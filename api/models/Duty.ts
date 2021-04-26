@@ -14,27 +14,35 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * The payment details
+ * 
+ * The payment details.<br/>
+ * Note that this is required for a Dutiable parcel shipped internationally.
  * @export
- * @interface Payment
+ * @interface Duty
  */
-export interface Payment {
+export interface Duty {
     /**
-     * The payor type
+     * The duty payer
      * @type {string}
-     * @memberof Payment
+     * @memberof Duty
      */
-    paid_by?: PaymentPaidByEnum;
+    paid_by?: DutyPaidByEnum;
     /**
-     * The payment amount currency
+     * The declared value currency
      * @type {string}
-     * @memberof Payment
+     * @memberof Duty
      */
-    currency: PaymentCurrencyEnum;
+    currency?: DutyCurrencyEnum;
     /**
-     * The payor account number
+     * The package declared value
+     * @type {number}
+     * @memberof Duty
+     */
+    declared_value?: number | null;
+    /**
+     * The duty payor account number
      * @type {string}
-     * @memberof Payment
+     * @memberof Duty
      */
     account_number?: string | null;
 }
@@ -43,7 +51,7 @@ export interface Payment {
 * @export
 * @enum {string}
 */
-export enum PaymentPaidByEnum {
+export enum DutyPaidByEnum {
     Sender = 'sender',
     Recipient = 'recipient',
     ThirdParty = 'third_party'
@@ -51,7 +59,7 @@ export enum PaymentPaidByEnum {
 * @export
 * @enum {string}
 */
-export enum PaymentCurrencyEnum {
+export enum DutyCurrencyEnum {
     Eur = 'EUR',
     Aed = 'AED',
     Usd = 'USD',
@@ -197,23 +205,24 @@ export enum PaymentCurrencyEnum {
     Zar = 'ZAR'
 }
 
-export function PaymentFromJSON(json: any): Payment {
-    return PaymentFromJSONTyped(json, false);
+export function DutyFromJSON(json: any): Duty {
+    return DutyFromJSONTyped(json, false);
 }
 
-export function PaymentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Payment {
+export function DutyFromJSONTyped(json: any, ignoreDiscriminator: boolean): Duty {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'paid_by': !exists(json, 'paid_by') ? undefined : json['paid_by'],
-        'currency': json['currency'],
+        'currency': !exists(json, 'currency') ? undefined : json['currency'],
+        'declared_value': !exists(json, 'declared_value') ? undefined : json['declared_value'],
         'account_number': !exists(json, 'account_number') ? undefined : json['account_number'],
     };
 }
 
-export function PaymentToJSON(value?: Payment | null): any {
+export function DutyToJSON(value?: Duty | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -224,6 +233,7 @@ export function PaymentToJSON(value?: Payment | null): any {
         
         'paid_by': value.paid_by,
         'currency': value.currency,
+        'declared_value': value.declared_value,
         'account_number': value.account_number,
     };
 }

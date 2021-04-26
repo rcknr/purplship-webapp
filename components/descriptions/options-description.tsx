@@ -19,8 +19,11 @@ const OptionsDescription: React.FC<OptionsDescriptionComponent> = ({ options }) 
             </p>
             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
                 {isNone(options.insurance) ? '' : <>
-                    <span>Insurance (Package Value <strong>{options.insurance} {options.currency}</strong>)</span>
+                    <span>Insurance (Coverage Amount <strong>{options.insurance} {options.currency}</strong>)</span>
                 </>}
+            </p>
+            <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                {isNone(options.declared_value) ? '' : <span>Declared Value: <strong>{` ${options.declared_value} ${options.currency}`}</strong></span>}
             </p>
             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
                 {isNone(options.cash_on_delivery) ? '' : <>
