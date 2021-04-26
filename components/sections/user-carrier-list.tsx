@@ -10,7 +10,7 @@ interface UserConnectionListView { }
 
 const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<UserConnectionListView>(({ updateConnection }) => {
   const { setLoading } = useContext(Loading);
-  const { user_connections, loading, load, refetch } = useContext(UserConnections);
+  const { user_connections, loading, refetch } = useContext(UserConnections);
 
   const update = async (_?: React.MouseEvent) => refetch && await refetch();
   const toggle = ({ __typename, active, id }: UserConnectionType) => async () => {
@@ -19,7 +19,6 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
     update();
   };
   
-  useEffect(() => { !loading && load() }, []);
   useEffect(() => { setLoading(loading); });
 
   return (

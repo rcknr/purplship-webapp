@@ -42,13 +42,14 @@ export type DefaultTemplatesType = LazyQueryResult<DefaultTemplate, any> & {
 export const DefaultTemplatesData = React.createContext<DefaultTemplatesType>({} as DefaultTemplatesType);
 
 const TemplatesQuery: React.FC = ({ children }) => {
-  const [load, result] = useLazyQuery<DefaultTemplate>(GET_DEFAULT_TEMPLATES);
+  const [initialLoad, result] = useLazyQuery<DefaultTemplate>(GET_DEFAULT_TEMPLATES);
 
   const extract = (templates?: TemplateType[]) => {
     if (isNone(templates)) return {};
     const { default_address, default_customs, default_parcel } = new DefaultTemplates(templates || []);
     return { default_address, default_customs, default_parcel };
   };
+  const load = (options?: any) => result.called ? result.fetchMore({}) : initialLoad(options);
 
   return (
     <DefaultTemplatesData.Provider value={{

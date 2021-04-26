@@ -16,9 +16,10 @@ export type AddressTemplatesType = LazyQueryResult<get_address_templates, any> &
 export const AddressTemplates = React.createContext<AddressTemplatesType>({} as AddressTemplatesType);
 
 const AddressTemplatesQuery: React.FC = ({ children }) => {
-  const [load, result] = useLazyQuery<get_address_templates>(GET_ADDRESS_TEMPLATES);
+  const [initialLoad, result] = useLazyQuery<get_address_templates>(GET_ADDRESS_TEMPLATES);
 
   const extract = (edges?: Edges) => (edges || []).map(item => item?.node as AddressTemplate);
+  const load = (options?: any) => result.called ? result.fetchMore({}) : initialLoad(options);
   const loadMore = (cursor?: string | null) => result?.fetchMore && result.fetchMore({ variables: { cursor } });
   
   return (

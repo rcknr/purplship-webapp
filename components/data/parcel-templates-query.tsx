@@ -16,9 +16,10 @@ export type ParcelTemplatesType = LazyQueryResult<get_parcel_templates, any> & {
 export const ParcelTemplates = React.createContext<ParcelTemplatesType>({} as ParcelTemplatesType);
 
 const ParcelTemplatesQuery: React.FC = ({ children }) => {
-  const [load, result] = useLazyQuery<get_parcel_templates>(GET_PARCEL_TEMPLATES);
+  const [initialLoad, result] = useLazyQuery<get_parcel_templates>(GET_PARCEL_TEMPLATES);
 
   const extract = (edges?: Edges) => (edges || []).map(item => item?.node as ParcelTemplateType);
+  const load = (options?: any) => result.called ? result.fetchMore({}) : initialLoad(options);
   const loadMore = (cursor?: string | null) => result?.fetchMore && result.fetchMore({ variables: { cursor } });
 
   return (

@@ -1,16 +1,25 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { View } from '@/library/types';
 import ConnectProviderModal from '@/components/connect-provider-modal';
 import Tabs from '@/components/generic/tabs';
 import UserConnectionList from '@/components/sections/user-carrier-list';
 import SystemConnectionList from '@/components/sections/system-carrier-list';
 import { UserConnections } from '@/components/data/user-connections-query';
+import { Loading } from '@/components/loader';
+import { SystemConnections } from '@/components/data/system-connections-query';
 
 interface ConnectionsView extends View {}
 
 const ConnectionsPage: React.FC<ConnectionsView> = ( ) => {
-  const { refetch } = useContext(UserConnections);
-  const update = async (_?: React.MouseEvent) => refetch && await refetch();
+  const { setLoading } = useContext(Loading);
+  const user_connections = useContext(UserConnections);
+  const system_connections = useContext(SystemConnections);
+
+  const update = async (_?: React.MouseEvent) => user_connections.refetch && await user_connections.refetch();
+
+  useEffect(() => { !user_connections.loading && user_connections.load() }, []);
+  useEffect(() => { !system_connections.loading && system_connections.load() }, []);
+  useEffect(() => { setLoading(user_connections.loading || system_connections.loading); });
 
   return (
     <Fragment>
