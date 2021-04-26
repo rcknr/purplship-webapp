@@ -60,11 +60,7 @@ query get_customs_info_templates {
           commercial_invoice
           certificate_number
           content_description
-          duty {
-            paid_by
-            currency
-            account_number
-          }
+          duty
           invoice
           signer
           certify

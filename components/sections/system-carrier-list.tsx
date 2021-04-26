@@ -1,16 +1,11 @@
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext } from 'react';
 import CarrierBadge from '@/components/carrier-badge';
 import { SystemConnections } from '@/components/data/system-connections-query';
-import { Loading } from '@/components/loader';
 
 interface SystemConnectionListView { }
 
 const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
-  const { setLoading } = useContext(Loading);
-  const { system_connections, loading, load } = useContext(SystemConnections);
-
-  useEffect(() => { !loading && load() }, []);
-  useEffect(() => { setLoading(loading); });
+  const { system_connections } = useContext(SystemConnections);
 
   return (
     <Fragment>

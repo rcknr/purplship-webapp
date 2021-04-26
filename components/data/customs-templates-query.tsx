@@ -16,9 +16,10 @@ type CustomInfoTemplatesQueryResult = LazyQueryResult<get_customs_info_templates
 export const CustomInfoTemplates = React.createContext<CustomInfoTemplatesQueryResult>({} as CustomInfoTemplatesQueryResult);
 
 const CustomInfoTemplatesQuery: React.FC = ({ children }) => {
-  const [load, result] = useLazyQuery<get_customs_info_templates>(GET_CUSTOMS_TEMPLATES);
+  const [initialLoad, result] = useLazyQuery<get_customs_info_templates>(GET_CUSTOMS_TEMPLATES);
 
   const extract = (edges?: Edges): CustomsTemplateType[] => (edges || []).map(item => item?.node as CustomsTemplateType);
+  const load = (options?: any) => result.called ? result.fetchMore({}) : initialLoad(options);
   const loadMore = (cursor?: string | null) => result?.fetchMore && result.fetchMore({ variables: { cursor } });
 
   return (

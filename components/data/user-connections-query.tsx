@@ -13,9 +13,10 @@ type UserConnectionsQueryResult = LazyQueryResult<get_user_connections, any> & {
 export const UserConnections = React.createContext<UserConnectionsQueryResult>({} as UserConnectionsQueryResult);
 
 const UserConnectionsQuery: React.FC = ({ children }) => {
-  const [load, result] = useLazyQuery<get_user_connections>(GET_USER_CONNECTIONS);
+  const [initialLoad, result] = useLazyQuery<get_user_connections>(GET_USER_CONNECTIONS);
 
   const extract = (results: any[]): UserConnectionType[] => results.filter(r => r !== null);
+  const load = (options?: any) => result.called ? result.fetchMore({}) : initialLoad(options);
 
   return (
     <UserConnections.Provider value={{ load, user_connections: extract(result.data?.user_connections || []), ...result }}>

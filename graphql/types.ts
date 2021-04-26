@@ -67,12 +67,6 @@ export interface get_customs_info_templates_customs_templates_pageInfo {
   endCursor: string | null;    // When paginating forwards, the cursor to continue.
 }
 
-export interface get_customs_info_templates_customs_templates_edges_node_customs_duty {
-  paid_by: PaymentPaidBy | null;
-  currency: PaymentCurrency | null;
-  account_number: string | null;
-}
-
 export interface get_customs_info_templates_customs_templates_edges_node_customs_commodities {
   id: string;
   sku: string | null;
@@ -93,7 +87,7 @@ export interface get_customs_info_templates_customs_templates_edges_node_customs
   commercial_invoice: boolean | null;
   certificate_number: string | null;
   content_description: string | null;
-  duty: get_customs_info_templates_customs_templates_edges_node_customs_duty | null;
+  duty: any | null;
   invoice: string | null;
   signer: string | null;
   certify: boolean | null;
@@ -1001,160 +995,6 @@ export enum CustomsIncoterm {
 }
 
 // An enumeration.
-export enum PaymentPaidBy {
-  RECIPIENT = "RECIPIENT",
-  SENDER = "SENDER",
-  THIRD_PARTY = "THIRD_PARTY",
-}
-
-// An enumeration.
-export enum PaymentCurrency {
-  AED = "AED",
-  AMD = "AMD",
-  ANG = "ANG",
-  AOA = "AOA",
-  ARS = "ARS",
-  AUD = "AUD",
-  AWG = "AWG",
-  AZN = "AZN",
-  BAM = "BAM",
-  BBD = "BBD",
-  BDT = "BDT",
-  BGN = "BGN",
-  BHD = "BHD",
-  BIF = "BIF",
-  BMD = "BMD",
-  BND = "BND",
-  BOB = "BOB",
-  BRL = "BRL",
-  BSD = "BSD",
-  BTN = "BTN",
-  BWP = "BWP",
-  BYN = "BYN",
-  BZD = "BZD",
-  CAD = "CAD",
-  CDF = "CDF",
-  CHF = "CHF",
-  CLP = "CLP",
-  CNY = "CNY",
-  COP = "COP",
-  CRC = "CRC",
-  CUC = "CUC",
-  CVE = "CVE",
-  CZK = "CZK",
-  DJF = "DJF",
-  DKK = "DKK",
-  DOP = "DOP",
-  DZD = "DZD",
-  EGP = "EGP",
-  ERN = "ERN",
-  ETB = "ETB",
-  EUR = "EUR",
-  FJD = "FJD",
-  GBP = "GBP",
-  GEL = "GEL",
-  GHS = "GHS",
-  GMD = "GMD",
-  GNF = "GNF",
-  GTQ = "GTQ",
-  GYD = "GYD",
-  HKD = "HKD",
-  HNL = "HNL",
-  HRK = "HRK",
-  HTG = "HTG",
-  HUF = "HUF",
-  IDR = "IDR",
-  ILS = "ILS",
-  INR = "INR",
-  IRR = "IRR",
-  ISK = "ISK",
-  JMD = "JMD",
-  JOD = "JOD",
-  JPY = "JPY",
-  KES = "KES",
-  KGS = "KGS",
-  KHR = "KHR",
-  KMF = "KMF",
-  KPW = "KPW",
-  KRW = "KRW",
-  KWD = "KWD",
-  KYD = "KYD",
-  KZT = "KZT",
-  LAK = "LAK",
-  LKR = "LKR",
-  LRD = "LRD",
-  LSL = "LSL",
-  LYD = "LYD",
-  MAD = "MAD",
-  MDL = "MDL",
-  MGA = "MGA",
-  MKD = "MKD",
-  MMK = "MMK",
-  MNT = "MNT",
-  MOP = "MOP",
-  MRO = "MRO",
-  MUR = "MUR",
-  MVR = "MVR",
-  MWK = "MWK",
-  MXN = "MXN",
-  MYR = "MYR",
-  MZN = "MZN",
-  NAD = "NAD",
-  NGN = "NGN",
-  NIO = "NIO",
-  NOK = "NOK",
-  NPR = "NPR",
-  NZD = "NZD",
-  OMR = "OMR",
-  PEN = "PEN",
-  PGK = "PGK",
-  PHP = "PHP",
-  PKR = "PKR",
-  PLN = "PLN",
-  PYG = "PYG",
-  QAR = "QAR",
-  RSD = "RSD",
-  RUB = "RUB",
-  RWF = "RWF",
-  SAR = "SAR",
-  SBD = "SBD",
-  SCR = "SCR",
-  SDG = "SDG",
-  SEK = "SEK",
-  SGD = "SGD",
-  SHP = "SHP",
-  SLL = "SLL",
-  SOS = "SOS",
-  SRD = "SRD",
-  SSP = "SSP",
-  STD = "STD",
-  SYP = "SYP",
-  SZL = "SZL",
-  THB = "THB",
-  TJS = "TJS",
-  TND = "TND",
-  TOP = "TOP",
-  TRY = "TRY",
-  TTD = "TTD",
-  TWD = "TWD",
-  TZS = "TZS",
-  UAH = "UAH",
-  USD = "USD",
-  UYU = "UYU",
-  UZS = "UZS",
-  VEF = "VEF",
-  VND = "VND",
-  VUV = "VUV",
-  WST = "WST",
-  XAF = "XAF",
-  XCD = "XCD",
-  XOF = "XOF",
-  XPF = "XPF",
-  YER = "YER",
-  ZAR = "ZAR",
-}
-
-// An enumeration.
 export enum CommodityWeightUnit {
   KG = "KG",
   LB = "LB",
@@ -1555,160 +1395,6 @@ export enum ParcelDimensionUnit {
 export enum ParcelWeightUnit {
   KG = "KG",
   LB = "LB",
-}
-
-// An enumeration.
-export enum paid_by {
-  RECIPIENT = "RECIPIENT",
-  SENDER = "SENDER",
-  THIRD_PARTY = "THIRD_PARTY",
-}
-
-// An enumeration.
-export enum currency {
-  AED = "AED",
-  AMD = "AMD",
-  ANG = "ANG",
-  AOA = "AOA",
-  ARS = "ARS",
-  AUD = "AUD",
-  AWG = "AWG",
-  AZN = "AZN",
-  BAM = "BAM",
-  BBD = "BBD",
-  BDT = "BDT",
-  BGN = "BGN",
-  BHD = "BHD",
-  BIF = "BIF",
-  BMD = "BMD",
-  BND = "BND",
-  BOB = "BOB",
-  BRL = "BRL",
-  BSD = "BSD",
-  BTN = "BTN",
-  BWP = "BWP",
-  BYN = "BYN",
-  BZD = "BZD",
-  CAD = "CAD",
-  CDF = "CDF",
-  CHF = "CHF",
-  CLP = "CLP",
-  CNY = "CNY",
-  COP = "COP",
-  CRC = "CRC",
-  CUC = "CUC",
-  CVE = "CVE",
-  CZK = "CZK",
-  DJF = "DJF",
-  DKK = "DKK",
-  DOP = "DOP",
-  DZD = "DZD",
-  EGP = "EGP",
-  ERN = "ERN",
-  ETB = "ETB",
-  EUR = "EUR",
-  FJD = "FJD",
-  GBP = "GBP",
-  GEL = "GEL",
-  GHS = "GHS",
-  GMD = "GMD",
-  GNF = "GNF",
-  GTQ = "GTQ",
-  GYD = "GYD",
-  HKD = "HKD",
-  HNL = "HNL",
-  HRK = "HRK",
-  HTG = "HTG",
-  HUF = "HUF",
-  IDR = "IDR",
-  ILS = "ILS",
-  INR = "INR",
-  IRR = "IRR",
-  ISK = "ISK",
-  JMD = "JMD",
-  JOD = "JOD",
-  JPY = "JPY",
-  KES = "KES",
-  KGS = "KGS",
-  KHR = "KHR",
-  KMF = "KMF",
-  KPW = "KPW",
-  KRW = "KRW",
-  KWD = "KWD",
-  KYD = "KYD",
-  KZT = "KZT",
-  LAK = "LAK",
-  LKR = "LKR",
-  LRD = "LRD",
-  LSL = "LSL",
-  LYD = "LYD",
-  MAD = "MAD",
-  MDL = "MDL",
-  MGA = "MGA",
-  MKD = "MKD",
-  MMK = "MMK",
-  MNT = "MNT",
-  MOP = "MOP",
-  MRO = "MRO",
-  MUR = "MUR",
-  MVR = "MVR",
-  MWK = "MWK",
-  MXN = "MXN",
-  MYR = "MYR",
-  MZN = "MZN",
-  NAD = "NAD",
-  NGN = "NGN",
-  NIO = "NIO",
-  NOK = "NOK",
-  NPR = "NPR",
-  NZD = "NZD",
-  OMR = "OMR",
-  PEN = "PEN",
-  PGK = "PGK",
-  PHP = "PHP",
-  PKR = "PKR",
-  PLN = "PLN",
-  PYG = "PYG",
-  QAR = "QAR",
-  RSD = "RSD",
-  RUB = "RUB",
-  RWF = "RWF",
-  SAR = "SAR",
-  SBD = "SBD",
-  SCR = "SCR",
-  SDG = "SDG",
-  SEK = "SEK",
-  SGD = "SGD",
-  SHP = "SHP",
-  SLL = "SLL",
-  SOS = "SOS",
-  SRD = "SRD",
-  SSP = "SSP",
-  STD = "STD",
-  SYP = "SYP",
-  SZL = "SZL",
-  THB = "THB",
-  TJS = "TJS",
-  TND = "TND",
-  TOP = "TOP",
-  TRY = "TRY",
-  TTD = "TTD",
-  TWD = "TWD",
-  TZS = "TZS",
-  UAH = "UAH",
-  USD = "USD",
-  UYU = "UYU",
-  UZS = "UZS",
-  VEF = "VEF",
-  VND = "VND",
-  VUV = "VUV",
-  WST = "WST",
-  XAF = "XAF",
-  XCD = "XCD",
-  XOF = "XOF",
-  XPF = "XPF",
-  YER = "YER",
-  ZAR = "ZAR",
 }
 
 // An enumeration.
@@ -2604,7 +2290,6 @@ export interface PartialAddressModelSerializerInput {
 // null
 export interface PartialCustomsModelSerializerInput {
   id?: string | null;
-  duty?: PartialPaymentModelSerializerInput | null;
   commodities?: (PartialCommodityModelSerializerInput | null)[] | null;
   aes?: string | null;
   eel_pfc?: string | null;
@@ -2616,37 +2301,7 @@ export interface PartialCustomsModelSerializerInput {
   incoterm?: incoterm | null;
   invoice?: string | null;
   signer?: string | null;
-}
-
-// null
-export interface PartialPaymentModelSerializerInput {
-  id?: string | null;
-  contact?: AddressModelSerializerInput | null;
-  amount?: number | null;
-  paid_by?: paid_by | null;
-  currency?: currency | null;
-  account_number?: string | null;
-}
-
-// null
-export interface AddressModelSerializerInput {
-  id?: string | null;
-  country_code?: string | null;
-  postal_code?: string | null;
-  city?: string | null;
-  federal_tax_id?: string | null;
-  state_tax_id?: string | null;
-  person_name?: string | null;
-  company_name?: string | null;
-  email?: string | null;
-  phone_number?: string | null;
-  state_code?: string | null;
-  suburb?: string | null;
-  residential?: boolean | null;
-  address_line1?: string | null;
-  address_line2?: string | null;
-  validate_location?: boolean | null;
-  validation?: string | null;
+  duty?: string | null;
 }
 
 // null

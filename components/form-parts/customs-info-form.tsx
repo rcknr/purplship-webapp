@@ -64,17 +64,24 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
             try {
+                const { options, duty, ...content } = customs;
+                const payload = {
+                    ...content,
+                    ...(isNone(duty) ? {} : { duty: JSON.stringify(duty) }),
+                    ...(isNone(options) ? {} : { options: JSON.stringify(options) }),
+                };
+
                 if (customs.id !== undefined) {
-                    await updateCustoms(customs);
+                    await updateCustoms(payload);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration successfully updated!' });
                 }
                 else if (shipment?.id !== undefined) {
-                    await addCustoms(shipment.id, customs);
+                    await addCustoms(shipment.id, payload);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
                 } else {
-                    update({ changes: { customs } });
+                    update({ changes: { customs: payload } });
                     form.current?.dispatchEvent(
                         new CustomEvent('label-select-tab', { bubbles: true, detail: { nextTab: 'options' } })
                     );
@@ -171,6 +178,8 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                                     <option key={unit} value={unit}>{unit}</option>
                                 ))}
                             </SelectField>
+
+                            <InputField label="Declared value" defaultValue={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-3 px-1 py-2"/>
 
                         </DataInput>
 

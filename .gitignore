@@ -75,6 +75,12 @@ typings/
 # FuseBox cache
 .fusebox/
 
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+*.sqlite3*
+
 # OSX
 .DS_Store
 
