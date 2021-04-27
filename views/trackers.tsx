@@ -7,6 +7,7 @@ import { isNone } from '@/library/helper';
 import { Trackers } from '@/components/data/trackers-query';
 import TrackerMutation from '@/components/data/tracker-mutation';
 import { Loading } from '@/components/loader';
+import DeleteItemModal from '@/components/delete-item-modal';
 
 
 interface TrackersView extends View {}
@@ -16,8 +17,8 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
   const { called, loading, results, load, loadMore, next, previous, refetch } = useContext(Trackers);
 
   const update = () => refetch && refetch();
-  const remove = (tracker: TrackingStatus) => async () => {
-    await removeTracker(tracker.id as string);
+  const remove = (id?: string) => async () => {
+    await removeTracker(id as string);
     update();
   };
 
@@ -43,6 +44,7 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
               <th className="status">status</th>
               <th className="carrier">Carrier</th>
               <th className="last-event">Last Event</th>
+              <th className="action"></th>
             </tr>
           </thead>
 
@@ -50,16 +52,27 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
 
             {results.map(tracker => (
               <tr key={tracker.id}>
-                <td><span className="is-subtitle is-size-6 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</span></td>
                 <td>
+                  <span className="is-subtitle is-size-6 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</span>
+                </td>
+                <td className="status is-vcentered">
                   <span className={`tag ${statusColor(tracker)}`}>{formatSatus(tracker)}</span>
                 </td>
-                <td>
+                <td className="carrier is-vcentered">
                   <CarrierBadge carrier={tracker.carrier_name} className="tag" />
                 </td>
-                <td>
+                <td className="py-1">
                   <span className="is-subtitle is-size-7 has-text-weight-semibold text-wrapped">{formatEventDescription((tracker.events || [])[0])}</span><br/>
                   <span className="is-subtitle is-size-7 has-text-weight-semibold has-text-grey">{formatEventDate((tracker.events || [])[0])}</span>
+                </td>
+                <td className="action is-vcentered">
+                  <div className="buttons is-centered">
+                    <DeleteItemModal label="Shipment Tracker" identifier={tracker.id as string} onConfirm={remove(tracker.id)}>
+                      <span className="icon is-small">
+                        <i className="fas fa-trash"></i>
+                      </span>
+                    </DeleteItemModal>
+                  </div>
                 </td>
               </tr>
             ))}
