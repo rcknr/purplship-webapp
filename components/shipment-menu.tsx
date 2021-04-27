@@ -1,10 +1,11 @@
 import React, { useState, useRef, useContext } from 'react';
 import { Shipment, ShipmentStatusEnum } from '@/api';
-import LabelPrinter from './label/label-printer';
+import LabelPrinter from '@/components/label/label-printer';
 import { useNavigate } from '@reach/router';
 import { NotificationType } from '@/library/types';
-import ShipmentMutation from './data/shipment-mutation';
-import { Notify } from './notifier';
+import ShipmentMutation from '@/components/data/shipment-mutation';
+import { Notify } from '@/components/notifier';
+import { Shipments } from '@/components/data/shipments-query';
 
 
 interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement> {
@@ -13,10 +14,12 @@ interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement
 
 
 const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentMenuComponent>(({ shipment, voidLabel, ...props }) => {
-    const { notify } = useContext(Notify);
-    const [isActive, setIsActive] = useState(false);
-    const btn = useRef<HTMLButtonElement>(null);
     const navigate = useNavigate();
+    const { notify } = useContext(Notify);
+    const shipments = useContext(Shipments)
+    const btn = useRef<HTMLButtonElement>(null);
+    const [isActive, setIsActive] = useState(false);
+
     const handleOnClick = (e: React.MouseEvent) => {
         if (!isActive) {
             setIsActive(true);
@@ -37,6 +40,7 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
         try {
             await voidLabel(shipment);
             notify({ type: NotificationType.success, message: 'Shipment successfully cancelled!' });
+            shipments.refetch();
         } catch (err) {
             notify({ type: NotificationType.error, message: err });
         }
