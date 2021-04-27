@@ -321,6 +321,7 @@ export const GET_USER_CONNECTIONS = gql`
         active
         site_id
         password
+        account_number
       }
       ... on DHLUniversalSettings {
         id

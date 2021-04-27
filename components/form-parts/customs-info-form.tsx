@@ -5,7 +5,6 @@ import TextAreaField from '@/components/generic/textarea-field';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import ButtonField from '@/components/generic/button-field';
 import SelectField from '@/components/generic/select-field';
-import DataInput from '@/components/generic/data-input';
 import { deepEqual, formatRef, isNone } from '@/library/helper';
 import { Collection, CURRENCY_OPTIONS, NotificationType, PAYOR_OPTIONS } from '@/library/types';
 import { UserData } from '@/components/data/user-query';
@@ -39,7 +38,7 @@ function reducer(state: any, { name, value }: { name: string, value: string | bo
         case 'optOut':
             return value === true ? null : { ...DEFAULT_CUSTOMS_CONTENT };
         default:
-            return { ...state, [name]: value }
+            return { ...state, [name]: value };
     }
 }
 
@@ -50,38 +49,25 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
         const [customs, dispatch] = useReducer(reducer, value, () => value);
         const form = useRef<any>(null);
         const handleChange = (event: React.ChangeEvent<any> & CustomEvent<{ name: keyof Customs, value: object }>) => {
-            if (event.detail !== undefined) {
-                const name = event.detail.name;
-                const value = event.detail.value;
-                dispatch({ name, value });
-            } else {
-                const target = event.target;
-                const name = target.name;
-                const value = target.type === 'checkbox' ? target.checked : target.value;
-                dispatch({ name, value });
-            }
+            const target = event.target;
+            const name = target.name;
+            const value = target.type === 'checkbox' ? target.checked : target.value;
+            dispatch({ name, value });
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
             try {
-                const { options, duty, ...content } = customs;
-                const payload = {
-                    ...content,
-                    ...(isNone(duty) ? {} : { duty: JSON.stringify(duty) }),
-                    ...(isNone(options) ? {} : { options: JSON.stringify(options) }),
-                };
-
                 if (customs.id !== undefined) {
-                    await updateCustoms(payload);
+                    await updateCustoms(customs);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration successfully updated!' });
                 }
                 else if (shipment?.id !== undefined) {
-                    await addCustoms(shipment.id, payload);
+                    await addCustoms(shipment.id, customs);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
                 } else {
-                    update({ changes: { customs: payload } });
+                    update({ changes: { customs } });
                     form.current?.dispatchEvent(
                         new CustomEvent('label-select-tab', { bubbles: true, detail: { nextTab: 'options' } })
                     );
@@ -165,23 +151,19 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                             <span>Duties</span>
                         </CheckBoxField>
 
-                        <DataInput state={customs?.duty} onChange={handleChange} name="duty" className="columns column is-multiline mb-0 ml-6 my-1 px-2 py-0" style={{ borderLeft: "solid 2px #ddd", display: `${!isNone(customs?.duty) ? 'block' : 'none'}` }}>
+                        <div className="columns column is-multiline mb-0 ml-6 my-1 px-2 py-0" style={{ borderLeft: "solid 2px #ddd", display: `${!isNone(customs?.duty) ? 'block' : 'none'}` }}>
 
-                            <SelectField label="paid by" value={customs?.duty?.paid_by} name="paid_by" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2" required={!isNone(customs?.duty)}>
-                                {PAYOR_OPTIONS.map(unit => (
-                                    <option key={unit} value={unit}>{formatRef(unit)}</option>
-                                ))}
+                            <SelectField label="paid by" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, paid_by: e.target.value } })} value={customs?.duty?.paid_by} name="paid_by" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2" required={!isNone(customs?.duty)}>
+                                {PAYOR_OPTIONS.map(unit => <option key={unit} value={unit}>{formatRef(unit)}</option>)}
                             </SelectField>
 
-                            <SelectField label="prefered currency" value={customs?.duty?.currency} name="currency" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2">
-                                {CURRENCY_OPTIONS.map(unit => (
-                                    <option key={unit} value={unit}>{unit}</option>
-                                ))}
+                            <SelectField label="prefered currency" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, currency: e.target.value } })} value={customs?.duty?.currency} name="currency" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2">
+                                {CURRENCY_OPTIONS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                             </SelectField>
 
-                            <InputField label="Declared value" defaultValue={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-3 px-1 py-2"/>
+                            <InputField label="Declared value"  onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, declared_value: e.target.value } })} defaultValue={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-3 px-1 py-2"/>
 
-                        </DataInput>
+                        </div>
 
                     </div>
 
@@ -201,7 +183,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
 
                     </div>
 
-                    <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value, customs)}>
+                    <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value, customs) && deepEqual(value?.duty, customs?.duty)}>
                         <span>{customs.id === undefined ? 'Continue' : 'Save'}</span>
                         {customs.id === undefined && <span className="icon is-small">
                             <i className="fas fa-chevron-right"></i>
