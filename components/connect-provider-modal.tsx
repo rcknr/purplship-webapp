@@ -25,15 +25,13 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
         const [key, setKey] = useState<string>(`connection-${Date.now()}`);
         const [isNew, _] = useState<boolean>(connection === null || connection === undefined);
         const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(connection || DEFAULT_STATE);
-        const [error, setError] = useState<string>("");
         const [isActive, setIsActive] = useState<boolean>(false);
         const [isDisabled, setIsDisabled] = useState<boolean>(true);
-        const [hasError, setHasError] = useState<boolean>(false);
 
         const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
             evt.preventDefault();
+            setIsDisabled(true);
             try {
-                setIsDisabled(true);
                 const { carrier_name, __typename, ...content } = payload;
                 const settingsName = `${carrier_name}settings`.replace('_', '');
                 const data = { [settingsName]: content };
@@ -50,15 +48,14 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                 close();
                 onUpdate && onUpdate();
             } catch (err) {
-                setHasError(true);
-                setError(err.message);
+                notify({ type: NotificationType.error, message: err });
+            } finally {
                 setIsDisabled(false);
             }
         };
         const close = (_?: React.MouseEvent) => {
             if (isNew) setPayload(DEFAULT_STATE);
             setKey(`connection-${Date.now()}`);
-            setHasError(false);
             setIsDisabled(false);
             setIsActive(false);
         };
@@ -88,7 +85,6 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     <form className="modal-card" onSubmit={handleSubmit}>
                         <section className="modal-card-body">
                             <h3 className="subtitle is-3">{isNew ? 'Connect a Carrier' : 'Update a Carrier Connection'}</h3>
-                            <p className="is-size-7 has-text-danger my-1" style={{ visibility: (hasError ? "visible" : "hidden") }}>{error}</p>
 
                             <SelectField value={payload.carrier_name} onChange={handleOnChange("carrier_name")} disabled={!isNew} key={`select-${key}`} className="is-fullwidth" required>
                                 <option value='none'>Select Carrier</option>
