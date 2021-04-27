@@ -127,7 +127,7 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
 
             <div className="columns is-multiline mb-0">
 
-                <SelectField label="shipment currency" value={options?.currency} onChange={handleChange} name="currency" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2" required={!isNone(options?.insurance) || !isNone(options?.cash_on_delivery)}>
+                <SelectField label="shipment currency" value={options?.currency} onChange={handleChange} name="currency" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2" required={!isNone(options?.insurance) || !isNone(options?.cash_on_delivery) || !isNone(options?.declared_value)}>
                     <option value="">Select a currency</option>
 
                     {CURRENCY_OPTIONS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
