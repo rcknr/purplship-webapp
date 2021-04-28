@@ -5,18 +5,29 @@ import CarrierBadge from '@/components/carrier-badge';
 import { UserConnections, UserConnectionType } from '@/components/data/user-connections-query';
 import ConnectionMutation from '@/components/data/connection-mutation';
 import { Loading } from '@/components/loader';
+import { Notify } from '@/components/notifier';
+import { NotificationType } from '@/library/types';
 
 interface UserConnectionListView { }
 
 const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<UserConnectionListView>(({ updateConnection }) => {
+  const { notify } = useContext(Notify);
   const { setLoading } = useContext(Loading);
   const { user_connections, loading, refetch } = useContext(UserConnections);
 
   const update = async (_?: React.MouseEvent) => refetch && await refetch();
   const toggle = ({ __typename, active, id }: UserConnectionType) => async () => {
-    const data = {[__typename.toLowerCase()]: { id, active: !active }};
-    await updateConnection({ id, ...data });
-    update();
+    try {
+      const data = {[__typename.toLowerCase()]: { id, active: !active }};
+      await updateConnection({ id, ...data });
+      notify({
+          type: NotificationType.success,
+          message: `carrier connection ${!active ? 'activated' : 'deactivated'}!`
+      });
+      update();
+    } catch(message) {
+      notify({ type: NotificationType.error, message });
+    }
   };
   
   useEffect(() => { setLoading(loading); });
