@@ -3,6 +3,7 @@ import { handleFailure } from '@/library/helper';
 import { RestClient } from '@/library/rest';
 import React, { useContext } from 'react';
 import { LabelData } from '@/components/data/shipment-query';
+import { CommodityType } from '@/library/types';
 
 
 export type ShipmentMutator<T> = T & {
@@ -15,6 +16,9 @@ export type ShipmentMutator<T> = T & {
   updateAddress: (address: Address) => Promise<Shipment>;
   updateCustoms: (customs: Customs) => Promise<Shipment>;
   updateParcel: (parcel: Parcel) => Promise<Shipment>;
+  addCommodity: (customs_id: string, commodity: CommodityType) => Promise<void>;
+  updateCommodity: (customs_id: string, commodity: CommodityType) => Promise<void>;
+  discardCommodity: (customs_id: string, commodity_id: string) => Promise<Customs>;
 }
 
 const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>) => (
@@ -74,6 +78,18 @@ const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>)
         .update({ id, data } as any)
         .then(() => loadShipment(state.shipment.id))
     );
+    const addCommodity = async (customs_id: string, commodity: CommodityType) => handleFailure(
+      purplship.customs
+        .addCommodity({ data: commodity, id: customs_id } as any)
+    );
+    const updateCommodity = async (customs_id: string, commodity: CommodityType) => handleFailure(
+      purplship.customs
+        .update({ data: { commodities: [commodity] }, id: customs_id } as any)
+    );
+    const discardCommodity = async (customs_id: string, commodity_id: string) => handleFailure(
+      purplship.customs
+        .discardCommodity({ id: customs_id, ck: commodity_id })
+    );
 
     return (
       <Component {...props}
@@ -86,6 +102,9 @@ const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>)
         updateAddress={updateAddress}
         updateCustoms={updateCustoms}
         updateParcel={updateParcel}
+        addCommodity={addCommodity}
+        updateCommodity={updateCommodity}
+        discardCommodity={discardCommodity}
       >
         {children}
       </Component>

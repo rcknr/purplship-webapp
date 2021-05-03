@@ -1,5 +1,5 @@
-import { Address, Customs, Message, Parcel, ParcelDimensionUnitEnum, ParcelWeightUnitEnum, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment } from '@/api';
-import { get_address_templates_address_templates_edges_node, get_address_templates_address_templates_edges_node_address, get_customs_info_templates_customs_templates_edges_node, get_customs_info_templates_customs_templates_edges_node_customs, get_logs_logs_edges_node, get_parcel_templates_parcel_templates_edges_node, get_parcel_templates_parcel_templates_edges_node_parcel } from '@/graphql';
+import { Address, Commodity, Customs, Message, Parcel, ParcelDimensionUnitEnum, ParcelWeightUnitEnum, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment } from '@/api';
+import { get_address_templates_address_templates_edges_node, get_address_templates_address_templates_edges_node_address, get_customs_info_templates_customs_templates_edges_node, get_customs_info_templates_customs_templates_edges_node_customs, get_customs_info_templates_customs_templates_edges_node_customs_commodities, get_logs_logs_edges_node, get_parcel_templates_parcel_templates_edges_node, get_parcel_templates_parcel_templates_edges_node_parcel } from '@/graphql';
 
 
 
@@ -12,6 +12,7 @@ export type AddressTemplate = get_address_templates_address_templates_edges_node
 export type CustomsTemplateType = get_customs_info_templates_customs_templates_edges_node;
 export type ParcelTemplateType = get_parcel_templates_parcel_templates_edges_node;
 export type TemplateType = AddressTemplate & ParcelTemplateType & CustomsTemplateType;
+export type CommodityType = (Commodity | get_customs_info_templates_customs_templates_edges_node_customs_commodities) & { id: string; };
 
 export interface View {
     path: string

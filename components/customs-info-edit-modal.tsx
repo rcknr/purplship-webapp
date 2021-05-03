@@ -23,7 +23,7 @@ interface CustomsInfoEditModalComponent {
 }
 
 const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMutation<CustomsInfoEditModalComponent>(
-    ({ customsTemplate, onUpdate, children, className, createTemplate, updateTemplate }) => {
+    ({ customsTemplate, onUpdate, children, className, createTemplate, updateTemplate, deleteCommodity }) => {
         const { notify } = useContext(Notify);
         const [isActive, setIsActive] = useState<boolean>(false);
         const [key, setKey] = useState<string>(`customs-${Date.now()}`);
@@ -83,7 +83,7 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
                         <section className="modal-card-body">
                             <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Customs Info</h3>
                             <hr />
-                            {payload !== undefined && <CustomsInfoForm value={payload as any} update={update} cannotOptOut={true}>
+                            {payload !== undefined && <CustomsInfoForm value={payload as any} update={update} cannotOptOut={true} commodityDiscarded={deleteCommodity}>
                                 <Extension />
                             </CustomsInfoForm>}
                         </section>

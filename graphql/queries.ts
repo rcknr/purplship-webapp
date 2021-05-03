@@ -250,6 +250,14 @@ export const DELETE_TEMPLATE = gql`
   }
 `;
 
+export const DISCARD_COMMODITY = gql`
+  mutation discard_commodity($data: DiscardCommodityInput!) {
+    discard_commodity(input: $data) {
+      id
+    }
+  }
+`;
+
 export const MUTATE_TOKEN = gql`
 mutation mutate_token($data: TokenMutationInput!) {
   mutate_token(input: $data) {
