@@ -69,12 +69,12 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
               </td>
               <td className="action is-vcentered">
                 <div className="buttons is-centered">
-                  <ConnectProviderModal connection={connection} className="button is-light is-info" onUpdate={update}>
+                  <ConnectProviderModal connection={connection} className="button is-white" onUpdate={update}>
                     <span className="icon is-small">
                       <i className="fas fa-pen"></i>
                     </span>
                   </ConnectProviderModal>
-                  <DisconnectProviderButton connection={connection}>
+                  <DisconnectProviderButton connection={connection} whenDone={update}>
                     <span className="icon is-small">
                       <i className="fas fa-trash"></i>
                     </span>

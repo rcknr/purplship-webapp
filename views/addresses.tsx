@@ -58,7 +58,7 @@ const AddressesPage: React.FC<AddressesView> = TemplateMutation<AddressesView>((
                 </td>
                 <td className="action is-vcentered">
                   <div className="buttons is-centered">
-                    <AddressEditModal className="button is-light" addressTemplate={template} onUpdate={update}>
+                    <AddressEditModal className="button is-white" addressTemplate={template} onUpdate={update}>
                       <span className="icon is-small">
                         <i className="fas fa-pen"></i>
                       </span>

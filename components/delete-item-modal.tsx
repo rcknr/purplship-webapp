@@ -31,7 +31,7 @@ const DeleteItemModal: React.FC<DeleteItemModalComponent> = ({ identifier, label
 
     return (
         <>
-            <button className="button is-danger is-light" onClick={() => setIsActive(true)}>
+            <button className="button is-white" onClick={() => setIsActive(true)}>
                 {children}
             </button>
 
