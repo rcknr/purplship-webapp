@@ -13,7 +13,7 @@ const THEME: Collection = {
     'dhl_express': 'is-dhl',
     'dhl_universal': 'is-dhl',
     'eshipper': 'is-eshipper',
-    'fedex_express': 'is-fedex',
+    'fedex': 'is-fedex',
     'freightcom': 'is-freightcom',
     'purolator_courier': 'is-purolator',
     'royalmail': 'is-royalmail',
