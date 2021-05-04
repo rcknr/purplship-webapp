@@ -7,6 +7,7 @@ export * from './CarrierList';
 export * from './CarrierSettings';
 export * from './Charge';
 export * from './Commodity';
+export * from './CommodityData';
 export * from './Customs';
 export * from './CustomsData';
 export * from './CustomsList';

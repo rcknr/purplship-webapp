@@ -13,7 +13,6 @@ import NameInput from '@/components/generic/name-input';
 import { AddressType, Collection, NotificationType } from '@/library/types';
 import { APIReference } from '@/components/data/references-query';
 import ShipmentMutation from '../data/shipment-mutation';
-import { LabelData } from '../data/shipment-query';
 import { Notify } from '../notifier';
 
 export const DEFAULT_ADDRESS_CONTENT = {

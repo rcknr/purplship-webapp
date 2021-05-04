@@ -58,7 +58,7 @@ const ParcelsPage: React.FC<ParcelsView> = TemplateMutation<ParcelsView>(({ dele
                 </td>
                 <td className="action is-vcentered">
                   <div className="buttons is-centered">
-                    <ParcelEditModal className="button is-light" parcelTemplate={template} onUpdate={refresh}>
+                    <ParcelEditModal className="button is-white" parcelTemplate={template} onUpdate={refresh}>
                       <span className="icon is-small">
                         <i className="fas fa-pen"></i>
                       </span>

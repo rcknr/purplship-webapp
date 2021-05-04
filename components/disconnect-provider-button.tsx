@@ -1,15 +1,16 @@
 import { NotificationType } from '@/library/types';
 import React, { useContext, useState } from 'react';
-import ConnectionMutation from './data/connection-mutation';
-import { UserConnectionType } from './data/user-connections-query';
-import { Notify } from './notifier';
+import ConnectionMutation from '@/components/data/connection-mutation';
+import { UserConnectionType } from '@/components/data/user-connections-query';
+import { Notify } from '@/components/notifier';
 
 interface DisconnectProviderButtonComponent {
     connection: UserConnectionType;
+    whenDone?: () => void;
 }
 
 const DisconnectProviderButton: React.FC<DisconnectProviderButtonComponent> = ConnectionMutation<DisconnectProviderButtonComponent>(
-    ({ children, connection, deleteConnection }) => {
+    ({ children, connection, whenDone, deleteConnection }) => {
         const { notify } = useContext(Notify);
         const [isActive, setIsActive] = useState<boolean>(false);
         const close = (evt?: React.MouseEvent) => {
@@ -25,6 +26,7 @@ const DisconnectProviderButton: React.FC<DisconnectProviderButtonComponent> = Co
                     message: 'Carrier account disconnected successfully!'
                 });
                 close();
+                whenDone && whenDone();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
@@ -32,7 +34,7 @@ const DisconnectProviderButton: React.FC<DisconnectProviderButtonComponent> = Co
 
         return (
             <>
-                <button className="button is-danger is-light" onClick={() => setIsActive(true)}>
+                <button className="button is-white" onClick={() => setIsActive(true)}>
                     {children}
                 </button>
 

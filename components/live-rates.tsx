@@ -144,7 +144,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
                                     <div className="is-size-7 has-text-weight-semibold">
                                         <h6 className="has-text-weight-bold">{formatRef(rate.service as string)}</h6>
                                         <span>{rate.total_charge} {rate.currency}</span>
-                                        {(rate.transit_days !== null) && <span> - {rate.transit_days} Transit days</span>}
+                                        {!isNone(rate.transit_days) && <span> - {rate.transit_days} Transit days</span>}
                                     </div>
                                 </a>
                             </li>

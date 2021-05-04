@@ -21,6 +21,9 @@ const CustomsInfoDescription: React.FC<CustomsInfoDescriptionComponent> = ({ cus
                 {isNone(customs?.invoice) ? '' : <span>Invoice Number: <strong>{customs.invoice}</strong></span>}
             </p>
             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                {isNone(customs?.invoice_date) ? '' : <span>Invoice Date: <strong>{customs.invoice_date}</strong></span>}
+            </p>
+            <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
                 {isNone(customs?.certificate_number) ? '' : <span>Certificate Number: <strong>{customs.certificate_number}</strong></span>}
             </p>
             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">

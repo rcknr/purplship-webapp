@@ -91,16 +91,6 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
 
       </div>}
 
-      {loading && <div className="card my-6">
-
-        <div className="card-content has-text-centered">
-          <span className="icon has-text-info is-large">
-            <i className="fas fa-spinner fa-pulse"></i>
-          </span>
-        </div>
-
-      </div>}
-
       <footer className="px-2 py-2 is-vcentered">
         <div className="buttons has-addons is-centered">
           <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>

@@ -14,63 +14,57 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * The parcel content items
+ * 
  * @export
- * @interface Commodity
+ * @interface CommodityData
  */
-export interface Commodity {
-    /**
-     * A unique identifier
-     * @type {string}
-     * @memberof Commodity
-     */
-    id?: string;
+export interface CommodityData {
     /**
      * The commodity's weight
      * @type {number}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     weight: number;
     /**
      * The commodity's weight unit
      * @type {string}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
-    weight_unit: CommodityWeightUnitEnum;
+    weight_unit: CommodityDataWeightUnitEnum;
     /**
      * A description of the commodity
      * @type {string}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     description?: string | null;
     /**
      * The commodity's quantity (number or item)
      * @type {number}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     quantity?: number | null;
     /**
      * The commodity's sku number
      * @type {string}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     sku?: string | null;
     /**
      * The monetary value of the commodity
      * @type {number}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     value_amount?: number | null;
     /**
      * The currency of the commodity value amount
      * @type {string}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     value_currency?: string | null;
     /**
      * The origin or manufacture country
      * @type {string}
-     * @memberof Commodity
+     * @memberof CommodityData
      */
     origin_country?: string | null;
 }
@@ -79,22 +73,21 @@ export interface Commodity {
 * @export
 * @enum {string}
 */
-export enum CommodityWeightUnitEnum {
+export enum CommodityDataWeightUnitEnum {
     Kg = 'KG',
     Lb = 'LB'
 }
 
-export function CommodityFromJSON(json: any): Commodity {
-    return CommodityFromJSONTyped(json, false);
+export function CommodityDataFromJSON(json: any): CommodityData {
+    return CommodityDataFromJSONTyped(json, false);
 }
 
-export function CommodityFromJSONTyped(json: any, ignoreDiscriminator: boolean): Commodity {
+export function CommodityDataFromJSONTyped(json: any, ignoreDiscriminator: boolean): CommodityData {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'weight': json['weight'],
         'weight_unit': json['weight_unit'],
         'description': !exists(json, 'description') ? undefined : json['description'],
@@ -106,7 +99,7 @@ export function CommodityFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     };
 }
 
-export function CommodityToJSON(value?: Commodity | null): any {
+export function CommodityDataToJSON(value?: CommodityData | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -115,7 +108,6 @@ export function CommodityToJSON(value?: Commodity | null): any {
     }
     return {
         
-        'id': value.id,
         'weight': value.weight,
         'weight_unit': value.weight_unit,
         'description': value.description,

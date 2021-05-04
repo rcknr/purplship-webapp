@@ -38,7 +38,7 @@ const CustomsInfoPage: React.FC<CustomsInfosView> = TemplateMutation<CustomsInfo
 
           <thead className="templates-table">
             <tr>
-              <th>Customs Info Templates</th>
+              <th colSpan={2}>Customs Info Templates</th>
               <th className="action"></th>
             </tr>
           </thead>
@@ -51,9 +51,14 @@ const CustomsInfoPage: React.FC<CustomsInfosView> = TemplateMutation<CustomsInfo
                   <p className="is-subtitle is-size-6 my-1 has-text-weight-semibold">{template.label}</p>
                   <CustomsInfoDescription customs={template.customs as CustomsType} />
                 </td>
+                <td className="default is-vcentered">
+                  {template.is_default && <span className="is-size-7 has-text-weight-semibold">
+                    <span className="icon has-text-success"><i className="fas fa-check"></i></span> Default customs
+                  </span>}
+                </td>
                 <td className="action is-vcentered">
                   <div className="buttons is-centered">
-                    <CustomsInfoEditModal className="button is-light" customsTemplate={template} onUpdate={refresh}>
+                    <CustomsInfoEditModal className="button is-white" customsTemplate={template} onUpdate={refresh}>
                       <span className="icon is-small">
                         <i className="fas fa-pen"></i>
                       </span>

@@ -1,4 +1,4 @@
-import { AddressType, CustomsType, ParcelType, PresetCollection, RequestError } from "@/library/types";
+import { AddressType, CommodityType, CustomsType, ParcelType, PresetCollection, RequestError } from "@/library/types";
 
 
 export function formatRef(s: string): string {
@@ -81,7 +81,7 @@ export function formatDimension(parcel?: Partial<ParcelType>): string {
     return 'Dimensions: None specified...';
 }
 
-export function formatWeight(parcel?: Partial<ParcelType>): string {
+export function formatWeight(parcel?: Partial<ParcelType> | Partial<CommodityType>): string {
     if (parcel !== undefined) {
 
         const { weight, weight_unit } = parcel;

@@ -60,8 +60,30 @@ query get_customs_info_templates {
           commercial_invoice
           certificate_number
           content_description
-          duty
+          duty {
+            paid_by
+            currency
+            account_number
+            declared_value
+            bill_to {
+              company_name
+              person_name
+              address_line1
+              address_line2
+              postal_code
+              residential
+              city
+              state_code
+              country_code
+              email
+              phone_number
+              validation
+              validate_location
+            }
+            id
+          }
           invoice
+          invoice_date
           signer
           certify
           commodities {
@@ -245,6 +267,14 @@ export const UPDATED_TEMPLATE = gql`
 export const DELETE_TEMPLATE = gql`
   mutation delete_template($data: DeleteTemplateInput!) {
     delete_template(input: $data) {
+      id
+    }
+  }
+`;
+
+export const DISCARD_COMMODITY = gql`
+  mutation discard_commodity($data: DiscardCommodityInput!) {
+    discard_commodity(input: $data) {
       id
     }
   }

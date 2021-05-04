@@ -67,6 +67,31 @@ export interface get_customs_info_templates_customs_templates_pageInfo {
   endCursor: string | null;    // When paginating forwards, the cursor to continue.
 }
 
+export interface get_customs_info_templates_customs_templates_edges_node_customs_duty_bill_to {
+  company_name: string | null;
+  person_name: string | null;
+  address_line1: string | null;
+  address_line2: string | null;
+  postal_code: string | null;
+  residential: boolean | null;
+  city: string | null;
+  state_code: string | null;
+  country_code: AddressCountryCode;
+  email: string | null;
+  phone_number: string | null;
+  validation: any | null;
+  validate_location: boolean | null;
+}
+
+export interface get_customs_info_templates_customs_templates_edges_node_customs_duty {
+  paid_by: string | null;
+  currency: string | null;
+  account_number: string | null;
+  declared_value: number | null;
+  bill_to: get_customs_info_templates_customs_templates_edges_node_customs_duty_bill_to | null;
+  id: string | null;
+}
+
 export interface get_customs_info_templates_customs_templates_edges_node_customs_commodities {
   id: string;
   sku: string | null;
@@ -87,8 +112,9 @@ export interface get_customs_info_templates_customs_templates_edges_node_customs
   commercial_invoice: boolean | null;
   certificate_number: string | null;
   content_description: string | null;
-  duty: any | null;
+  duty: get_customs_info_templates_customs_templates_edges_node_customs_duty | null;
   invoice: string | null;
+  invoice_date: string | null;
   signer: string | null;
   certify: boolean | null;
   commodities: (get_customs_info_templates_customs_templates_edges_node_customs_commodities | null)[] | null;
@@ -423,6 +449,26 @@ export interface delete_templateVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: discard_commodity
+// ====================================================
+
+export interface discard_commodity_discard_commodity {
+  id: string | null;
+}
+
+export interface discard_commodity {
+  discard_commodity: discard_commodity_discard_commodity | null;
+}
+
+export interface discard_commodityVariables {
+  data: DiscardCommodityInput;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: mutate_token
 // ====================================================
 
@@ -524,6 +570,7 @@ export interface get_user_connections_user_connections_DHLExpressSettings {
   active: boolean;
   site_id: string;
   password: string;
+  account_number: string;
 }
 
 export interface get_user_connections_user_connections_DHLUniversalSettings {
@@ -2300,6 +2347,7 @@ export interface PartialCustomsModelSerializerInput {
   content_description?: string | null;
   incoterm?: incoterm | null;
   invoice?: string | null;
+  invoice_date?: string | null;
   signer?: string | null;
   duty?: string | null;
 }
@@ -2346,6 +2394,12 @@ export interface UpdateTemplateInput {
 
 // null
 export interface DeleteTemplateInput {
+  id: string;
+  clientMutationId?: string | null;
+}
+
+// null
+export interface DiscardCommodityInput {
   id: string;
   clientMutationId?: string | null;
 }
