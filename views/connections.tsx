@@ -35,11 +35,11 @@ const ConnectionsPage: React.FC<ConnectionsView> = ( ) => {
 
       <div className="table-container">
 
-        <Tabs tabs={['System Connections', 'Your Connections']}>
-
-          <SystemConnectionList />
+        <Tabs tabs={['Your Connections', 'System Connections']} style={{ position: 'relative' }}>
 
           <UserConnectionList />
+
+          <SystemConnectionList />
 
         </Tabs>
 
