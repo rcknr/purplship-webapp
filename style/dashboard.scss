@@ -157,6 +157,10 @@ hr {
     right: 0;
 }
 
+.mode-menu-item {
+    color: #c44c34 !important;
+}
+
 .purplship-notifier {
     position: fixed;
     top: 0;
@@ -166,6 +170,29 @@ hr {
     opacity: 0.9;
     border-radius: 0;
     font-weight: 700;
+}
+
+.mode-indicator {
+    position: absolute;
+    top: 0;
+    z-index: 31;
+    border-top: 2px solid #c44c34;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+
+    .mode-indicator-container {
+        margin: 0 auto;
+        background: #c44c34;
+        display: inline;
+        padding: 1px 10px;
+        border-radius: 0 0 5px 5px;
+
+        .mode-indicator-label {
+            font-size: 0.6rem;
+            color: white;
+        }
+    }
 }
 
 .table-container {

@@ -31,6 +31,7 @@ import Navbar from '@/components/navbar/navbar';
 import Loader from '@/components/loader';
 import Notifier from '@/components/notifier';
 import LocationTitle from '@/components/location-title';
+import AppModeProvider, { computeBasePath } from '@/components/data/app-mode';
 import '@/library/rest';
 import 'prismjs';
 import 'prismjs/components/prism-json';
@@ -54,6 +55,7 @@ const DATA_CONTEXTS = [
     TemplatesQuery,
     Loader,
     Notifier,
+    AppModeProvider,
 ];
 
 
@@ -78,10 +80,10 @@ const Dashboard: React.FC = () => {
                     <Notifier />
                     <Navbar />
 
-                    <div className="dashboard-content">
-                        <Router>
+                    <div className="dashboard-content" style={{ position: 'relative'}}>
+                        <Router basepath={computeBasePath()}>
                             <ShipmentPage path="/" />
-                            <TrackersPage path="/trackers" />
+                            <TrackersPage path="trackers" />
 
                             <AddressesPage path="configurations/addresses" />
                             <ConnectionsPage path="configurations/carriers" />

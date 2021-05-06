@@ -7,6 +7,7 @@ import SystemConnectionList from '@/components/sections/system-carrier-list';
 import { UserConnections } from '@/components/data/user-connections-query';
 import { Loading } from '@/components/loader';
 import { SystemConnections } from '@/components/data/system-connections-query';
+import ModeIndicator from '@/components/mode-indicator';
 
 interface ConnectionsView extends View {}
 
@@ -23,6 +24,7 @@ const ConnectionsPage: React.FC<ConnectionsView> = ( ) => {
 
   return (
     <Fragment>
+      <ModeIndicator />
 
       <header className="px-2 pt-1 pb-6">
         <span className="subtitle is-4">Carriers</span>

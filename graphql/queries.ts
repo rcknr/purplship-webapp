@@ -229,8 +229,8 @@ query get_parcel_templates($offset: Int, $first: Int) {
 `;
 
 export const GET_SYSTEM_CONNECTIONS = gql`
-query get_system_connections {
-  system_connections {
+query get_system_connections($test: Boolean) {
+  system_connections(test: $test) {
     id
     carrier_id
     carrier_name
@@ -300,8 +300,8 @@ export const GET_TOKEN = gql`
 `;
 
 export const GET_USER_CONNECTIONS = gql`
-  query get_user_connections {
-    user_connections {
+  query get_user_connections($test: Boolean) {
+    user_connections(test: $test) {
       __typename
       ... on AramexSettings {
         id

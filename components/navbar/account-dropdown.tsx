@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Link } from "@reach/router";
 import { UserType } from '@/components/data/user-query';
+import NavLink from '@/components/generic/navlink';
 
 
 interface AccountDropdownComponent {
@@ -44,13 +44,13 @@ const AccountDropdown: React.FC<AccountDropdownComponent> = ({ user }) => {
                     <h6 className="is-size-7 mt-2 px-4 has-text-weight-semibold">{user.email}</h6>
 
                     <div className="options-items">
-                        <Link to="settings/account" className="options-item">
+                        <NavLink to="/settings/account" className="options-item">
                             <i className="fas fa-cog"></i>
                             <div className="option-content">
                                 <span>My Account</span>
                                 <span>Manage your account</span>
                             </div>
-                        </Link>
+                        </NavLink>
 
                         {user.is_staff && <a href="/admin" className="options-item">
                             <i className="fas fa-tools"></i>

@@ -4,6 +4,7 @@ import { RestClient } from '@/library/rest';
 import React, { useContext } from 'react';
 import { LabelData } from '@/components/data/shipment-query';
 import { CommodityType } from '@/library/types';
+import { AppMode } from './app-mode';
 
 
 export type ShipmentMutator<T> = T & {
@@ -24,6 +25,7 @@ export type ShipmentMutator<T> = T & {
 const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>) => (
   ({ children, ...props }: any) => {
     const purplship = useContext(RestClient);
+    const { testMode } = useContext(AppMode);
     const { loadShipment, updateShipment, ...state } = useContext(LabelData);
 
     const fetchRates = async (shipment: Shipment | ShipmentData) => {
@@ -31,7 +33,7 @@ const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>)
         if ((shipment as Shipment).id !== undefined) {
           return purplship.shipments.rates({ id: (shipment as Shipment).id as string });
         } else {
-          return purplship.shipments.create({ data: (shipment as ShipmentData) });
+          return purplship.shipments.create({ data: (shipment as ShipmentData), test: testMode });
         }
       })().then(r => { updateShipment(r); return r; }));
     };

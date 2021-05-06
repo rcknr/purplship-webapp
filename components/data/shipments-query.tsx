@@ -3,6 +3,7 @@ import { ShipmentList } from '@/api';
 import { RestClient } from '@/library/rest';
 import { RequestError } from '@/library/types';
 import { getCursorPagination } from '@/library/helper';
+import { AppMode } from '@/components/data/app-mode';
 
 const DEFAULT_PAGINATED_RESULT = { results: [] };
 
@@ -19,6 +20,7 @@ export const Shipments = React.createContext<ResultType>({} as ResultType);
 
 const ShipmentsQuery: React.FC = ({ children }) => {
   const purplship = useContext(RestClient);
+  const { testMode } = useContext(AppMode);
   const [result, setValue] = useState<ShipmentList>(DEFAULT_PAGINATED_RESULT);
   const [error, setError] = useState<RequestError>();
   const [called, setCalled] = useState<boolean>(false);
@@ -31,7 +33,7 @@ const ShipmentsQuery: React.FC = ({ children }) => {
 
     return purplship
       .shipments
-      .list(getCursorPagination(cursor))
+      .list({...getCursorPagination(cursor), testMode: testMode})
       .then(setValue)
       .catch(setError)
       .then(() => setLoading(false));

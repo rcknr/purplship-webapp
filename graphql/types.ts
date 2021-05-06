@@ -392,6 +392,10 @@ export interface get_system_connections {
   system_connections: (get_system_connections_system_connections | null)[] | null;
 }
 
+export interface get_system_connectionsVariables {
+  test?: boolean | null;
+}
+
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
@@ -750,6 +754,10 @@ export type get_user_connections_user_connections = get_user_connections_user_co
 
 export interface get_user_connections {
   user_connections: (get_user_connections_user_connections | null)[] | null;
+}
+
+export interface get_user_connectionsVariables {
+  test?: boolean | null;
 }
 
 

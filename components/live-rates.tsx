@@ -13,6 +13,7 @@ import ShipmentMutation from '@/components/data/shipment-mutation';
 import { LabelData } from '@/components/data/shipment-query';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
+import { AppMode } from '@/components/data/app-mode';
 
 interface LiveRatesComponent {
     update: (payload: {}, refresh?: boolean) => void;
@@ -23,6 +24,7 @@ const DEFAULT_PAYMENT: Partial<Payment> = { paid_by: PaymentPaidByEnum.Sender };
 const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesComponent>(({ update, fetchRates, buyLabel }) => {
     const navigate = useNavigate();
     const { notify } = useContext(Notify);
+    const { basePath } = useContext(AppMode);
     const { shipment } = useContext(LabelData);
     const { loading, setLoading } = useContext(Loading);
     const [selected_rate_id, setSelectedRate] = useState<string | undefined>(shipment?.selected_rate_id || undefined);
@@ -43,13 +45,13 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
             setLoading(true);
             let payload = { ...shipment };
             const response = await fetchRates(payload);
-            if (payload.id === undefined) navigate('/buy_label/' + response.id);
-            update(shipment, true);
-            if ((shipment.messages || []).length > 0) {
+            if (payload.id === undefined) navigate('' + response.id);
+            update(response, true);
+            if ((response.messages || []).length > 0) {
                 const error: APIError = {
                     error: {
                         code: "notes",
-                        details: { messages: shipment.messages } as APIError['error']['details']
+                        details: { messages: response.messages } as APIError['error']['details']
                     }
                 };
                 const message = new RequestError(error);
@@ -74,7 +76,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
             });
             update(shipment as Shipment);
             notify({ type: NotificationType.success, message: 'Label successfully purchased!' });
-            navigate('/');
+            navigate(basePath);
         } catch (err) {
             notify({ type: NotificationType.error, message: err });
         } finally {
@@ -135,18 +137,22 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
 
                     <ul className="menu-list py-2 rates-list-box">
                         {shipment.rates?.map(rate => (
-                            <li key={rate.id}>
-                                <a className={`columns mb-0 ${rate.id === selected_rate_id ? 'has-text-grey-dark' : 'has-text-grey'}`} onClick={() => setSelectedRate(rate.id)}>
+                            <li key={rate.id} {...(rate.test_mode ? { title: "Test Mode" } : {})}>
+                                <a className={`columns mb-1 ${rate.id === selected_rate_id ? 'has-text-grey-dark' : 'has-text-grey'}`} onClick={() => setSelectedRate(rate.id)}>
 
                                     <span className={`icon is-medium ${rate.id === selected_rate_id ? 'has-text-success' : ''}`}>
                                         {(rate.id === selected_rate_id) ? <i className="fas fa-check-square"></i> : <i className="fas fa-square"></i>}
                                     </span>
 
-                                    <div className="is-size-7 has-text-weight-semibold">
+                                    <div className="column px-1 py-0 is-size-7 has-text-weight-semibold">
                                         <h6 className="has-text-weight-bold">{formatRef(rate.service as string)}</h6>
                                         <span>{rate.total_charge} {rate.currency}</span>
                                         {!isNone(rate.transit_days) && <span> - {rate.transit_days} Transit days</span>}
                                     </div>
+
+                                    {rate.test_mode && <div className="has-text-warning p-1">
+                                        <i className="fas fa-exclamation-circle"></i>
+                                    </div>}
                                 </a>
                             </li>
                         ))}
@@ -190,7 +196,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
                     </div>
 
                     {(payment.paid_by !== PaymentPaidByEnum.Sender) && <div className="columns ml-3 my-1 px-2 py-0" style={{ borderLeft: "solid 2px #ddd" }}>
-                        <InputField label="account number" defaultValue={payment?.account_number as string} onChange={e => setPayment({ ...payment, account_number: e.target.value })} fieldClass="column"/>
+                        <InputField label="account number" defaultValue={payment?.account_number as string} onChange={e => setPayment({ ...payment, account_number: e.target.value })} fieldClass="column" />
                     </div>}
 
                 </div>

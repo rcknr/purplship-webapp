@@ -8,6 +8,7 @@ import { Trackers } from '@/components/data/trackers-query';
 import TrackerMutation from '@/components/data/tracker-mutation';
 import { Loading } from '@/components/loader';
 import DeleteItemModal from '@/components/delete-item-modal';
+import ModeIndicator from '@/components/mode-indicator';
 
 
 interface TrackersView extends View {}
@@ -27,6 +28,7 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
 
   return (
     <>
+      <ModeIndicator />
 
       <header className="px-2 pt-1 pb-6">
         <span className="subtitle is-4">Trackers</span>
@@ -53,7 +55,7 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
             {results.map(tracker => (
               <tr key={tracker.id}>
                 <td>
-                  <span className="is-subtitle is-size-6 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</span>
+                  <p className="is-subtitle is-size-6 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</p>
                 </td>
                 <td className="status is-vcentered">
                   <span className={`tag ${statusColor(tracker)}`}>{formatSatus(tracker)}</span>
