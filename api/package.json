@@ -1,0 +1,21 @@
+{
+  "name": "purplship",
+  "version": "2021.4.0",
+  "description": "Purplship Javascript client for bowser apps",
+  "main": "purplship.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "shipping",
+    "api",
+    "client"
+  ],
+  "author": "Purplship Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.1",
+    "gulp": "^4.0.2",
+    "rollup": "^2.47.0"
+  }
+}
