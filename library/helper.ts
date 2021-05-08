@@ -6,8 +6,7 @@ export function formatRef(s: string): string {
 }
 
 export function formatDate(date: string): string {
-    let [month, day, year] = (new Date(date)).toLocaleDateString().split("/");
-    return `${day}/${month}/${year}`;
+   return (new Date(date)).toLocaleDateString();
 }
 
 export function formatDateTime(date_string: string): string {

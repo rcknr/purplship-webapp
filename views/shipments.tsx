@@ -21,7 +21,6 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
   useEffect(() => { setLoading(loading); });
 
   const { notify } = useContext(Notify);
-  (window as any).noti = () => notify({ message: 'Tracker successfully added!' })
 
   return (
     <>

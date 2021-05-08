@@ -37,7 +37,7 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
 
   return (
     <Fragment>
-      <label className="p-2" style={{ position: 'absolute', top: 1, right: 1 }} htmlFor="toogle">
+      <label className="checkbox p-2" style={{ position: 'absolute', top: 1, right: 1 }}>
         <span className="is-size-7 has-text-weight-semibold has-text-info px-2">Show {testMode ? 'live' : 'test'} connections</span>
         <input id="toggle" type="checkbox" defaultChecked={viewOtherMode} onChange={() => showOther(!viewOtherMode)} />
       </label>

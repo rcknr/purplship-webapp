@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { View } from '@/library/types';
 import CarrierBadge from '@/components/carrier-badge';
-import { TrackingEvent, TrackingStatus } from '@/api';
+import { TrackingEvent, TrackingStatus } from '@/api/index';
 import TrackShipmentModal from '@/components/track-shipment-modal';
 import { isNone } from '@/library/helper';
 import { Trackers } from '@/components/data/trackers-query';

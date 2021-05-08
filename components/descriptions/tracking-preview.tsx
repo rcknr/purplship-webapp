@@ -64,7 +64,7 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
 
                         <hr />
 
-                        <div className="my-3 pl-6" style={{ maxHeight: '40vh', overflowY: 'scroll' }}>
+                        <div className="my-3 pl-3" style={{ maxHeight: '40vh', overflowY: 'scroll' }}>
 
                             <aside className="menu">
                                 <ul className="menu-list mb-5" style={{ maxWidth: "28rem;" }}>

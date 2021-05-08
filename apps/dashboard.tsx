@@ -31,6 +31,7 @@ import Navbar from '@/components/navbar/navbar';
 import Loader from '@/components/loader';
 import Notifier from '@/components/notifier';
 import LocationTitle from '@/components/location-title';
+import ShipmentDetails from '@/components/descriptions/shipment-details';
 import AppModeProvider, { computeBasePath } from '@/components/data/app-mode';
 import '@/library/rest';
 import 'prismjs';
@@ -95,6 +96,7 @@ const Dashboard: React.FC = () => {
                             <APISettings path="settings/api" />
                             <WebhooksPage path="settings/webhooks" />
                             <LabelCreator path="buy_label/:id" />
+                            <ShipmentDetails path="shipments/:id" />
                         </Router>
                     </div>
 

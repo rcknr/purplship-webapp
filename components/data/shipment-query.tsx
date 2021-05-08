@@ -41,8 +41,8 @@ const LabelDataQuery: React.FC = ({ children }) => {
       await handleFailure(
         purplship.shipments.retrieve({ id: id as string })
       )
-        .then(r => { setValue(r); resolve(r); })
-        .catch(setError)
+        .then(r => { setValue(r as any); resolve(r as any); })
+        .catch(e => { setError(e); setValue({} as Shipment); })
         .then(() => setLoading(false));
     });
   };

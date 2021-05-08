@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ShipmentList } from '@/api';
+import { ShipmentList } from '@/api/index';
 import { RestClient } from '@/library/rest';
 import { RequestError } from '@/library/types';
 import { getCursorPagination } from '@/library/helper';
