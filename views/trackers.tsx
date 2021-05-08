@@ -9,6 +9,7 @@ import TrackerMutation from '@/components/data/tracker-mutation';
 import { Loading } from '@/components/loader';
 import DeleteItemModal from '@/components/delete-item-modal';
 import ModeIndicator from '@/components/mode-indicator';
+import TrackingPreview from '@/components/descriptions/tracking-preview';
 
 
 interface TrackersView extends View {}
@@ -67,8 +68,13 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
                   <span className="is-subtitle is-size-7 has-text-weight-semibold text-wrapped">{formatEventDescription((tracker.events || [])[0])}</span><br/>
                   <span className="is-subtitle is-size-7 has-text-weight-semibold has-text-grey">{formatEventDate((tracker.events || [])[0])}</span>
                 </td>
-                <td className="action is-vcentered">
-                  <div className="buttons is-centered">
+                <td className="action is-vcentered p-1">
+                  <div className="buttons is-pulled-right">
+                    <TrackingPreview tracker={tracker}>
+                      <span className="icon is-small">
+                        <i className="fas fa-eye"></i>
+                      </span>
+                    </TrackingPreview>
                     <DeleteItemModal label="Shipment Tracker" identifier={tracker.id as string} onConfirm={remove(tracker.id)}>
                       <span className="icon is-small">
                         <i className="fas fa-trash"></i>
