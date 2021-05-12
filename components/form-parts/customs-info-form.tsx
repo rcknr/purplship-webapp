@@ -68,16 +68,16 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             e.preventDefault();
             setLoading(true);
             try {
-                if (customs.id !== undefined) {
+                if (customs.id === undefined && shipment?.id !== undefined) {
+                    await addCustoms(shipment.id, customs);
+                    update({ refresh: true });
+                    notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
+                } else if (customs.id !== undefined) {
                     await updateCustoms(customs);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration successfully updated!' });
                 }
-                else if (shipment?.id !== undefined) {
-                    await addCustoms(shipment.id, customs);
-                    update({ refresh: true });
-                    notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
-                } else {
+                else {
                     update({ changes: { customs } });
                     form.current?.dispatchEvent(
                         new CustomEvent('label-select-tab', { bubbles: true, detail: { nextTab: 'options' } })

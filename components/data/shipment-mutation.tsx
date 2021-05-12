@@ -81,14 +81,17 @@ const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>)
     const addCommodity = async (customs_id: string, commodity: CommodityType) => handleFailure(
       purplship.customs
         .addCommodity({ data: commodity, id: customs_id } as any)
+        .then(() => loadShipment(state.shipment.id))
     );
     const updateCommodity = async (customs_id: string, commodity: CommodityType) => handleFailure(
       purplship.customs
         .update({ data: { commodities: [commodity] }, id: customs_id } as any)
+        .then(() => loadShipment(state.shipment.id))
     );
     const discardCommodity = async (customs_id: string, commodity_id: string) => handleFailure(
       purplship.customs
         .discardCommodity({ id: customs_id, ck: commodity_id })
+        .then(() => loadShipment(state.shipment.id))
     );
 
     return (
