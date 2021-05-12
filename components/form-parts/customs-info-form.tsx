@@ -166,19 +166,19 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                             }
                         </SelectField>
 
-                        <InputField label="AES" defaultValue={customs?.aes} onChange={handleChange} name="aes" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="AES" value={customs?.aes} onChange={handleChange} name="aes" fieldClass="column mb-0 is-6 px-2 py-1" />
 
-                        <InputField label="EEL / PFC" defaultValue={customs?.eel_pfc} onChange={handleChange} name="eel_pfc" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="EEL / PFC" value={customs?.eel_pfc} onChange={handleChange} name="eel_pfc" fieldClass="column mb-0 is-6 px-2 py-1" />
 
-                        <InputField label="certificate number" defaultValue={customs?.certificate_number} onChange={handleChange} name="certificate_number" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="certificate number" value={customs?.certificate_number} onChange={handleChange} name="certificate_number" fieldClass="column mb-0 is-6 px-2 py-1" />
 
                         <CheckBoxField name="commercial_invoice" defaultChecked={customs?.commercial_invoice} onChange={handleChange} fieldClass="column mb-0 is-12 px-2 py-2">
                             <span>Commercial Invoice</span>
                         </CheckBoxField>
 
-                        <InputField label="invoice number" defaultValue={customs?.invoice} onChange={handleChange} name="invoice" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="invoice number" value={customs?.invoice} onChange={handleChange} name="invoice" fieldClass="column mb-0 is-6 px-2 py-1" />
 
-                        <InputField label="invoice date" defaultValue={customs?.invoice_date} onChange={handleChange} name="invoice_date" type="date" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="invoice date" value={customs?.invoice_date} onChange={handleChange} name="invoice_date" type="date" fieldClass="column mb-0 is-6 px-2 py-1" />
 
                     </div>
 
@@ -195,13 +195,13 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                             </SelectField>
 
                             {customs?.duty?.paid_by === PaymentPaidByEnum.ThirdParty &&
-                                <InputField label="account number" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, account_number: e.target.value } })} defaultValue={customs?.duty?.account_number} name="account_number" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />}
+                                <InputField label="account number" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, account_number: e.target.value } })} value={customs?.duty?.account_number} name="account_number" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />}
 
                             <SelectField label="prefered currency" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, currency: e.target.value } })} value={customs?.duty?.currency} name="currency" className="is-small is-fullwidth" fieldClass="column is-4 mb-0 px-1 py-2">
                                 {CURRENCY_OPTIONS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                             </SelectField>
 
-                            <InputField label="Declared value" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, declared_value: e.target.value } })} defaultValue={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />
+                            <InputField label="Declared value" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, declared_value: e.target.value } })} value={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />
 
                         </div>
 
@@ -218,7 +218,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                                     <tr>
                                         <th className="commodity">Customs Commodities</th>
                                         <th className="action">
-                                            <button className="button is-small is-light is-success is-pulled-right" onClick={e => { e.preventDefault(); toggleCommodity();  return false; }}>
+                                            <button className="button is-small is-light is-success is-pulled-right" onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}>
                                                 <span className="icon is-small"><i className="fas fa-plus"></i></span>
                                             </button>
                                         </th>
@@ -263,13 +263,13 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
 
                     <hr className="my-2" />
 
-                    <div className="columns is-multiline mb-0 pt-2">
+                    <div className="columns is-multiline mb-6 pt-2">
 
-                        <TextAreaField label="content description" defaultValue={customs?.content_description} onChange={handleChange} name="content_description" fieldClass="column mb-0 is-12 px-2 py-2" placeholder="Content type description" />
+                        <TextAreaField label="content description" value={customs?.content_description} onChange={handleChange} name="content_description" fieldClass="column mb-0 is-12 px-2 py-2" placeholder="Content type description" />
 
                         <UserData.Consumer>
                             {({ user }) => (
-                                <InputField label="Signed By" defaultValue={(customs?.signer || user?.full_name) as string} onChange={handleChange} name="signer" fieldClass="column mb-0 is-12 px-2 py-2" required={!cannotOptOut} />
+                                <InputField label="Signed By" value={(customs?.signer || user?.full_name) as string} onChange={handleChange} name="signer" fieldClass="column mb-0 is-12 px-2 py-2" required={!cannotOptOut} />
                             )}
                         </UserData.Consumer>
 

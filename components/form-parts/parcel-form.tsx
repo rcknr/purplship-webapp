@@ -206,13 +206,13 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
                         </SelectField>
 
                         <span className="is-size-7 my-3">W:</span>
-                        <InputField type="number" step="any" min="0" name="width" onChange={handleChange} defaultValue={parcel.width} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
+                        <InputField type="number" step="any" min="0" name="width" onChange={handleChange} value={parcel.width} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
 
                         <span className="is-size-7 my-3">H:</span>
-                        <InputField type="number" step="any" min="0" name="height" onChange={handleChange} defaultValue={parcel.height} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
+                        <InputField type="number" step="any" min="0" name="height" onChange={handleChange} value={parcel.height} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
 
                         <span className="is-size-7 my-3">L:</span>
-                        <InputField type="number" step="any" min="0" name="length" onChange={handleChange} defaultValue={parcel.length} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
+                        <InputField type="number" step="any" min="0" name="length" onChange={handleChange} value={parcel.length} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
 
                         <SelectField name="dimension_unit" onChange={handleChange} value={parcel.dimension_unit || ParcelDimensionUnitEnum.Cm} className="is-small is-fullwidth" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)}>
                             {DIMENSION_UNITS.map(unit => (
@@ -228,7 +228,7 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
 
                 <div className="columns mb-0 px-2">
 
-                    <InputField type="number" step="any" min="0" name="weight" onChange={handleChange} defaultValue={parcel.weight} className="is-small" fieldClass="column is-2 mb-0 px-1 py-2" required />
+                    <InputField type="number" step="any" min="0" name="weight" onChange={handleChange} value={parcel.weight} className="is-small" fieldClass="column is-2 mb-0 px-1 py-2" required />
 
                     <SelectField name="weight_unit" onChange={handleChange} value={parcel.weight_unit || ParcelWeightUnitEnum.Kg} className="is-small is-fullwidth" fieldClass="column is-2 mb-0 px-1 py-2" required>
                         {WEIGHT_UNITS.map(unit => (
