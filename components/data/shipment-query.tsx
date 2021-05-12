@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Address, Parcel, Shipment } from '@/api';
+import { Address, Parcel, Shipment } from '@/api/index';
 import { RestClient } from '@/library/rest';
 import { handleFailure } from '@/library/helper';
 import { RequestError } from '@/library/types';

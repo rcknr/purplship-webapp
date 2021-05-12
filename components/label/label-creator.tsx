@@ -7,7 +7,7 @@ import ShipmentOptions from '@/components/form-parts/shipment-options';
 import ParcelForm from '@/components/form-parts/parcel-form';
 import LiveRates from '@/components/live-rates';
 import Tabs from '@/components/generic/tabs';
-import { Shipment, ShipmentStatusEnum } from '@/api';
+import { Shipment, ShipmentStatusEnum } from '@/api/index';
 import { isNone } from '@/library/helper';
 import { APIReference } from '@/components/data/references-query';
 import { LabelData, } from '@/components/data/shipment-query';
@@ -60,10 +60,10 @@ const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
             </nav>
 
             {ready && <div className="columns px-2 pb-6">
-                <div className="column is-7 px-0">
+                <div className="column is-7 px-0" style={{ minHeight: '850px' }}>
 
                     <div className="card px-3 py-3" style={{ overflow: 'visible' }}>
-                        <Tabs tabs={tabs} disabled={filterDisabled(tabs, shipment)} eventKey="label-select-tab">
+                        <Tabs tabs={tabs} disabled={filterDisabled(tabs, shipment)} eventKey="label-select-tab" style={{ overflowY: 'auto', minHeight: '100%', maxHeight: '75vh' }}>
 
                             <AddressForm key={`${ckey}-shipper`} value={shipment.shipper} default_value={default_address} shipment={shipment} update={update} name="shipper" />
 

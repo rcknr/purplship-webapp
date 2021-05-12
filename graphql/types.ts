@@ -52,6 +52,11 @@ export interface get_address_templates {
   address_templates: get_address_templates_address_templates | null;
 }
 
+export interface get_address_templatesVariables {
+  offset?: number | null;
+  first?: number | null;
+}
+
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
@@ -114,7 +119,7 @@ export interface get_customs_info_templates_customs_templates_edges_node_customs
   content_description: string | null;
   duty: get_customs_info_templates_customs_templates_edges_node_customs_duty | null;
   invoice: string | null;
-  invoice_date: string | null;
+  invoice_date: any | null;
   signer: string | null;
   certify: boolean | null;
   commodities: (get_customs_info_templates_customs_templates_edges_node_customs_commodities | null)[] | null;
@@ -138,6 +143,11 @@ export interface get_customs_info_templates_customs_templates {
 
 export interface get_customs_info_templates {
   customs_templates: get_customs_info_templates_customs_templates | null;
+}
+
+export interface get_customs_info_templatesVariables {
+  offset?: number | null;
+  first?: number | null;
 }
 
 
@@ -304,6 +314,11 @@ export interface get_logs {
   logs: get_logs_logs | null;
 }
 
+export interface get_logsVariables {
+  offset?: number | null;
+  first?: number | null;
+}
+
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
@@ -350,6 +365,11 @@ export interface get_parcel_templates_parcel_templates {
 
 export interface get_parcel_templates {
   parcel_templates: get_parcel_templates_parcel_templates | null;
+}
+
+export interface get_parcel_templatesVariables {
+  offset?: number | null;
+  first?: number | null;
 }
 
 
@@ -2347,7 +2367,7 @@ export interface PartialCustomsModelSerializerInput {
   content_description?: string | null;
   incoterm?: incoterm | null;
   invoice?: string | null;
-  invoice_date?: string | null;
+  invoice_date?: any | null;
   signer?: string | null;
   duty?: string | null;
 }

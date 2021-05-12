@@ -1,4 +1,4 @@
-import { Commodity, CommodityWeightUnitEnum, Customs, CustomsContentTypeEnum, CustomsIncotermEnum, Payment, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment } from '@/api';
+import { Commodity, CommodityWeightUnitEnum, Customs, CustomsContentTypeEnum, CustomsIncotermEnum, Payment, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment } from '@/api/index';
 import React, { ChangeEvent, FormEvent, useContext, useReducer, useRef, useState } from 'react';
 import InputField from '@/components/generic/input-field';
 import TextAreaField from '@/components/generic/textarea-field';
@@ -13,7 +13,8 @@ import ShipmentMutation from '@/components/data/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import CommodityDescription from '@/components/descriptions/commodity-description';
 import CommodityForm from '@/components/form-parts/commodity-form';
-import { DefaultTemplatesData } from '../data/default-templates-query';
+import { DefaultTemplatesData } from '@/components/data/default-templates-query';
+import { Loading } from '@/components/loader';
 
 
 export const DEFAULT_CUSTOMS_CONTENT: Customs = {
@@ -39,6 +40,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
     ({ children, value, shipment, cannotOptOut, update, commodityDiscarded, updateCustoms, discardCustoms, addCustoms, discardCommodity }) => {
         const form = useRef<any>(null);
         const { notify } = useContext(Notify);
+        const { loading, setLoading } = useContext(Loading);
         const { default_customs } = useContext(DefaultTemplatesData);
         const { incoterms, customs_content_type } = useContext(APIReference);
         const [editCommodity, setEditCommodity] = useState<boolean>(false);
@@ -64,17 +66,18 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
+            setLoading(true);
             try {
-                if (customs.id !== undefined) {
+                if (customs.id === undefined && shipment?.id !== undefined) {
+                    await addCustoms(shipment.id, customs);
+                    update({ refresh: true });
+                    notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
+                } else if (customs.id !== undefined) {
                     await updateCustoms(customs);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration successfully updated!' });
                 }
-                else if (shipment?.id !== undefined) {
-                    await addCustoms(shipment.id, customs);
-                    update({ refresh: true });
-                    notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
-                } else {
+                else {
                     update({ changes: { customs } });
                     form.current?.dispatchEvent(
                         new CustomEvent('label-select-tab', { bubbles: true, detail: { nextTab: 'options' } })
@@ -83,9 +86,11 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
+            setLoading(false);
         };
         const applyOptOut = async (e: ChangeEvent<any>) => {
             e.preventDefault();
+            setLoading(true);
             try {
                 if (!isNone(shipment?.id) && !isNone(shipment?.customs?.id)) {
                     await discardCustoms(shipment?.customs?.id as string);
@@ -96,6 +101,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
+            setLoading(false);
         };
         const removeCommodity = async (id: string) => {
             const commodities = (customs.commodities || []).filter((c: CommodityType) => c.id !== id);
@@ -118,7 +124,6 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             }
             toggleCommodity();
         };
-
 
         return (
             <>
@@ -161,19 +166,19 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                             }
                         </SelectField>
 
-                        <InputField label="AES" defaultValue={customs?.aes} onChange={handleChange} name="aes" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="AES" value={customs?.aes} onChange={handleChange} name="aes" fieldClass="column mb-0 is-6 px-2 py-1" />
 
-                        <InputField label="EEL / PFC" defaultValue={customs?.eel_pfc} onChange={handleChange} name="eel_pfc" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="EEL / PFC" value={customs?.eel_pfc} onChange={handleChange} name="eel_pfc" fieldClass="column mb-0 is-6 px-2 py-1" />
 
-                        <InputField label="certificate number" defaultValue={customs?.certificate_number} onChange={handleChange} name="certificate_number" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="certificate number" value={customs?.certificate_number} onChange={handleChange} name="certificate_number" fieldClass="column mb-0 is-6 px-2 py-1" />
 
                         <CheckBoxField name="commercial_invoice" defaultChecked={customs?.commercial_invoice} onChange={handleChange} fieldClass="column mb-0 is-12 px-2 py-2">
                             <span>Commercial Invoice</span>
                         </CheckBoxField>
 
-                        <InputField label="invoice number" defaultValue={customs?.invoice} onChange={handleChange} name="invoice" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="invoice number" value={customs?.invoice} onChange={handleChange} name="invoice" fieldClass="column mb-0 is-6 px-2 py-1" />
 
-                        <InputField label="invoice date" defaultValue={customs?.invoice_date} onChange={handleChange} name="invoice_date" type="date" fieldClass="column mb-0 is-6 px-2 py-1" />
+                        <InputField label="invoice date" value={customs?.invoice_date} onChange={handleChange} name="invoice_date" type="date" fieldClass="column mb-0 is-6 px-2 py-1" />
 
                     </div>
 
@@ -190,13 +195,13 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                             </SelectField>
 
                             {customs?.duty?.paid_by === PaymentPaidByEnum.ThirdParty &&
-                                <InputField label="account number" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, account_number: e.target.value } })} defaultValue={customs?.duty?.account_number} name="account_number" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />}
+                                <InputField label="account number" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, account_number: e.target.value } })} value={customs?.duty?.account_number} name="account_number" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />}
 
                             <SelectField label="prefered currency" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, currency: e.target.value } })} value={customs?.duty?.currency} name="currency" className="is-small is-fullwidth" fieldClass="column is-4 mb-0 px-1 py-2">
                                 {CURRENCY_OPTIONS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                             </SelectField>
 
-                            <InputField label="Declared value" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, declared_value: e.target.value } })} defaultValue={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />
+                            <InputField label="Declared value" onChange={e => dispatch({ name: 'duty', value: { ...customs.duty, declared_value: e.target.value } })} value={customs?.duty?.declared_value} name="declared_value" type="number" min={0} step="any" className="is-small" fieldClass="column mb-0 is-4 px-1 py-2" />
 
                         </div>
 
@@ -213,7 +218,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                                     <tr>
                                         <th className="commodity">Customs Commodities</th>
                                         <th className="action">
-                                            <button className="button is-small is-light is-success is-pulled-right" onClick={e => { e.preventDefault(); toggleCommodity();  return false; }}>
+                                            <button className="button is-small is-light is-success is-pulled-right" onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}>
                                                 <span className="icon is-small"><i className="fas fa-plus"></i></span>
                                             </button>
                                         </th>
@@ -258,13 +263,13 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
 
                     <hr className="my-2" />
 
-                    <div className="columns is-multiline mb-0 pt-2">
+                    <div className="columns is-multiline mb-6 pt-2">
 
-                        <TextAreaField label="content description" defaultValue={customs?.content_description} onChange={handleChange} name="content_description" fieldClass="column mb-0 is-12 px-2 py-2" placeholder="Content type description" />
+                        <TextAreaField label="content description" value={customs?.content_description} onChange={handleChange} name="content_description" fieldClass="column mb-0 is-12 px-2 py-2" placeholder="Content type description" />
 
                         <UserData.Consumer>
                             {({ user }) => (
-                                <InputField label="Signed By" defaultValue={(customs?.signer || user?.full_name) as string} onChange={handleChange} name="signer" fieldClass="column mb-0 is-12 px-2 py-2" required={!cannotOptOut} />
+                                <InputField label="Signed By" value={(customs?.signer || user?.full_name) as string} onChange={handleChange} name="signer" fieldClass="column mb-0 is-12 px-2 py-2" required={!cannotOptOut} />
                             )}
                         </UserData.Consumer>
 
@@ -274,17 +279,21 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
 
                     </div>
 
-                    <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value, customs) && deepEqual(value?.duty, customs?.duty)}>
-                        <span>{customs.id === undefined ? 'Continue' : 'Save'}</span>
-                        {customs.id === undefined && <span className="icon is-small">
-                            <i className="fas fa-chevron-right"></i>
-                        </span>}
+                    <ButtonField type="submit"
+                        className={`is-primary ${loading ? 'is-loading' : ''}`}
+                        fieldClass="form-floating-footer p-3"
+                        controlClass="has-text-centered"
+                        disabled={deepEqual(value, customs) && deepEqual(value?.duty, customs?.duty)}>
+                        <span>Save</span>
                     </ButtonField>
 
                 </form>}
 
                 {(!isNone(customs) && editCommodity) && <div className="block" style={{ display: `${editCommodity ? 'block' : 'none'}` }}>
-                    <button type="button" className="button is-light mb-4 mx-2" onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}>
+                    <button type="button" 
+                    className="button is-light mb-3 mx-0" 
+                    onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}
+                    disabled={loading}>
                         <span className="icon is-small is-dark"><i className="fas fa-arrow-left"></i></span>
                     </button>
                     <CommodityForm value={commodity} update={refreshCommodities} />

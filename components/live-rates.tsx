@@ -1,6 +1,6 @@
 import { formatRef, isNone } from '@/library/helper';
 import { APIError, NotificationType, RequestError } from '@/library/types';
-import { Customs, Payment, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment, ShipmentLabelTypeEnum } from '@/api';
+import { Customs, Payment, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment, ShipmentLabelTypeEnum } from '@/api/index';
 import { useNavigate } from '@reach/router';
 import React, { useContext, useState } from 'react';
 import AddressDescription from '@/components/descriptions/address-description';
@@ -9,9 +9,10 @@ import OptionsDescription from '@/components/descriptions/options-description';
 import ParcelDescription from '@/components/descriptions/parcel-description';
 import ButtonField from '@/components/generic/button-field';
 import InputField from '@/components/generic/input-field';
-import ShipmentMutation from './data/shipment-mutation';
-import { LabelData } from './data/shipment-query';
-import { Notify } from './notifier';
+import ShipmentMutation from '@/components/data/shipment-mutation';
+import { LabelData } from '@/components/data/shipment-query';
+import { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 interface LiveRatesComponent {
     update: (payload: {}, refresh?: boolean) => void;
@@ -23,7 +24,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
     const navigate = useNavigate();
     const { notify } = useContext(Notify);
     const { shipment } = useContext(LabelData);
-    const [loading, setLoading] = useState<boolean>(false);
+    const { loading, setLoading } = useContext(Loading);
     const [selected_rate_id, setSelectedRate] = useState<string | undefined>(shipment?.selected_rate_id || undefined);
     const [label_type, setLabelType] = useState<ShipmentLabelTypeEnum>(shipment?.label_type || ShipmentLabelTypeEnum.Pdf);
     const [payment, setPayment] = useState<Partial<Payment>>(DEFAULT_PAYMENT);
@@ -128,11 +129,11 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
 
                 </div>
 
-                <div className="column is-12 py-3" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
+                <div className="column is-12 py-4" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
 
                     <h6 className="is-title is-size-6 mt-1 mb-4 has-text-weight-semibold">Live Rates</h6>
 
-                    <ul className="menu-list py-2" style={{ maxHeight: "16em", overflowY: "auto", overflowX: "hidden" }}>
+                    <ul className="menu-list py-2 rates-list-box">
                         {shipment.rates?.map(rate => (
                             <li key={rate.id}>
                                 <a className={`columns mb-0 ${rate.id === selected_rate_id ? 'has-text-grey-dark' : 'has-text-grey'}`} onClick={() => setSelectedRate(rate.id)}>
@@ -151,41 +152,40 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
                         ))}
                     </ul>
 
-
                 </div>
 
-                <div className="column is-12 py-3" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
+                <div className="column is-12 py-2" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
 
                     <h6 className="is-title is-size-6 mt-1 mb-4 has-text-weight-semibold">Select your label type</h6>
                     <div className="control">
                         <label className="radio">
                             <input className="mr-1" type="radio" name="label_type" defaultChecked={label_type === ShipmentLabelTypeEnum.Pdf} onChange={() => setLabelType(ShipmentLabelTypeEnum.Pdf)} />
-                            <span className="is-size-6 has-text-weight-bold">{ShipmentLabelTypeEnum.Pdf}</span>
+                            <span className="is-size-7 has-text-weight-bold">{ShipmentLabelTypeEnum.Pdf}</span>
                         </label>
                         <label className="radio">
                             <input className="mr-1" type="radio" name="label_type" defaultChecked={label_type === ShipmentLabelTypeEnum.Zpl} onChange={() => setLabelType(ShipmentLabelTypeEnum.Zpl)} />
-                            <span className="is-size-6 has-text-weight-bold">{ShipmentLabelTypeEnum.Zpl}</span>
+                            <span className="is-size-7 has-text-weight-bold">{ShipmentLabelTypeEnum.Zpl}</span>
                         </label>
                     </div>
 
                 </div>
 
-                <div className="column is-12 py-3" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
+                <div className="column is-12 py-2" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
 
                     <h6 className="is-title is-size-6 mt-1 mb-4 has-text-weight-semibold">Shipment Paid By</h6>
 
                     <div className="control">
                         <label className="radio">
                             <input className="mr-1" type="radio" name="paid_by" defaultChecked={payment.paid_by === PaymentPaidByEnum.Sender} onChange={() => setPayment({ paid_by: PaymentPaidByEnum.Sender })} />
-                            <span className="is-size-6 has-text-weight-bold">{formatRef(PaymentPaidByEnum.Sender.toString())}</span>
+                            <span className="is-size-7 has-text-weight-bold">{formatRef(PaymentPaidByEnum.Sender.toString())}</span>
                         </label>
                         <label className="radio">
                             <input className="mr-1" type="radio" name="paid_by" defaultChecked={payment.paid_by === PaymentPaidByEnum.Recipient} onChange={() => setPayment({ ...payment, paid_by: PaymentPaidByEnum.Recipient })} />
-                            <span className="is-size-6 has-text-weight-bold">{formatRef(PaymentPaidByEnum.Recipient.toString())}</span>
+                            <span className="is-size-7 has-text-weight-bold">{formatRef(PaymentPaidByEnum.Recipient.toString())}</span>
                         </label>
                         <label className="radio">
                             <input className="mr-1" type="radio" name="paid_by" defaultChecked={payment.paid_by === PaymentPaidByEnum.ThirdParty} onChange={() => setPayment({ ...payment, paid_by: PaymentPaidByEnum.ThirdParty })} />
-                            <span className="is-size-6 has-text-weight-bold">{formatRef(PaymentPaidByEnum.ThirdParty.toString())}</span>
+                            <span className="is-size-7 has-text-weight-bold">{formatRef(PaymentPaidByEnum.ThirdParty.toString())}</span>
                         </label>
                     </div>
 
@@ -200,10 +200,10 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
             <ButtonField
                 onClick={buyShipment}
                 fieldClass="has-text-centered mt-3"
-                className={`is-medium is-success ${loading ? 'is-loading' : ''}`}
+                className={`is-success ${loading ? 'is-loading' : ''}`}
                 style={(shipment.rates || []).length === 0 ? { display: 'none' } : {}}
                 disabled={(shipment.rates || []).filter(r => r.id === selected_rate_id).length === 0}>
-                <span>Buy</span>
+                <span className="px-6">Buy</span>
             </ButtonField>
 
         </div>

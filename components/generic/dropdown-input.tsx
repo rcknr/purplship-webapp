@@ -12,15 +12,15 @@ export interface DropdownInputComponent extends React.AllHTMLAttributes<HTMLInpu
 }
 
 
-const DropdownInput: React.FC<DropdownInputComponent> = ({ label, name, items, defaultValue, fieldClass, controlClass, dropdownClass, required, onValueChange, ...props }) => {
+const DropdownInput: React.FC<DropdownInputComponent> = ({ label, name, items, value, fieldClass, controlClass, dropdownClass, required, onValueChange, ...props }) => {
     const btn = useRef<any>(null);
     const control = useRef<any>(null);
     const [key, setKey] = useState<string>(`dropdown-${Date.now()}`);
     const [isActive, setIsActive] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
-    const [value, setValue] = useState<string>();
-    const find = (value: string) => {
-        return items?.find(([key, val]) => key.toLowerCase() == value.toLowerCase() || val.toLowerCase() == value.toLowerCase())
+    const [country, setValue] = useState<string>();
+    const find = (country: string) => {
+        return items?.find(([key, val]) => key.toLowerCase() == country.toLowerCase() || val.toLowerCase() == country.toLowerCase())
     };
     const handleOnClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -47,8 +47,8 @@ const DropdownInput: React.FC<DropdownInputComponent> = ({ label, name, items, d
     };
     const onRefChange = (e: ChangeEvent<any>) => {
         e.preventDefault();
-        const [key, value] = find(e.target.value) || [];
-        setValue(value || "");
+        const [key, country] = find(e.target.value) || [];
+        setValue(country || "");
         onValueChange(key as string);
     };
     const onSelect = (key: string) => (_: React.MouseEvent) => {
@@ -57,11 +57,11 @@ const DropdownInput: React.FC<DropdownInputComponent> = ({ label, name, items, d
     };
 
     useEffect(() => {
-        if (!isNone(items) && !isNone(defaultValue)) {
-            const [_, value] = find(defaultValue as string) || [];
-            setValue(value);
+        if (!isNone(items) && !isNone(value)) {
+            const [_, country] = find(value as string) || [];
+            setValue(country);
         }
-    }, [items, defaultValue]);
+    }, [items, value]);
 
     return (
         <div className={`field ${fieldClass}`} key={key}>
@@ -71,9 +71,9 @@ const DropdownInput: React.FC<DropdownInputComponent> = ({ label, name, items, d
             </label>}
             <div className={`control ${controlClass}`}>
                 <div className={`dropdown select is-fullwidth ${isActive ? 'is-active' : ''} ${dropdownClass}`} key={`dropdown-input-${key}`}>
-                    <input name={name} onChange={onRefChange} defaultValue={value} className="input is-fullwidth" style={{ position: 'absolute', zIndex: -1 }} required={required}/>
+                    <input name={name} onChange={onRefChange} value={country} className="input is-fullwidth" style={{ position: 'absolute', zIndex: -1 }} required={required} />
                     <a onClick={handleOnClick} aria-haspopup="true" className="dropdown-trigger input is-fullwidth px-2" style={{ justifyContent: 'left' }} aria-controls={`dropdown-input-`} ref={btn}>
-                        <span>{value}</span>
+                        <span>{country}</span>
                     </a>
 
                     <div className="dropdown-menu py-0" id={`dropdown-input-${key}`} role="menu" style={{ right: 0, left: 0 }}>
@@ -88,7 +88,9 @@ const DropdownInput: React.FC<DropdownInputComponent> = ({ label, name, items, d
                                 {(items || [])
                                     .filter(([_, val]) => search === "" || val.toLowerCase().includes(search.toLowerCase()))
                                     .map(([key, val]) => (
-                                        <a key={`${key}-${Date.now()}`} onClick={onSelect(key)} className={`panel-block  ${key === value ? 'is-active' : ''}`}>
+                                        <a key={`${key}-${Date.now()}`}
+                                            onClick={onSelect(key)}
+                                            className={`panel-block  ${key === country ? 'is-active' : ''}`}>
                                             <span>{val}</span>
                                         </a>
                                     ))

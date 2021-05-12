@@ -1,4 +1,4 @@
-import { ConfigurationParameters, PurplshipClient } from "@/api";
+import { ConfigurationParameters, PurplshipClient } from "@/api/index";
 import { getCookie, isNone } from "@/library/helper";
 import React from "react";
 

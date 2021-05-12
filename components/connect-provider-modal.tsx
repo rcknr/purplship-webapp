@@ -1,14 +1,16 @@
-import { CarrierSettingsCarrierNameEnum } from '@/api';
+import { CarrierSettingsCarrierNameEnum } from '@/api/index';
 import React, { useContext, useState } from 'react';
 import InputField from '@/components/generic/input-field';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import ButtonField from '@/components/generic/button-field';
-import SelectField from './generic/select-field';
+import SelectField from '@/components/generic/select-field';
 import { Collection, NotificationType } from '@/library/types';
 import { APIReference } from '@/components/data/references-query';
 import ConnectionMutation from '@/components/data/connection-mutation';
 import { UserConnectionType } from '@/components/data/user-connections-query';
-import { Notify } from './notifier';
+import { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
+import { deepEqual } from '@/library/helper';
 
 interface ConnectProviderModalComponent {
     connection?: UserConnectionType;
@@ -22,6 +24,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
     ({ children, connection, className, onUpdate, createConnection, updateConnection }) => {
         const { carriers } = useContext(APIReference);
         const { notify } = useContext(Notify);
+        const { loading, setLoading } = useContext(Loading);
         const [key, setKey] = useState<string>(`connection-${Date.now()}`);
         const [isNew, _] = useState<boolean>(connection === null || connection === undefined);
         const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(connection || DEFAULT_STATE);
@@ -30,7 +33,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
         const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
             evt.preventDefault();
-            setIsDisabled(true);
+            setLoading(true);
             try {
                 const { carrier_name, __typename, ...content } = payload;
                 const settingsName = `${carrier_name}settings`.replace('_', '');
@@ -50,7 +53,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             } finally {
-                setIsDisabled(false);
+                setLoading(false);
             }
         };
         const close = (_?: React.MouseEvent) => {
@@ -68,7 +71,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                 new_state = { ...payload, test: e.target.checked };
             }
             setPayload(new_state);
-            setIsDisabled((connection || DEFAULT_STATE) == new_state);
+            setIsDisabled(deepEqual((connection || DEFAULT_STATE), new_state));
         };
         const has = (property: string) => {
             return hasProperty(payload.carrier_name as CarrierSettingsCarrierNameEnum, property);
@@ -155,7 +158,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
                                     <CheckBoxField defaultChecked={payload.test} onChange={handleOnChange("test")}>Test Mode</CheckBoxField>
 
-                                    <ButtonField className="mt-2" fieldClass="has-text-centered" disabled={isDisabled}>Submit</ButtonField>
+                                    <ButtonField className={`mt-2 ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered" disabled={isDisabled}>Submit</ButtonField>
                                 </>
                             }
                         </section>
