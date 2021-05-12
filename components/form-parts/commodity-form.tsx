@@ -50,12 +50,14 @@ const CommodityForm: React.FC<CommodityTypeFormComponent> = ShipmentMutation<Com
     };
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
             update(commodity);
             setKey(`commodity-${Date.now()}`);
         } catch (message) {
             notify({ type: NotificationType.error, message });
         }
+        setLoading(false);
     };
 
     return (

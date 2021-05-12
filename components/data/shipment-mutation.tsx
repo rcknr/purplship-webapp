@@ -1,4 +1,4 @@
-import { Customs, OperationResponse, Shipment, Address, ShipmentData, Parcel } from '@/api';
+import { Customs, OperationResponse, Shipment, Address, ShipmentData, Parcel } from '@/api/index';
 import { handleFailure } from '@/library/helper';
 import { RestClient } from '@/library/rest';
 import React, { useContext } from 'react';

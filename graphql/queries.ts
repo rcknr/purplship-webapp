@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 
 export const GET_ADDRESS_TEMPLATES = gql`
-query get_address_templates {
-  address_templates {
+query get_address_templates($offset: Int, $first: Int) {
+  address_templates(offset: $offset, first: $first) {
     pageInfo {
       hasNextPage
       hasPreviousPage
@@ -39,8 +39,8 @@ query get_address_templates {
 `;
 
 export const GET_CUSTOMS_TEMPLATES = gql`
-query get_customs_info_templates {
-  customs_templates {
+query get_customs_info_templates($offset: Int, $first: Int) {
+  customs_templates(offset: $offset, first: $first) {
     pageInfo { 
       hasNextPage
       hasPreviousPage
@@ -165,8 +165,8 @@ query get_log($id: Int!) {
 `;
 
 export const GET_LOGS = gql`
-query get_logs {
-  logs {
+query get_logs($offset: Int, $first: Int) {
+  logs(offset: $offset, first: $first) {
     pageInfo {
       hasNextPage
       hasPreviousPage
@@ -197,8 +197,8 @@ query get_logs {
 `;
 
 export const GET_PARCEL_TEMPLATES = gql`
-query get_parcel_templates {
-  parcel_templates {
+query get_parcel_templates($offset: Int, $first: Int) {
+  parcel_templates(offset: $offset, first: $first) {
     pageInfo {
       hasNextPage
       hasPreviousPage

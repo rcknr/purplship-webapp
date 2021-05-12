@@ -207,6 +207,24 @@ td > div.dropdown.is-active .dropdown-menu {
     overflow-y: auto;
 }
 
+.form-floating-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: white;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+}
+
+.rates-list-box {
+    max-height: 11em;
+    overflow: hidden;
+    &:hover {
+        overflow-y: scroll;
+    }
+}
+
+
 .is-aramex {
     background-color: #dc291e !important;
     color: #fff !important;

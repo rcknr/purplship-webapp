@@ -1,4 +1,4 @@
-import { Address, AddressCountryCodeEnum, Shipment } from '@/api';
+import { Address, AddressCountryCodeEnum, Shipment } from '@/api/index';
 import React, { FormEvent, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { COUNTRY_WITH_POSTAL_CODE, deepEqual, isNone } from '@/library/helper';
 import AddressAutocompleteInput from '@/components/generic/address-autocomplete-input';
