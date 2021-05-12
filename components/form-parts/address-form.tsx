@@ -12,8 +12,9 @@ import PhoneInput from '@/components/generic/phone-input';
 import NameInput from '@/components/generic/name-input';
 import { AddressType, Collection, NotificationType } from '@/library/types';
 import { APIReference } from '@/components/data/references-query';
-import ShipmentMutation from '../data/shipment-mutation';
-import { Notify } from '../notifier';
+import ShipmentMutation from '@/components/data/shipment-mutation';
+import { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 export const DEFAULT_ADDRESS_CONTENT = {
     residential: false,
@@ -48,6 +49,7 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
         const { notify } = useContext(Notify);
         const form = useRef<HTMLFormElement>(null);
         const { states } = useContext(APIReference);
+        const { loading, setLoading } = useContext(Loading);
         const init = () => deepEqual(value, {}) ? DEFAULT_ADDRESS_CONTENT : value;
         const [key, setKey] = useState<string>(`address-${Date.now()}`);
         const [address, dispatch] = useReducer(reducer, value, init);
@@ -62,6 +64,7 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
+            setLoading(true);
             try {
                 if (address.id !== undefined) {
                     await updateAddress(address);
@@ -77,6 +80,7 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
+            setLoading(false);
         };
 
         useEffect(() => {
@@ -132,11 +136,8 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
 
                 </div>
 
-                <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value || {}, address)}>
-                    <span>{address.id === undefined ? 'Continue' : 'Save'}</span>
-                    {address.id === undefined && <span className="icon is-small">
-                        <i className="fas fa-chevron-right"></i>
-                    </span>}
+                <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(value || {}, address)}>
+                    <span>Save</span>
                 </ButtonField>
 
             </form>

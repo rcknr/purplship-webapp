@@ -13,7 +13,8 @@ import ShipmentMutation from '@/components/data/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import CommodityDescription from '@/components/descriptions/commodity-description';
 import CommodityForm from '@/components/form-parts/commodity-form';
-import { DefaultTemplatesData } from '../data/default-templates-query';
+import { DefaultTemplatesData } from '@/components/data/default-templates-query';
+import { Loading } from '@/components/loader';
 
 
 export const DEFAULT_CUSTOMS_CONTENT: Customs = {
@@ -39,6 +40,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
     ({ children, value, shipment, cannotOptOut, update, commodityDiscarded, updateCustoms, discardCustoms, addCustoms, discardCommodity }) => {
         const form = useRef<any>(null);
         const { notify } = useContext(Notify);
+        const { loading, setLoading } = useContext(Loading);
         const { default_customs } = useContext(DefaultTemplatesData);
         const { incoterms, customs_content_type } = useContext(APIReference);
         const [editCommodity, setEditCommodity] = useState<boolean>(false);
@@ -64,6 +66,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
+            setLoading(true);
             try {
                 if (customs.id !== undefined) {
                     await updateCustoms(customs);
@@ -83,9 +86,11 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
+            setLoading(false);
         };
         const applyOptOut = async (e: ChangeEvent<any>) => {
             e.preventDefault();
+            setLoading(true);
             try {
                 if (!isNone(shipment?.id) && !isNone(shipment?.customs?.id)) {
                     await discardCustoms(shipment?.customs?.id as string);
@@ -96,6 +101,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
+            setLoading(false);
         };
         const removeCommodity = async (id: string) => {
             const commodities = (customs.commodities || []).filter((c: CommodityType) => c.id !== id);
@@ -118,7 +124,6 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
             }
             toggleCommodity();
         };
-
 
         return (
             <>
@@ -274,17 +279,21 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
 
                     </div>
 
-                    <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value, customs) && deepEqual(value?.duty, customs?.duty)}>
-                        <span>{customs.id === undefined ? 'Continue' : 'Save'}</span>
-                        {customs.id === undefined && <span className="icon is-small">
-                            <i className="fas fa-chevron-right"></i>
-                        </span>}
+                    <ButtonField type="submit"
+                        className={`is-primary ${loading ? 'is-loading' : ''}`}
+                        fieldClass="form-floating-footer p-3"
+                        controlClass="has-text-centered"
+                        disabled={deepEqual(value, customs) && deepEqual(value?.duty, customs?.duty)}>
+                        <span>Save</span>
                     </ButtonField>
 
                 </form>}
 
                 {(!isNone(customs) && editCommodity) && <div className="block" style={{ display: `${editCommodity ? 'block' : 'none'}` }}>
-                    <button type="button" className="button is-light mb-4 mx-2" onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}>
+                    <button type="button" 
+                    className="button is-light mb-3 mx-0" 
+                    onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}
+                    disabled={loading}>
                         <span className="icon is-small is-dark"><i className="fas fa-arrow-left"></i></span>
                     </button>
                     <CommodityForm value={commodity} update={refreshCommodities} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { CommodityWeightUnitEnum } from "@/api";
+import { CommodityWeightUnitEnum } from "@/api/index";
 import { CommodityType, CURRENCY_OPTIONS, NotificationType, WEIGHT_UNITS } from "@/library/types";
 import { FormEvent, useContext, useReducer, useRef, useState } from "react";
 import { Notify } from "@/components/notifier";
@@ -10,6 +10,7 @@ import { CommodityDataWeightUnitEnum } from "@/api/models/CommodityData";
 import { deepEqual, isNone } from "@/library/helper";
 import CountryInput from "@/components/generic/country-input";
 import ShipmentMutation from "@/components/data/shipment-mutation";
+import { Loading } from "@/components/loader";
 
 
 type stateValue = string | boolean | Partial<CommodityType>;
@@ -35,10 +36,12 @@ function reducer(state: any, { name, value }: { name: string, value: stateValue 
 const CommodityForm: React.FC<CommodityTypeFormComponent> = ShipmentMutation<CommodityTypeFormComponent>(({ value, update }) => {
     const form = useRef<HTMLFormElement>(null);
     const { notify } = useContext(Notify);
+    const { loading, setLoading } = useContext(Loading);
     const [key, setKey] = useState<string>(`commodity-${Date.now()}`);
     const [commodity, dispatch] = useReducer(reducer, value, () => value || DEFAULT_COMMODITY_CONTENT);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
         const target = event.target;
         let name: string = target.name;
         let value: stateValue = target.type === 'checkbox' ? target.checked : target.value;
@@ -86,7 +89,7 @@ const CommodityForm: React.FC<CommodityTypeFormComponent> = ShipmentMutation<Com
 
             </div>
 
-            <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value, commodity)}>
+            <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(value, commodity)}>
                 <span>{(commodity.id || '').includes('new-') ? 'Add' : 'Save'}</span>
             </ButtonField>
 

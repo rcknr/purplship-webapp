@@ -7,7 +7,8 @@ import { APIReference } from '@/components/data/references-query';
 import { UserConnections, UserConnectionType } from '@/components/data/user-connections-query';
 import { SystemConnections, SystemConnectionType } from '@/components/data/system-connections-query';
 import TrackerMutation from '@/components/data/tracker-mutation';
-import { Notify } from './notifier';
+import { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 type Connection = UserConnectionType | SystemConnectionType;
 interface TrackShipmentModalComponent {
@@ -19,6 +20,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
     ({ children, className, onUpdate, createTracker }) => {
         const { notify } = useContext(Notify);
         const { carriers } = useContext(APIReference);
+        const { loading, setLoading } = useContext(Loading);
         const { user_connections, ...user } = useContext(UserConnections);
         const { system_connections, ...system } = useContext(SystemConnections);
         const [isActive, setIsActive] = useState<boolean>(false);
@@ -35,6 +37,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
         };
         const create = async (evt: React.FormEvent<HTMLFormElement>) => {
             evt.preventDefault();
+            setLoading(true);
             try {
                 await createTracker(trackingNumber as string, carrier?.carrier_name as string, carrier?.test as boolean);
                 notify({ type: NotificationType.success, message: 'Tracker successfully added!' });
@@ -42,6 +45,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
             } catch (message) {
                 notify({ type: NotificationType.error, message });
             }
+            setLoading(false);
         };
         const updateCarrier = (carrierId: string) => {
             const all_carriers = [...(user_connections || []), ...(system_connections || [])];
@@ -76,7 +80,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
                                 ))}
                             </SelectField>
 
-                            <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-6">
+                            <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-6">
                                 <span>Submit</span>
                             </ButtonField>
                         </section>

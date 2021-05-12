@@ -1,4 +1,4 @@
-import { PaymentCurrencyEnum, Shipment } from '@/api';
+import { Shipment } from '@/api/index';
 import React, { FormEvent, useContext, useReducer } from 'react';
 import ButtonField from '@/components/generic/button-field';
 import InputField from '@/components/generic/input-field';
@@ -6,8 +6,9 @@ import CheckBoxField from '@/components/generic/checkbox-field';
 import SelectField from '@/components/generic/select-field';
 import { cleanDict, deepEqual, isNone } from '@/library/helper';
 import { CURRENCY_OPTIONS, NotificationType } from '@/library/types';
-import ShipmentMutation from '../data/shipment-mutation';
-import { Notify } from '../notifier';
+import ShipmentMutation from '@/components/data/shipment-mutation';
+import { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 interface ShipmentOptionsComponent {
     shipment: Shipment;
@@ -29,6 +30,7 @@ function reducer(state: any, { name, value }: { name: string, value: string | bo
 
 const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<ShipmentOptionsComponent>(({ shipment, update, setOptions }) => {
     const { notify } = useContext(Notify);
+    const { loading, setLoading } = useContext(Loading);
     const [options, dispatch] = useReducer(reducer, shipment?.options, () => shipment?.options);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +42,7 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
     };
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
             if (shipment.id !== undefined) {
                 await setOptions(shipment.id, options);
@@ -51,6 +54,7 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
         } catch (err) {
             notify({ type: NotificationType.error, message: err });
         }
+        setLoading(false);
     };
 
     return (
@@ -125,7 +129,7 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
             </div>
 
 
-            <div className="columns is-multiline mb-0">
+            <div className="columns is-multiline mb-0 px-1">
 
                 <SelectField label="shipment currency" value={options?.currency} onChange={handleChange} name="currency" className="is-small is-fullwidth" fieldClass="column is-3 mb-0 px-1 py-2" required={!isNone(options?.insurance) || !isNone(options?.cash_on_delivery) || !isNone(options?.declared_value)}>
                     <option value="">Select a currency</option>
@@ -136,8 +140,8 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
             </div>
 
 
-            <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(shipment.options, options) || (options === {} && shipment.options === {})}>
-                <span>{shipment.id === undefined ? 'Continue' : 'Save'}</span>
+            <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(shipment.options, options) || (options === {} && shipment.options === {})}>
+                <span>Save</span>
             </ButtonField>
 
         </form>

@@ -1,4 +1,4 @@
-import { Parcel, ParcelDimensionUnitEnum, ParcelWeightUnitEnum, Shipment } from '@/api';
+import { Parcel, ParcelDimensionUnitEnum, ParcelWeightUnitEnum, Shipment } from '@/api/index';
 import React, { FormEvent, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import InputField from '@/components/generic/input-field';
 import SelectField from '@/components/generic/select-field';
@@ -11,6 +11,7 @@ import { ParcelTemplates } from '@/components/data/parcel-templates-query';
 import { DefaultTemplatesData } from '@/components/data/default-templates-query';
 import ShipmentMutation from '@/components/data/shipment-mutation';
 import { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 type stateValue = string | boolean | Partial<Parcel>;
 export const DEFAULT_PARCEL_CONTENT: Partial<Parcel> = {
@@ -50,8 +51,9 @@ function reducer(state: any, { name, value }: { name: string, value: stateValue 
 const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormComponent>(
     ({ value, shipment, update, children, updateParcel }) => {
         const { notify } = useContext(Notify);
+        const { loading, setLoading } = useContext(Loading);
         const { packaging_types, package_presets } = useContext(APIReference);
-        const { templates, called, loading, load } = useContext(ParcelTemplates);
+        const { templates, called, load, ...state } = useContext(ParcelTemplates);
         const { default_parcel } = useContext(DefaultTemplatesData);
         const form = useRef<HTMLFormElement>(null);
         const [key, setKey] = useState<string>(`parcel-${Date.now()}`);
@@ -85,6 +87,7 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
+            setLoading(true);
             try {
                 if (parcel.id !== undefined) {
                     await updateParcel(parcel as Parcel);
@@ -99,6 +102,7 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
+            setLoading(false);
         };
         const isDimensionRequired = (parcel: Parcel) => {
             return !(
@@ -120,7 +124,7 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
         }, [package_presets]);
 
         useEffect(() => {
-            if (!called && !loading) load();
+            if (!called && !state.loading) load();
             // Load parcel template if we are creating a new shipment and there is a default parcel preset
             if (!isNone(package_presets) && shipment !== undefined && isNone(shipment.id) && !isNone(default_parcel) && !deepEqual(default_parcel, parcel)) {
                 const preset = findPreset(package_presets as PresetCollection, default_parcel?.package_preset as string) as Partial<Parcel>;
@@ -234,11 +238,8 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
 
                 </div>
 
-                <ButtonField type="submit" className="is-primary" fieldClass="has-text-centered mt-3" disabled={deepEqual(value, parcel)}>
-                    <span>{parcel.id === undefined ? 'Continue' : 'Save'}</span>
-                    {parcel.id === undefined && <span className="icon is-small">
-                        <i className="fas fa-chevron-right"></i>
-                    </span>}
+                <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(value, parcel)}>
+                    <span>Save</span>
                 </ButtonField>
 
             </form>

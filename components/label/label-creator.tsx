@@ -7,7 +7,7 @@ import ShipmentOptions from '@/components/form-parts/shipment-options';
 import ParcelForm from '@/components/form-parts/parcel-form';
 import LiveRates from '@/components/live-rates';
 import Tabs from '@/components/generic/tabs';
-import { Shipment, ShipmentStatusEnum } from '@/api';
+import { Shipment, ShipmentStatusEnum } from '@/api/index';
 import { isNone } from '@/library/helper';
 import { APIReference } from '@/components/data/references-query';
 import { LabelData, } from '@/components/data/shipment-query';
