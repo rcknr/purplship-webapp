@@ -309,11 +309,12 @@ export const GET_USER_CONNECTIONS = gql`
         carrier_name
         test
         active
+        username
+        password
         account_pin
         account_entity
         account_number
         account_country_code
-        username
       }
       ... on AustraliaPostSettings {
         id
@@ -321,9 +322,9 @@ export const GET_USER_CONNECTIONS = gql`
         carrier_name
         test
         active
-        account_number
-        password
         api_key
+        password
+        account_number
       }
       ... on CanadaPostSettings {
         id
@@ -333,6 +334,8 @@ export const GET_USER_CONNECTIONS = gql`
         active
         username
         password
+        customer_number
+        contract_id
       }
       ... on CanparSettings {
         id

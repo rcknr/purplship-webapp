@@ -32,7 +32,7 @@ export interface get_address_templates_address_templates_edges_node_address {
 
 export interface get_address_templates_address_templates_edges_node {
   id: string;  // The ID of the object.
-  is_default: boolean | null;
+  is_default: boolean;
   label: string;
   address: get_address_templates_address_templates_edges_node_address;
   created_at: any;
@@ -128,7 +128,7 @@ export interface get_customs_info_templates_customs_templates_edges_node_customs
 export interface get_customs_info_templates_customs_templates_edges_node {
   id: string;  // The ID of the object.
   label: string;
-  is_default: boolean | null;
+  is_default: boolean;
   customs: get_customs_info_templates_customs_templates_edges_node_customs;
 }
 
@@ -347,7 +347,7 @@ export interface get_parcel_templates_parcel_templates_edges_node_parcel {
 
 export interface get_parcel_templates_parcel_templates_edges_node {
   id: string;  // The ID of the object.
-  is_default: boolean | null;
+  is_default: boolean;
   label: string;
   parcel: get_parcel_templates_parcel_templates_edges_node_parcel;
   created_at: any;
@@ -540,11 +540,12 @@ export interface get_user_connections_user_connections_AramexSettings {
   carrier_name: string;
   test: boolean;
   active: boolean;
+  username: string;
+  password: string;
   account_pin: string;
   account_entity: string;
   account_number: string;
   account_country_code: string;
-  username: string;
 }
 
 export interface get_user_connections_user_connections_AustraliaPostSettings {
@@ -554,9 +555,9 @@ export interface get_user_connections_user_connections_AustraliaPostSettings {
   carrier_name: string;
   test: boolean;
   active: boolean;
-  account_number: string;
-  password: string;
   api_key: string;
+  password: string;
+  account_number: string;
 }
 
 export interface get_user_connections_user_connections_CanadaPostSettings {
@@ -568,6 +569,8 @@ export interface get_user_connections_user_connections_CanadaPostSettings {
   active: boolean;
   username: string;
   password: string;
+  customer_number: string;
+  contract_id: string;
 }
 
 export interface get_user_connections_user_connections_CanparSettings {
