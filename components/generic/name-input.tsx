@@ -10,7 +10,7 @@ interface NameInputComponent extends InputFieldComponent {
     disableSuggestion?: boolean;
 }
 
-const NameInput: React.FC<NameInputComponent> = ({ defaultValue, disableSuggestion, onValueChange, ...props }) => {
+const NameInput: React.FC<NameInputComponent> = ({ disableSuggestion, onValueChange, ...props }) => {
     const onClick = (e: React.MouseEvent<HTMLInputElement>) => e.currentTarget.select();
     const { templates, called, loading, load } = useContext(AddressTemplates);
     const onInput = (e: ChangeEvent<any>) => {
@@ -23,7 +23,7 @@ const NameInput: React.FC<NameInputComponent> = ({ defaultValue, disableSuggesti
     useEffect(() => { if (!called && !loading) load(); }, [templates]);
 
     return (
-        <InputField onInput={onInput} onClick={onClick} defaultValue={defaultValue} list="address_templates" {...props}>
+        <InputField onInput={onInput} onClick={onClick} list="address_templates" {...props}>
             {!disableSuggestion && <datalist id="address_templates">
                 {templates
                     .map(template => (

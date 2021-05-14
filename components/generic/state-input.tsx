@@ -6,10 +6,10 @@ import InputField, { InputFieldComponent } from '@/components/generic/input-fiel
 
 interface StateInputComponent extends InputFieldComponent {
     onValueChange: (value: string | null) => void;
-    defaultValue?: string;
+    value?: string;
 }
 
-const StateInput: React.FC<StateInputComponent> = ({ name, onValueChange, defaultValue, ...props }) => {
+const StateInput: React.FC<StateInputComponent> = ({ name, onValueChange, value, ...props }) => {
     const onClick = (e: React.MouseEvent<HTMLInputElement>) => e.currentTarget.select();
     const input = useRef<HTMLInputElement>(null);
     const { states } = useContext(APIReference);
@@ -28,13 +28,13 @@ const StateInput: React.FC<StateInputComponent> = ({ name, onValueChange, defaul
     useEffect(() => {}, [states]);
 
     return (
-        <InputField onChange={onChange} onClick={onClick} defaultValue={fname(defaultValue)} list="state_or_provinces" {...props} ref={input}>
+        <InputField onChange={onChange} onClick={onClick} value={fname(value)} list="state_or_provinces" {...props} ref={input}>
             <datalist id="state_or_provinces">
                 {Object
                     .entries(states || {})
-                    .map(([country, value]) => (
+                    .map(([country, data]) => (
                         <optgroup label={country}>
-                            {Object.entries(value as object).map(([state, name]) => (
+                            {Object.entries(data as object).map(([state, name]) => (
                                 <option key={state} value={name}>{state}</option>
                             ))}
                         </optgroup>

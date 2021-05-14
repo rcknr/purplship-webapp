@@ -12,7 +12,7 @@ interface AddressAutocompleteInputComponent extends InputFieldComponent {
     disableSuggestion?: boolean;
 }
 
-const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({ defaultValue, onValueChange, ...props }) => {
+const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({ onValueChange, ...props }) => {
     const { countries } = useContext(APIReference);
     const [predictions, setPredictions] = useState<QueryAutocompletePrediction[]>([]);
     const [predictor, initPredictor] = useState<ReturnType<typeof initDebouncedPrediction> | undefined>();
@@ -72,7 +72,7 @@ const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({
     }, [(window as any).google]);
 
     return (
-        <InputField onInput={onInput} onClick={onClick} defaultValue={defaultValue} list="predictions" {...props}>
+        <InputField onInput={onInput} onClick={onClick} list="predictions" {...props}>
             <datalist id="predictions">
                 {predictions
                     .map((prediction, index) => (
