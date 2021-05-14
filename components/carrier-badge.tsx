@@ -1,5 +1,5 @@
 import { Collection } from '@/library/types';
-import { CarrierSettingsCarrierNameEnum } from '@/api';
+import { CarrierSettingsCarrierNameEnum } from '@/api/index';
 import React, { useContext } from 'react';
 import { APIReference } from './data/references-query';
 
@@ -19,7 +19,7 @@ const THEME: Collection = {
     'royalmail': 'is-royalmail',
     'sendle': 'is-sendle',
     'sf_express': 'is-sf_express',
-    'ups_package': 'is-ups',
+    'ups': 'is-ups',
     'usps': 'is-usps',
     'yanwen': 'is-yanwen',
     'yunexpress': 'is-yunexpress',
