@@ -1,7 +1,7 @@
 import { Collection } from '@/library/types';
 import { CarrierSettingsCarrierNameEnum } from '@/api/index';
 import React, { useContext } from 'react';
-import { APIReference } from './data/references-query';
+import { APIReference } from '@/components/data/references-query';
 
 const THEME: Collection = {
     'aramex': 'is-aramex',
@@ -36,7 +36,9 @@ const CarrierBadge: React.FC<CarrierBadgeComponent> = ({ carrier, className, ...
     return (
         <>
             {carriers && (
-                <span className={`${className} ${THEME[name] || 'is-light'}`} {...props}>{(carriers as Collection)[name] || "Unknown"}</span>
+                <strong className={`${className} ${THEME[name] || 'is-light'}`} {...props}>
+                    {(carriers as Collection)[name] || "Unknown"}
+                </strong>
             )}
         </>
     );

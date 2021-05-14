@@ -15,6 +15,7 @@ import { DefaultTemplatesData } from '@/components/data/default-templates-query'
 import { Notify } from '@/components/notifier';
 import NavLink from '@/components/generic/navlink';
 import { AppMode } from '@/components/data/app-mode';
+import ModeIndicator from '@/components/mode-indicator';
 
 
 interface LabelCreatorComponent extends View {
@@ -48,7 +49,7 @@ const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
                                 error: { code: "notes", details: { messages } as APIError['error']['details'] }
                             };
                             const message = new RequestError(error);
-            
+
                             notify({ type: NotificationType.warning, message });
                         }
                     } else {
@@ -63,6 +64,7 @@ const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
 
     return (
         <>
+            <ModeIndicator />
             <nav className="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
                 <ul>
                     <li><NavLink to="/">Shipments</NavLink></li>

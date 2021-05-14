@@ -44,8 +44,8 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
           <thead className="trackers-table">
             <tr>
               <th className="tracking-number">Tracking No</th>
-              <th className="status">status</th>
-              <th className="carrier">Carrier</th>
+              <th className="status has-text-centered">status</th>
+              <th className="carrier has-text-centered">Carrier</th>
               <th className="last-event">Last Event</th>
               <th className="action"></th>
             </tr>
@@ -59,10 +59,10 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
                   <p className="is-subtitle is-size-6 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</p>
                 </td>
                 <td className="status is-vcentered">
-                  <span className={`tag ${statusColor(tracker)}`}>{formatSatus(tracker)}</span>
+                  <strong className={`tag ${statusColor(tracker)}`} style={{ width: '100%', minWidth: '120px' }} >{formatSatus(tracker)}</strong>
                 </td>
                 <td className="carrier is-vcentered">
-                  <CarrierBadge carrier={tracker.carrier_name} className="tag" />
+                  <CarrierBadge carrier={tracker.carrier_name} className="tag" style={{ width: '100%', minWidth: '120px' }} />
                 </td>
                 <td className="py-1">
                   <span className="is-subtitle is-size-7 has-text-weight-semibold text-wrapped">{formatEventDescription((tracker.events || [])[0])}</span><br/>
