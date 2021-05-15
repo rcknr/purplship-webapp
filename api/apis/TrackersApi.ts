@@ -81,7 +81,7 @@ export class TrackersApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/v1/trackers/{carrier_name}/{tracking_number}`.replace(`{${"carrier_name"}}`, encodeURIComponent(String(requestParameters.carrierName))).replace(`{${"tracking_number"}}`, encodeURIComponent(String(requestParameters.trackingNumber))),
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
