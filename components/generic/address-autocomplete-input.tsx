@@ -4,7 +4,7 @@ import { Address, AddressCountryCodeEnum } from '@/api';
 import { isNone } from '@/library/helper';
 import { initDebouncedPrediction, QueryAutocompletePrediction } from '@/library/autocomplete';
 import { Collection } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
 
 interface AddressAutocompleteInputComponent extends InputFieldComponent {
     onValueChange: (value: Partial<Address>) => void;

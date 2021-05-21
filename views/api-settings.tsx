@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import { View } from '@/library/types';
 import GenerateAPIModal from '@/components/generate-api-dialog';
-import { TokenData } from '@/components/data/token-query';
+import { TokenData } from '@/context/token-query';
 
 interface APISettingsView extends View { }
 

@@ -11,8 +11,8 @@ import PostalInput from '@/components/generic/postal-input';
 import PhoneInput from '@/components/generic/phone-input';
 import NameInput from '@/components/generic/name-input';
 import { AddressType, Collection, NotificationType } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import { APIReference } from '@/context/references-query';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 

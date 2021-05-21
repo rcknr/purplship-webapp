@@ -9,11 +9,11 @@ import OptionsDescription from '@/components/descriptions/options-description';
 import ParcelDescription from '@/components/descriptions/parcel-description';
 import ButtonField from '@/components/generic/button-field';
 import InputField from '@/components/generic/input-field';
-import ShipmentMutation from '@/components/data/shipment-mutation';
-import { LabelData } from '@/components/data/shipment-query';
+import ShipmentMutation from '@/context/shipment-mutation';
+import { LabelData } from '@/context/shipment-query';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 
 interface LiveRatesComponent {
     update: (payload: {}, refresh?: boolean) => void;

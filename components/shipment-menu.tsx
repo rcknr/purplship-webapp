@@ -3,9 +3,9 @@ import { Shipment, ShipmentStatusEnum } from '@/api/index';
 import LabelPrinter from '@/components/label/label-printer';
 import { useNavigate } from '@reach/router';
 import { NotificationType } from '@/library/types';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
-import { Shipments } from '@/components/data/shipments-query';
+import { Shipments } from '@/context/shipments-query';
 
 
 interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement> {

@@ -1,10 +1,10 @@
+import React, { useContext } from 'react';
 import { Customs, OperationResponse, Shipment, Address, ShipmentData, Parcel } from '@/api/index';
 import { handleFailure } from '@/library/helper';
-import { RestClient } from '@/library/rest';
-import React, { useContext } from 'react';
-import { LabelData } from '@/components/data/shipment-query';
+import { LabelData } from '@/context/shipment-query';
 import { CommodityType } from '@/library/types';
-import { AppMode } from './app-mode';
+import { AppMode } from '@/context/app-mode';
+import { RestClient } from '@/context/rest';
 
 
 export type ShipmentMutator<T> = T & {

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { UserType } from '@/components/data/user-query';
+import { UserType } from '@/context/user-query';
 import NavLink from '@/components/generic/navlink';
 
 

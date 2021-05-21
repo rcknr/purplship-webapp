@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { View } from '@/library/types';
 import EditWebhookModal from '@/components/webhook-edit-modal';
-import { Webhooks } from '@/components/data/webhooks-query';
+import { Webhooks } from '@/context/webhooks-query';
 import DeleteItemModal from '@/components/delete-item-modal';
-import WebhookMutation from '@/components/data/webhook-mutation';
+import WebhookMutation from '@/context/webhook-mutation';
 import { Loading } from '@/components/loader';
 import ModeIndicator from '@/components/mode-indicator';
 

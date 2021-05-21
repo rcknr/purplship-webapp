@@ -9,7 +9,7 @@ import SelectField from "@/components/generic/select-field";
 import { CommodityDataWeightUnitEnum } from "@/api/models/CommodityData";
 import { deepEqual, isNone } from "@/library/helper";
 import CountryInput from "@/components/generic/country-input";
-import ShipmentMutation from "@/components/data/shipment-mutation";
+import ShipmentMutation from "@/context/shipment-mutation";
 import { Loading } from "@/components/loader";
 
 

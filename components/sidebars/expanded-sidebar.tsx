@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import NavLink from '@/components/generic/navlink';
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 
 interface ExpandedSidebarComponent { }
 

@@ -1,11 +1,14 @@
 import React from 'react';
 import { QueryResult, useQuery } from '@apollo/client';
 import { GetToken, GetToken_token, GET_TOKEN } from '@/graphql';
+import { collectToken } from '@/library/helper';
 
 export type TokenType = GetToken_token;
 type TokenDataType = Partial<QueryResult<GetToken>> & { token: TokenType };
 
-export const TokenData = React.createContext<TokenDataType>({} as TokenDataType);
+export const TokenData = React.createContext<TokenDataType>({
+  token: { key: collectToken() }
+} as TokenDataType);
 
 const TokenQuery: React.FC = ({ children }) => {
   const result = useQuery<GetToken>(GET_TOKEN);

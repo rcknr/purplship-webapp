@@ -3,8 +3,8 @@ import { View } from '@/library/types';
 import AddressDescription from '@/components/descriptions/address-description';
 import AddressEditModal from '@/components/address-edit-modal';
 import DeleteItemModal from '@/components/delete-item-modal';
-import { AddressTemplates } from '@/components/data/address-templates-query';
-import TemplateMutation from '@/components/data/template-mutation';
+import { AddressTemplates } from '@/context/address-templates-query';
+import TemplateMutation from '@/context/template-mutation';
 import { isNone } from '@/library/helper';
 import { Loading } from '@/components/loader';
 

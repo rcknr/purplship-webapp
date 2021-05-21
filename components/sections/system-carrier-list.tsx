@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from 'react';
 import CarrierBadge from '@/components/carrier-badge';
-import { SystemConnections } from '@/components/data/system-connections-query';
+import { SystemConnections } from '@/context/system-connections-query';
 
 interface SystemConnectionListView { }
 

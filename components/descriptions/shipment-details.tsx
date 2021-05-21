@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import CarrierBadge from '@/components/carrier-badge';
 import NavLink from '@/components/generic/navlink';
 import { View } from '@/library/types';
-import { LabelData } from '@/components/data/shipment-query';
+import { LabelData } from '@/context/shipment-query';
 import { formatRef, isNone } from '@/library/helper';
 import LabelPrinter from '@/components/label/label-printer';
 import AddressDescription from '@/components/descriptions/address-description';

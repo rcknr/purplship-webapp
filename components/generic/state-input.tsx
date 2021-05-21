@@ -1,7 +1,7 @@
 import { isNone } from '@/library/helper';
 import { Collection } from '@/library/types';
 import React, { ChangeEvent, useContext, useEffect, useRef } from 'react';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
 import InputField, { InputFieldComponent } from '@/components/generic/input-field';
 
 interface StateInputComponent extends InputFieldComponent {

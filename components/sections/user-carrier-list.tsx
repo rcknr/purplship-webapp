@@ -2,12 +2,12 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import ConnectProviderModal from '@/components/connect-provider-modal';
 import DisconnectProviderButton from '@/components/disconnect-provider-button';
 import CarrierBadge from '@/components/carrier-badge';
-import { UserConnections, UserConnectionType } from '@/components/data/user-connections-query';
-import ConnectionMutation from '@/components/data/connection-mutation';
+import { UserConnections, UserConnectionType } from '@/context/user-connections-query';
+import ConnectionMutation from '@/context/connection-mutation';
 import { Loading } from '@/components/loader';
 import { Notify } from '@/components/notifier';
 import { NotificationType } from '@/library/types';
-import { AppMode, computeMode } from '@/components/data/app-mode';
+import { AppMode, computeMode } from '@/context/app-mode';
 
 interface UserConnectionListView { }
 

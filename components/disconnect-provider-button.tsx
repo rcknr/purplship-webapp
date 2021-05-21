@@ -1,7 +1,7 @@
 import { NotificationType } from '@/library/types';
 import React, { useContext, useState } from 'react';
-import ConnectionMutation from '@/components/data/connection-mutation';
-import { UserConnectionType } from '@/components/data/user-connections-query';
+import ConnectionMutation from '@/context/connection-mutation';
+import { UserConnectionType } from '@/context/user-connections-query';
 import { Notify } from '@/components/notifier';
 
 interface DisconnectProviderButtonComponent {

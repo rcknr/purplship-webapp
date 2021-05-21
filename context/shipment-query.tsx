@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Address, Parcel, Shipment } from '@/api/index';
-import { RestClient } from '@/library/rest';
 import { handleFailure } from '@/library/helper';
 import { RequestError } from '@/library/types';
+import { RestClient } from '@/context/rest';
 
 const DEFAULT_SHIPMENT_DATA = {
   shipper: {} as Address,

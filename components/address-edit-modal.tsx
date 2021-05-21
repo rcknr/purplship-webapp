@@ -1,12 +1,12 @@
 import React, { EventHandler, useContext, useState } from 'react';
-import { Shipment, Address } from '@/api';
+import { Shipment } from '@/api/index';
 import AddressForm from '@/components/form-parts/address-form';
 import { isNone } from '@/library/helper';
 import InputField from '@/components/generic/input-field';
 import CheckBoxField from './generic/checkbox-field';
 import { AddressTemplate, NotificationType } from '@/library/types';
-import TemplateMutation from '@/components/data/template-mutation';
-import { Notify } from './notifier';
+import TemplateMutation from '@/context/template-mutation';
+import { Notify } from '@/components/notifier';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     address: {

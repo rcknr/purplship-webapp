@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react';
 import { LogType, View } from '@/library/types';
 import StatusCode from '@/components/status-code-badge';
 import { formatDateTime, isNone } from '@/library/helper';
-import { Logs } from '@/components/data/logs-query';
+import { Logs } from '@/context/logs-query';
 import { useNavigate } from '@reach/router';
-import { Log } from '@/components/data/log-query';
+import { Log } from '@/context/log-query';
 import { Loading } from '@/components/loader';
 
 interface LogListView extends View {}

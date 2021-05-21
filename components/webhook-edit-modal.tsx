@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { NotificationType } from '@/library/types';
 import ButtonField from '@/components/generic/button-field';
-import WebhookMutation from './data/webhook-mutation';
-import { Webhook, WebhookData, WebhookDataEnabledEventsEnum } from '@/api';
+import WebhookMutation from '@/context/webhook-mutation';
+import { Webhook, WebhookData } from '@/api/index';
 import { Notify } from './notifier';
 
 interface WebhookEditModalComponent {
