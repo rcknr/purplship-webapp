@@ -1,11 +1,14 @@
 import React, { useContext, useRef } from 'react';
 import NavLink from '@/components/generic/navlink';
 import { AppMode } from '@/context/app-mode';
+import { FeatureFlags } from '@/context/feature-flags';
+import OrganizationDropdown from '@/components/sidebars/organization-dropdown';
 
 interface ExpandedSidebarComponent { }
 
 const ExpandedSidebar: React.FC<ExpandedSidebarComponent> = () => {
     const { testMode, switchMode } = useContext(AppMode);
+    const { MULTI_ORGANIZATIONS } = useContext(FeatureFlags);
     const sidebar = useRef<HTMLDivElement>(null);
     const dismiss = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -14,13 +17,14 @@ const ExpandedSidebar: React.FC<ExpandedSidebarComponent> = () => {
 
     return (
         <div className="plex-sidebar" ref={sidebar}>
-            <div className="sidebar-header">
-                <img src="/static/branding/logo.svg" alt="Purplship" width="80" />
+            <div className="sidebar-header pl-5">
+                {!MULTI_ORGANIZATIONS && <img src="/static/branding/logo.svg" alt="Purplship" width="80" />}
+                {MULTI_ORGANIZATIONS && <OrganizationDropdown />}
                 <button className="menu-icon v-5 is-open mobile-item is-block mobile-sidebar-trigger" onClick={dismiss}>
                     <span></span>
                 </button>
             </div>
-            <div className="sidebar-menu has-slimscroll py-6" style={{ height: "calc(100% - 60px)" }}>
+            <div className="sidebar-menu has-slimscroll py-4" style={{ height: "calc(100% - 60px)" }}>
                 <NavLink to="/">
                     <span>Shipments</span>
                 </NavLink>

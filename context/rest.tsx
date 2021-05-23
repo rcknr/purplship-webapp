@@ -1,21 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { PurplshipClient } from "@/api/index";
-import { TokenData } from "@/context/token-query";
-import { collectToken } from "@/library/helper";
 
 
-export const RestClient = React.createContext<PurplshipClient>(
-    new PurplshipClient({ apiKey: collectToken(), basePath: '' })
-);
+export const RestClient = React.createContext<PurplshipClient>(new PurplshipClient({ basePath: '' }));
 
 const RestClientContext: React.FC = ({ children }) => {
-    const { token } = useContext(TokenData);
-    const setupClient = (apiKey: string) => new PurplshipClient({ 
-        apiKey, basePath: '' 
-    });
-
     return (
-        <RestClient.Provider value={setupClient(token.key)}>
+        <RestClient.Provider value={new PurplshipClient({ basePath: '' })}>
             {children}
         </RestClient.Provider>
     );

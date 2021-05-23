@@ -20,8 +20,6 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
   useEffect(() => { !loading && load(); }, []);
   useEffect(() => { setLoading(loading); });
 
-  const { notify } = useContext(Notify);
-
   return (
     <>
       <ModeIndicator />

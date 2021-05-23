@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/client';
 import RestClientContext from '@/context/rest';
 import GraphClientContext, { graphqlClient } from '@/context/graphql';
+import FeatureFlagsContext from '@/context/feature-flags';
 import { Router } from "@reach/router";
 import ShipmentPage from '@/views/shipments';
 import TrackersPage from '@/views/trackers';
@@ -26,6 +27,7 @@ import TrackersQuery from '@/context/trackers-query';
 import UserConnectionsQuery from '@/context/user-connections-query';
 import SystemConnectionsQuery from '@/context/system-connections-query';
 import LabelDataQuery from '@/context/shipment-query';
+import OrganizationsQuery from '@/context/organizations-query';
 import ExpandedSidebar from '@/components/sidebars/expanded-sidebar';
 import LabelCreator from '@/components/label/label-creator';
 import Navbar from '@/components/navbar/navbar';
@@ -43,6 +45,8 @@ import '@/style/dashboard.scss';
 
 const DATA_CONTEXTS = [
     TokenQuery,
+    FeatureFlagsContext,
+    OrganizationsQuery,
     GraphClientContext,
     RestClientContext,
     UserQuery,
