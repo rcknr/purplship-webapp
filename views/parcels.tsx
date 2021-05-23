@@ -3,8 +3,8 @@ import { View } from '@/library/types';
 import ParcelDescription from '@/components/descriptions/parcel-description';
 import ParcelEditModal from '@/components/parcel-edit-modal';
 import DeleteItemModal from '@/components/delete-item-modal';
-import { ParcelTemplates } from '@/components/data/parcel-templates-query';
-import TemplateMutation from '@/components/data/template-mutation';
+import { ParcelTemplates } from '@/context/parcel-templates-query';
+import TemplateMutation from '@/context/template-mutation';
 import { isNone } from '@/library/helper';
 import { Loading } from '@/components/loader';
 

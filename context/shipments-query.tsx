@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { ShipmentList } from '@/api/index';
-import { RestClient } from '@/library/rest';
+import { RestClient } from '@/context/rest';
 import { RequestError } from '@/library/types';
 import { getCursorPagination } from '@/library/helper';
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 
 const DEFAULT_PAGINATED_RESULT = { results: [] };
 

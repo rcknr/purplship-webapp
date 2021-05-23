@@ -4,7 +4,7 @@ import { isNone } from '@/library/helper';
 import InputField from '@/components/generic/input-field';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import { NotificationType, ParcelTemplateType, ParcelType } from '@/library/types';
-import TemplateMutation from '@/components/data/template-mutation';
+import TemplateMutation from '@/context/template-mutation';
 import { Notify } from '@/components/notifier';
 
 const DEFAULT_TEMPLATE_CONTENT = {

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, LinkProps } from "@reach/router";
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 
 const NavLink = (props: React.PropsWithoutRef<LinkProps<any>> & React.RefAttributes<HTMLAnchorElement>) => {
     const { basePath } = useContext(AppMode);

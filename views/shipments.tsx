@@ -3,8 +3,8 @@ import { View } from '@/library/types';
 import ShipmentMenu from '@/components/shipment-menu';
 import { formatAddress, formatDate, isNone } from '@/library/helper';
 import CarrierBadge from '@/components/carrier-badge';
-import ShipmentMutation from '@/components/data/shipment-mutation';
-import { Shipments } from '@/components/data/shipments-query';
+import ShipmentMutation from '@/context/shipment-mutation';
+import { Shipments } from '@/context/shipments-query';
 import { Loading } from '@/components/loader';
 import { Notify } from '@/components/notifier';
 import ModeIndicator from '@/components/mode-indicator';
@@ -19,8 +19,6 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
 
   useEffect(() => { !loading && load(); }, []);
   useEffect(() => { setLoading(loading); });
-
-  const { notify } = useContext(Notify);
 
   return (
     <>

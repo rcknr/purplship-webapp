@@ -9,12 +9,12 @@ import LiveRates from '@/components/live-rates';
 import Tabs from '@/components/generic/tabs';
 import { Shipment, ShipmentStatusEnum } from '@/api/index';
 import { isNone } from '@/library/helper';
-import { APIReference } from '@/components/data/references-query';
-import { LabelData, } from '@/components/data/shipment-query';
-import { DefaultTemplatesData } from '@/components/data/default-templates-query';
+import { APIReference } from '@/context/references-query';
+import { LabelData, } from '@/context/shipment-query';
+import { DefaultTemplatesData } from '@/context/default-templates-query';
 import { Notify } from '@/components/notifier';
 import NavLink from '@/components/generic/navlink';
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 import ModeIndicator from '@/components/mode-indicator';
 
 

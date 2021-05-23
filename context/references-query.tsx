@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { References } from '@/api';
+import { References } from '@/api/index';
 import { isNone } from '@/library/helper';
-import { RestClient } from '@/library/rest';
+import { RestClient } from '@/context/rest';
 
 
 export const APIReference = React.createContext<References>({} as References);

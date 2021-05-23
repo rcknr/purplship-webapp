@@ -1,6 +1,6 @@
 import { NotificationType } from '@/library/types';
 import React, { useContext, useState } from 'react';
-import UserMutation from '@/components/data/user-mutation';
+import UserMutation from '@/context/user-mutation';
 import { Notify } from './notifier';
 
 interface CloseAccountActionComponent extends React.InputHTMLAttributes<HTMLDivElement> {}

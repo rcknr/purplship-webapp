@@ -167,6 +167,25 @@ export interface get_default_templates {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: get_organizations
+// ====================================================
+
+export interface get_organizations_organizations {
+  id: string;
+  name: string;  // The name of the organization
+  slug: string;  // The name in all lowercase, suitable for URL identification
+  token: string;
+}
+
+export interface get_organizations {
+  organizations: (get_organizations_organizations | null)[] | null;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: create_connection
 // ====================================================
 
@@ -527,6 +546,10 @@ export interface GetToken_token {
 
 export interface GetToken {
   token: GetToken_token | null;
+}
+
+export interface GetTokenVariables {
+  org_id?: string | null;
 }
 
 

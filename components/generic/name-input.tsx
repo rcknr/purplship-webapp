@@ -2,7 +2,7 @@ import React, { ChangeEvent, useContext, useEffect } from 'react';
 import InputField, { InputFieldComponent } from '@/components/generic/input-field';
 import { formatAddress, isNone } from '@/library/helper';
 import { Address } from '@/api';
-import { AddressTemplates } from '@/components/data/address-templates-query';
+import { AddressTemplates } from '@/context/address-templates-query';
 
 interface NameInputComponent extends InputFieldComponent {
     onValueChange: (value: Partial<Address>, refresh?: boolean) => void;

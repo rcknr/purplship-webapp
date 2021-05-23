@@ -6,10 +6,10 @@ import ButtonField from '@/components/generic/button-field';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import { deepEqual, findPreset, formatDimension, formatRef, isNone } from '@/library/helper';
 import { DIMENSION_UNITS, NotificationType, PresetCollection, WEIGHT_UNITS } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
-import { ParcelTemplates } from '@/components/data/parcel-templates-query';
-import { DefaultTemplatesData } from '@/components/data/default-templates-query';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import { APIReference } from '@/context/references-query';
+import { ParcelTemplates } from '@/context/parcel-templates-query';
+import { DefaultTemplatesData } from '@/context/default-templates-query';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 

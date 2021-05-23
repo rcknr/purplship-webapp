@@ -110,6 +110,17 @@ query get_default_templates {
 }
 `;
 
+export const GET_ORGANIZATIONS = gql`
+query get_organizations {
+  organizations {
+    id
+    name
+    slug
+    token
+  }
+}
+`;
+
 export const CREATE_CONNECTION = gql`
   mutation create_connection($data: CreateConnectionInput!) {
     create_connection(input: $data) {
@@ -291,8 +302,8 @@ mutation mutate_token($data: TokenMutationInput!) {
 `;
 
 export const GET_TOKEN = gql`
-  query GetToken {
-    token {
+  query GetToken($org_id: String) {
+    token(org_id: $org_id) {
       key
       created
     }

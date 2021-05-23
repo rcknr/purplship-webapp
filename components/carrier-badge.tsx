@@ -1,7 +1,7 @@
 import { Collection } from '@/library/types';
 import { CarrierSettingsCarrierNameEnum } from '@/api/index';
 import React, { useContext } from 'react';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
 
 const THEME: Collection = {
     'aramex': 'is-aramex',

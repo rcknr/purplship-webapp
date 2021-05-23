@@ -6,7 +6,7 @@ import CheckBoxField from '@/components/generic/checkbox-field';
 import SelectField from '@/components/generic/select-field';
 import { cleanDict, deepEqual, isNone } from '@/library/helper';
 import { CURRENCY_OPTIONS, NotificationType } from '@/library/types';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 

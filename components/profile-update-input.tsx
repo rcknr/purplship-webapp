@@ -1,7 +1,7 @@
 import { NotificationType } from '@/library/types';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserData, UserType } from '@/components/data/user-query';
-import UserMutation from '@/components/data/user-mutation';
+import { UserData, UserType } from '@/context/user-query';
+import UserMutation from '@/context/user-mutation';
 import { Notify } from './notifier';
 
 interface ProfileUpdateInputComponent {

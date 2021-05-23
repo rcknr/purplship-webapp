@@ -1,6 +1,6 @@
 import { Location } from '@reach/router';
 import React, { useContext } from 'react';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
 
 interface LocationTitleComponent { }
 

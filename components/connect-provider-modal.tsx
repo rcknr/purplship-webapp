@@ -5,13 +5,13 @@ import CheckBoxField from '@/components/generic/checkbox-field';
 import ButtonField from '@/components/generic/button-field';
 import SelectField from '@/components/generic/select-field';
 import { Collection, NotificationType } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
-import ConnectionMutation from '@/components/data/connection-mutation';
-import { UserConnectionType } from '@/components/data/user-connections-query';
+import { APIReference } from '@/context/references-query';
+import ConnectionMutation from '@/context/connection-mutation';
+import { UserConnectionType } from '@/context/user-connections-query';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 import { deepEqual } from '@/library/helper';
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 
 interface ConnectProviderModalComponent {
     connection?: UserConnectionType;

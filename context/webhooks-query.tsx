@@ -1,27 +1,27 @@
 import React, { useContext, useState } from 'react';
-import { TrackerList } from '@/api/index';
-import { RestClient } from '@/library/rest';
+import { WebhookList } from '@/api/index';
+import { RestClient } from '@/context/rest';
 import { RequestError } from '@/library/types';
 import { getCursorPagination } from '@/library/helper';
-import { AppMode } from '@/components/data/app-mode';
+import { AppMode } from '@/context/app-mode';
 
 const DEFAULT_PAGINATED_RESULT = { results: [] };
 
 
-type ResultType = TrackerList & {
+type ResultType = WebhookList & {
   error?: RequestError;
   called: boolean;
   loading: boolean;
   load: (options?: any) => void;
-  loadMore: (cursor?: string) => void;
-  refetch: (cursor?: string) => void;
+  loadMore: (cursor: string) => void;
+  refetch: (options?: any) => void;
 };
-export const Trackers = React.createContext<ResultType>({} as ResultType);
+export const Webhooks = React.createContext<ResultType>({} as ResultType);
 
-const TrackersQuery: React.FC = ({ children }) => {
+const WebhooksQuery: React.FC = ({ children }) => {
   const purplship = useContext(RestClient);
   const { testMode } = useContext(AppMode);
-  const [result, setValue] = useState<TrackerList>(DEFAULT_PAGINATED_RESULT);
+  const [result, setValue] = useState<WebhookList>(DEFAULT_PAGINATED_RESULT);
   const [error, setError] = useState<RequestError>();
   const [called, setCalled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const TrackersQuery: React.FC = ({ children }) => {
     setLoading(true);
 
     return purplship
-      .trackers
+      .webhooks
       .list({...getCursorPagination(cursor), testMode: testMode})
       .then(setValue)
       .catch(setError)
@@ -46,7 +46,7 @@ const TrackersQuery: React.FC = ({ children }) => {
   const refetch = async () => loadMore(cursor);
 
   return (
-    <Trackers.Provider value={{
+    <Webhooks.Provider value={{
       load,
       loadMore,
       called,
@@ -56,8 +56,8 @@ const TrackersQuery: React.FC = ({ children }) => {
       ...result
     }}>
       {children}
-    </Trackers.Provider>
+    </Webhooks.Provider>
   );
 };
 
-export default TrackersQuery;
+export default WebhooksQuery;

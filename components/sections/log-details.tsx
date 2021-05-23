@@ -3,7 +3,7 @@ import { View } from '@/library/types';
 import StatusCode from '@/components/status-code-badge';
 import Prism from 'prismjs';
 import { formatDateTime, isNone, notEmptyJSON } from '@/library/helper';
-import { Log } from '@/components/data/log-query';
+import { Log } from '@/context/log-query';
 import { Loading } from '@/components/loader';
 import NavLink from '@/components/generic/navlink';
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import DropdownInput, { DropdownInputComponent } from '@/components/generic/dropdown-input';
 import { isNone } from '@/library/helper';
 import { Collection } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
 
 interface CountryInputComponent extends Omit<DropdownInputComponent, 'items'> { }
 

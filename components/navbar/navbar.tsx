@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import AccountDropdown from '@/components/navbar/account-dropdown';
-import { UserData, UserType } from '@/components/data/user-query';
+import { UserData, UserType } from '@/context/user-query';
 
 interface NavbarComponent { }
 
