@@ -37,7 +37,7 @@ const CarrierBadge: React.FC<CarrierBadgeComponent> = ({ carrier, className, ...
         <>
             {carriers && (
                 <strong className={`${className} ${THEME[name] || 'is-light'}`} {...props}>
-                    {(carriers as Collection)[name] || "Unknown"}
+                    {(carriers as Collection)[name] || "Not Selected"}
                 </strong>
             )}
         </>
