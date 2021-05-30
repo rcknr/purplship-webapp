@@ -1,7 +1,7 @@
 import { Collection } from '@/library/types';
-import { CarrierSettingsCarrierNameEnum } from '@/api';
+import { CarrierSettingsCarrierNameEnum } from '@/api/index';
 import React, { useContext } from 'react';
-import { APIReference } from './data/references-query';
+import { APIReference } from '@/context/references-query';
 
 const THEME: Collection = {
     'aramex': 'is-aramex',
@@ -19,7 +19,7 @@ const THEME: Collection = {
     'royalmail': 'is-royalmail',
     'sendle': 'is-sendle',
     'sf_express': 'is-sf_express',
-    'ups_package': 'is-ups',
+    'ups': 'is-ups',
     'usps': 'is-usps',
     'yanwen': 'is-yanwen',
     'yunexpress': 'is-yunexpress',
@@ -36,7 +36,9 @@ const CarrierBadge: React.FC<CarrierBadgeComponent> = ({ carrier, className, ...
     return (
         <>
             {carriers && (
-                <span className={`${className} ${THEME[name] || 'is-light'}`} {...props}>{(carriers as Collection)[name] || "Unknown"}</span>
+                <strong className={`${className} ${THEME[name] || 'is-light'}`} {...props}>
+                    {(carriers as Collection)[name] || "Not Selected"}
+                </strong>
             )}
         </>
     );

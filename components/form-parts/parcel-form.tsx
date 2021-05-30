@@ -6,10 +6,10 @@ import ButtonField from '@/components/generic/button-field';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import { deepEqual, findPreset, formatDimension, formatRef, isNone } from '@/library/helper';
 import { DIMENSION_UNITS, NotificationType, PresetCollection, WEIGHT_UNITS } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
-import { ParcelTemplates } from '@/components/data/parcel-templates-query';
-import { DefaultTemplatesData } from '@/components/data/default-templates-query';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import { APIReference } from '@/context/references-query';
+import { ParcelTemplates } from '@/context/parcel-templates-query';
+import { DefaultTemplatesData } from '@/context/default-templates-query';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 
@@ -18,7 +18,8 @@ export const DEFAULT_PARCEL_CONTENT: Partial<Parcel> = {
     packaging_type: "envelope",
     is_document: false,
     weight_unit: ParcelWeightUnitEnum.Kg,
-    dimension_unit: ParcelDimensionUnitEnum.Cm
+    dimension_unit: ParcelDimensionUnitEnum.Cm,
+    package_preset: undefined,
 };
 
 interface ParcelFormComponent {
@@ -70,11 +71,11 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
 
             if (name === 'parcel_type') {
                 const template = templates.find(p => p.id === value)?.parcel;
-                const preset = { package_preset: undefined } as Partial<Parcel>;
+                const preset = { ...parcel, package_preset: undefined } as Partial<Parcel>;
 
                 setParcelType(value as string);
                 setDimension(formatDimension(value === 'customs' ? undefined : template || preset));
-                value = template || preset as any;
+                value = { ...(template || preset as any), id: parcel.id };
                 name = isNone(template) ? name : 'template';
             }
             else if (name === 'package_preset') {
@@ -126,7 +127,7 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
         useEffect(() => {
             if (!called && !state.loading) load();
             // Load parcel template if we are creating a new shipment and there is a default parcel preset
-            if (!isNone(package_presets) && shipment !== undefined && isNone(shipment.id) && !isNone(default_parcel) && !deepEqual(default_parcel, parcel)) {
+            if (!isNone(package_presets) && !isNone(shipment) && isNone(shipment?.id) && !isNone(default_parcel) && !deepEqual(default_parcel, parcel)) {
                 const preset = findPreset(package_presets as PresetCollection, default_parcel?.package_preset as string) as Partial<Parcel>;
                 if (!isNone(preset)) {
                     setDimension(formatDimension(preset));
@@ -156,9 +157,7 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
                         <option value='preset'>Carrier Parcel Presets</option>
                     </optgroup>
                     <optgroup label="Load your custom parcel template">
-                        {templates.map(template => (
-                            <option key={template.id} value={template.id}>{template.label}</option>
-                        ))}
+                        {templates.map(template => <option key={template.id} value={template.id}>{template.label}</option>)}
                     </optgroup>
                 </SelectField>
 
@@ -169,23 +168,21 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
 
                         {Object
                             .entries(presets)
-                            .map(([key, value]) => {
-                                return (
-                                    <optgroup key={key} label={formatRef(key)}>
-                                        {Object.keys(value as object).map((preset) => (
-                                            <option key={preset} value={preset}>{formatRef(preset)}</option>
-                                        ))}
-                                    </optgroup>
-                                );
-                            })
+                            .map(([key, value]) => (
+                                <optgroup key={key} label={formatRef(key)}>
+                                    {Object.keys(value as object).map((preset) => (
+                                        <option key={preset} value={preset}>{formatRef(preset)}</option>
+                                    ))}
+                                </optgroup>
+                            ))
                         }
                     </SelectField>
 
                 </>}
 
-                {parcel_type !== 'custom' && <div className="is-size-7 mt-1 mb-2 has-text-grey">{dimension}</div>}
+                {parcel_type !== 'custom' && <div className="is-size-7 mt-1 mb-2 has-text-grey">{dimension || ""}</div>}
 
-                {parcel_type === 'custom' && <>
+                <div style={{ display: `${parcel_type === 'custom' ? 'block' : 'none'}` }}>
                     <h6 className="is-size-7 my-2 has-text-weight-semibold">Dimensions</h6>
 
                     <div className="columns mb-0 px-2">
@@ -193,15 +190,13 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
                         <SelectField name="packaging_type" onChange={handleChange} value={parcel.packaging_type} className="is-small is-fullwidth" fieldClass="column is-4 mb-0 px-1 py-2" required>
                             {packaging_types && Object
                                 .entries(packaging_types)
-                                .map(([key, value]) => {
-                                    return (
-                                        <optgroup key={key} label={formatRef(key)}>
-                                            {Object.keys(value as object).map((type) => (
-                                                <option key={type} value={type}>{formatRef(type)}</option>
-                                            ))}
-                                        </optgroup>
-                                    );
-                                })
+                                .map(([key, value]) => (
+                                    <optgroup key={key} label={formatRef(key)}>
+                                        {Object.keys(value as object).map((type) => (
+                                            <option key={type} value={type}>{formatRef(type)}</option>
+                                        ))}
+                                    </optgroup>
+                                ))
                             }
                         </SelectField>
 
@@ -214,31 +209,27 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
                         <span className="is-size-7 my-3">L:</span>
                         <InputField type="number" step="any" min="0" name="length" onChange={handleChange} value={parcel.length} className="is-small" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)} />
 
-                        <SelectField name="dimension_unit" onChange={handleChange} value={parcel.dimension_unit || ParcelDimensionUnitEnum.Cm} className="is-small is-fullwidth" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)}>
-                            {DIMENSION_UNITS.map(unit => (
-                                <option key={unit} value={unit}>{unit}</option>
-                            ))}
+                        <SelectField name="dimension_unit" onChange={handleChange} value={parcel.dimension_unit} className="is-small is-fullwidth" fieldClass="column mb-0 px-1 py-2" required={isDimensionRequired(parcel)}>
+                            {DIMENSION_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                         </SelectField>
 
                     </div>
 
-                </>}
+                </div>
 
                 <h6 className="is-size-7 my-2 has-text-weight-semibold">Weight</h6>
 
-                <div className="columns mb-0 px-2">
+                <div className="columns mb-4 px-2">
 
                     <InputField type="number" step="any" min="0" name="weight" onChange={handleChange} value={parcel.weight} className="is-small" fieldClass="column is-2 mb-0 px-1 py-2" required />
 
                     <SelectField name="weight_unit" onChange={handleChange} value={parcel.weight_unit || ParcelWeightUnitEnum.Kg} className="is-small is-fullwidth" fieldClass="column is-2 mb-0 px-1 py-2" required>
-                        {WEIGHT_UNITS.map(unit => (
-                            <option key={unit} value={unit}>{unit}</option>
-                        ))}
+                        {WEIGHT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                     </SelectField>
 
                 </div>
 
-                <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(value, parcel)}>
+                <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-2" disabled={deepEqual(value, parcel)}>
                     <span>Save</span>
                 </ButtonField>
 

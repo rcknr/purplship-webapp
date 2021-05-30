@@ -1,10 +1,11 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import InputField, { InputFieldComponent } from '@/components/generic/input-field';
-import { Address, AddressCountryCodeEnum } from '@/api';
+import { Address, AddressCountryCodeEnum } from '@/api/index';
 import { isNone } from '@/library/helper';
 import { initDebouncedPrediction, QueryAutocompletePrediction } from '@/library/autocomplete';
 import { Collection } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
+import { FeatureFlags } from '@/context/feature-flags';
 
 interface AddressAutocompleteInputComponent extends InputFieldComponent {
     onValueChange: (value: Partial<Address>) => void;
@@ -12,8 +13,9 @@ interface AddressAutocompleteInputComponent extends InputFieldComponent {
     disableSuggestion?: boolean;
 }
 
-const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({ defaultValue, onValueChange, ...props }) => {
+const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({ onValueChange, ...props }) => {
     const { countries } = useContext(APIReference);
+    const { ADDRESS_AUTO_COMPLETE } = useContext(FeatureFlags);
     const [predictions, setPredictions] = useState<QueryAutocompletePrediction[]>([]);
     const [predictor, initPredictor] = useState<ReturnType<typeof initDebouncedPrediction> | undefined>();
     const onClick = (e: React.MouseEvent<HTMLInputElement>) => e.currentTarget.select();
@@ -68,11 +70,11 @@ const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({
     };
 
     useEffect(() => {
-        if ((window as any).google !== undefined) initPredictor(initDebouncedPrediction());
-    }, [(window as any).google]);
+        if (ADDRESS_AUTO_COMPLETE) initPredictor(initDebouncedPrediction());
+    }, [ADDRESS_AUTO_COMPLETE]);
 
     return (
-        <InputField onInput={onInput} onClick={onClick} defaultValue={defaultValue} list="predictions" {...props}>
+        <InputField onInput={onInput} onClick={onClick} list="predictions" {...props}>
             <datalist id="predictions">
                 {predictions
                     .map((prediction, index) => (

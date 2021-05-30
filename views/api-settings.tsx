@@ -1,19 +1,24 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View } from '@/library/types';
 import GenerateAPIModal from '@/components/generate-api-dialog';
-import { TokenData } from '@/components/data/token-query';
+import { TokenData } from '@/context/token-query';
+import { Loading } from '@/components/loader';
 
 interface APISettingsView extends View { }
 
 const APISettings: React.FC<APISettingsView> = () => {
-  const { token } = useContext(TokenData)
+  const { token, loading, load } = useContext(TokenData)
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
   const tokenInput = useRef<HTMLInputElement>(null);
+  const { setLoading } = useContext(Loading);
 
   const copy = (_: React.MouseEvent) => {
     tokenInput.current?.select();
     document.execCommand("copy");
   };
+
+  useEffect(() => { !loading && load(); }, []);
+  useEffect(() => { setLoading(loading); });
 
   return (
     <>

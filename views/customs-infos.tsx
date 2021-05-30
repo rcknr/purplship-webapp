@@ -3,8 +3,8 @@ import { CustomsType, View } from '@/library/types';
 import CustomsInfoDescription from '@/components/descriptions/customs-info-description';
 import DeleteItemModal from '@/components/delete-item-modal';
 import CustomsInfoEditModal from '@/components/customs-info-edit-modal';
-import TemplateMutation from '@/components/data/template-mutation';
-import { CustomInfoTemplates } from '@/components/data/customs-templates-query';
+import TemplateMutation from '@/context/template-mutation';
+import { CustomInfoTemplates } from '@/context/customs-templates-query';
 import { isNone } from '@/library/helper';
 import { Loading } from '@/components/loader';
 

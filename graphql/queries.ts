@@ -110,6 +110,17 @@ query get_default_templates {
 }
 `;
 
+export const GET_ORGANIZATIONS = gql`
+query get_organizations {
+  organizations {
+    id
+    name
+    slug
+    token
+  }
+}
+`;
+
 export const CREATE_CONNECTION = gql`
   mutation create_connection($data: CreateConnectionInput!) {
     create_connection(input: $data) {
@@ -229,8 +240,8 @@ query get_parcel_templates($offset: Int, $first: Int) {
 `;
 
 export const GET_SYSTEM_CONNECTIONS = gql`
-query get_system_connections {
-  system_connections {
+query get_system_connections($test: Boolean) {
+  system_connections(test: $test) {
     id
     carrier_id
     carrier_name
@@ -291,8 +302,8 @@ mutation mutate_token($data: TokenMutationInput!) {
 `;
 
 export const GET_TOKEN = gql`
-  query GetToken {
-    token {
+  query GetToken($org_id: String) {
+    token(org_id: $org_id) {
       key
       created
     }
@@ -300,8 +311,8 @@ export const GET_TOKEN = gql`
 `;
 
 export const GET_USER_CONNECTIONS = gql`
-  query get_user_connections {
-    user_connections {
+  query get_user_connections($test: Boolean) {
+    user_connections(test: $test) {
       __typename
       ... on AramexSettings {
         id

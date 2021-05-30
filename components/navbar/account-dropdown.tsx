@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Link } from "@reach/router";
-import { UserType } from '@/components/data/user-query';
+import { UserType } from '@/context/user-query';
+import NavLink from '@/components/generic/navlink';
 
 
 interface AccountDropdownComponent {
@@ -11,7 +11,6 @@ interface AccountDropdownComponent {
 const AccountDropdown: React.FC<AccountDropdownComponent> = ({ user }) => {
     const [isActive, setIsActive] = useState(false);
     const btn = useRef<HTMLButtonElement>(null);
-    const img = useRef<HTMLImageElement>(null);
     const handleOnClick = (e: React.MouseEvent) => {
         if (!isActive) {
             setIsActive(true);
@@ -20,7 +19,7 @@ const AccountDropdown: React.FC<AccountDropdownComponent> = ({ user }) => {
         e.stopPropagation();
     };
     const onBodyClick = (e: MouseEvent) => {
-        if (e.target !== btn.current && e.target !== img.current) {
+        if (e.target !== btn.current) {
             setIsActive(false);
             document.removeEventListener('click', onBodyClick);
         }
@@ -28,10 +27,10 @@ const AccountDropdown: React.FC<AccountDropdownComponent> = ({ user }) => {
 
     return (
         <div className={`dropdown-wrap is-right ${isActive ? "is-active" : ""}`}>
-
-            <span className="indicator"></span>
-            <button className="dropdown-button has-image" onClick={handleOnClick} ref={btn}>
-                <img src="/static/client/profile.svg" alt="Purplship Profile" ref={img} />
+            <button className="dropdown-button button is-medium" onClick={handleOnClick} ref={btn}>
+                <span className="icon">
+                    <i className="fas fa-user"></i>
+                </span>
             </button>
             <div className="drop-menu">
                 <div className="menu-inner">
@@ -44,13 +43,13 @@ const AccountDropdown: React.FC<AccountDropdownComponent> = ({ user }) => {
                     <h6 className="is-size-7 mt-2 px-4 has-text-weight-semibold">{user.email}</h6>
 
                     <div className="options-items">
-                        <Link to="settings/account" className="options-item">
+                        <NavLink to="/settings/account" className="options-item">
                             <i className="fas fa-cog"></i>
                             <div className="option-content">
                                 <span>My Account</span>
                                 <span>Manage your account</span>
                             </div>
-                        </Link>
+                        </NavLink>
 
                         {user.is_staff && <a href="/admin" className="options-item">
                             <i className="fas fa-tools"></i>

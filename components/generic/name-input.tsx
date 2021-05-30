@@ -2,7 +2,7 @@ import React, { ChangeEvent, useContext, useEffect } from 'react';
 import InputField, { InputFieldComponent } from '@/components/generic/input-field';
 import { formatAddress, isNone } from '@/library/helper';
 import { Address } from '@/api';
-import { AddressTemplates } from '@/components/data/address-templates-query';
+import { AddressTemplates } from '@/context/address-templates-query';
 
 interface NameInputComponent extends InputFieldComponent {
     onValueChange: (value: Partial<Address>, refresh?: boolean) => void;
@@ -10,7 +10,7 @@ interface NameInputComponent extends InputFieldComponent {
     disableSuggestion?: boolean;
 }
 
-const NameInput: React.FC<NameInputComponent> = ({ defaultValue, disableSuggestion, onValueChange, ...props }) => {
+const NameInput: React.FC<NameInputComponent> = ({ disableSuggestion, onValueChange, ...props }) => {
     const onClick = (e: React.MouseEvent<HTMLInputElement>) => e.currentTarget.select();
     const { templates, called, loading, load } = useContext(AddressTemplates);
     const onInput = (e: ChangeEvent<any>) => {
@@ -23,7 +23,7 @@ const NameInput: React.FC<NameInputComponent> = ({ defaultValue, disableSuggesti
     useEffect(() => { if (!called && !loading) load(); }, [templates]);
 
     return (
-        <InputField onInput={onInput} onClick={onClick} defaultValue={defaultValue} list="address_templates" {...props}>
+        <InputField onInput={onInput} onClick={onClick} list="address_templates" {...props}>
             {!disableSuggestion && <datalist id="address_templates">
                 {templates
                     .map(template => (

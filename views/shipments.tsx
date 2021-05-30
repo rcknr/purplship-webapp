@@ -1,38 +1,34 @@
 import React, { useContext, useEffect } from 'react';
 import { View } from '@/library/types';
 import ShipmentMenu from '@/components/shipment-menu';
-import { useNavigate } from '@reach/router';
 import { formatAddress, formatDate, isNone } from '@/library/helper';
 import CarrierBadge from '@/components/carrier-badge';
-import ShipmentMutation from '@/components/data/shipment-mutation';
-import { Shipments } from '@/components/data/shipments-query';
+import ShipmentMutation from '@/context/shipment-mutation';
+import { Shipments } from '@/context/shipments-query';
 import { Loading } from '@/components/loader';
 import { Notify } from '@/components/notifier';
+import ModeIndicator from '@/components/mode-indicator';
+import NavLink from '@/components/generic/navlink';
 
 
 interface ShipmentsView extends View { }
 
 const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(() => {
-  const navigate = useNavigate();
   const { setLoading } = useContext(Loading);
   const { loading, results, load, loadMore, previous, next } = useContext(Shipments);
-
-  const createLabel = (_: React.MouseEvent) => navigate('buy_label/new');
 
   useEffect(() => { !loading && load(); }, []);
   useEffect(() => { setLoading(loading); });
 
-  const { notify } = useContext(Notify);
-  (window as any).noti = () => notify({ message: 'Tracker successfully added!' })
-
   return (
     <>
-
+      <ModeIndicator />
+      
       <header className="px-2 pt-1 pb-6">
         <span className="subtitle is-4">Shipments</span>
-        <a className="button is-success is-pulled-right" onClick={createLabel}>
+        <NavLink className="button is-success is-pulled-right" to="/buy_label/new">
           <span>Create Label</span>
-        </a>
+        </NavLink>
       </header>
 
       <div className="table-container">

@@ -1,6 +1,6 @@
-import { Operation, Webhook, WebhookData } from '@/api';
+import { Operation, Webhook, WebhookData } from '@/api/index';
 import { handleFailure } from '@/library/helper';
-import { RestClient } from '@/library/rest';
+import { RestClient } from '@/context/rest';
 import React, { useContext } from 'react';
 
 

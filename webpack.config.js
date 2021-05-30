@@ -8,11 +8,11 @@ module.exports = function (env, argv) {
       vendor: ['rxjs', 'react', 'react-dom', 'libphonenumber-js', '@reach/router', 'graphql', '@apollo/client'],
       graph: {
         dependOn: 'vendor',
-        import: ['./library/graphql.ts', './graphql/index.ts']
+        import: './graphql/index.ts'
       },
       rest: {
         dependOn: 'vendor',
-        import: './library/rest.ts'
+        import: './api/index.ts'
       },
       dashboard: {
         dependOn: ['vendor', 'rest', 'graph'],

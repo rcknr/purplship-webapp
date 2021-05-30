@@ -1,11 +1,11 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Shipment, ShipmentStatusEnum } from '@/api';
+import { Shipment, ShipmentStatusEnum } from '@/api/index';
 import LabelPrinter from '@/components/label/label-printer';
 import { useNavigate } from '@reach/router';
 import { NotificationType } from '@/library/types';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
-import { Shipments } from '@/components/data/shipments-query';
+import { Shipments } from '@/context/shipments-query';
 
 
 interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement> {
@@ -35,6 +35,9 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
     };
     const createLabel = (_: React.MouseEvent) => {
         navigate('buy_label/' + shipment.id);
+    };
+    const displayDetails = (_: React.MouseEvent) => {
+        navigate('shipments/' + shipment.id);
     };
     const cancelShipment = (shipment: Shipment) => async (e: React.MouseEvent) => {
         try {
@@ -68,6 +71,7 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
 
             <div className="dropdown-menu" id={`shipment-menu-${shipment.id}`} role="menu">
                 <div className="dropdown-content">
+                    {shipment.status !== ShipmentStatusEnum.Created && <a className="dropdown-item" onClick={displayDetails}>View Shipment</a>}
                     <a href="#" className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>
                 </div>
             </div>

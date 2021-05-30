@@ -7,13 +7,13 @@ import ButtonField from '@/components/generic/button-field';
 import SelectField from '@/components/generic/select-field';
 import { deepEqual, formatRef, isNone } from '@/library/helper';
 import { Collection, CommodityType, CURRENCY_OPTIONS, NotificationType, PAYOR_OPTIONS } from '@/library/types';
-import { UserData } from '@/components/data/user-query';
-import { APIReference } from '@/components/data/references-query';
-import ShipmentMutation from '@/components/data/shipment-mutation';
+import { UserData } from '@/context/user-query';
+import { APIReference } from '@/context/references-query';
+import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import CommodityDescription from '@/components/descriptions/commodity-description';
 import CommodityForm from '@/components/form-parts/commodity-form';
-import { DefaultTemplatesData } from '@/components/data/default-templates-query';
+import { DefaultTemplatesData } from '@/context/default-templates-query';
 import { Loading } from '@/components/loader';
 
 

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Address, Parcel, Shipment } from '@/api/index';
-import { RestClient } from '@/library/rest';
 import { handleFailure } from '@/library/helper';
 import { RequestError } from '@/library/types';
+import { RestClient } from '@/context/rest';
 
 const DEFAULT_SHIPMENT_DATA = {
   shipper: {} as Address,
@@ -41,8 +41,8 @@ const LabelDataQuery: React.FC = ({ children }) => {
       await handleFailure(
         purplship.shipments.retrieve({ id: id as string })
       )
-        .then(r => { setValue(r); resolve(r); })
-        .catch(setError)
+        .then(r => { setValue(r as any); resolve(r as any); })
+        .catch(e => { setError(e); setValue({} as Shipment); })
         .then(() => setLoading(false));
     });
   };

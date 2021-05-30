@@ -1,11 +1,12 @@
-import { Shipment, ShipmentLabelTypeEnum } from '@/api';
+import { Shipment, ShipmentLabelTypeEnum } from '@/api/index';
 import React, { useState } from 'react';
 
 interface LabelPrinterComponent extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     shipment: Shipment;
+    className?: string;
 }
 
-const LabelPrinter: React.FC<LabelPrinterComponent> = ({ shipment, ...props }) => {
+const LabelPrinter: React.FC<LabelPrinterComponent> = ({ shipment, className, ...props }) => {
     const [isActive, setIsActive] = useState<boolean>(false);
     const close = (evt?: React.MouseEvent) => {
         evt?.preventDefault();
@@ -20,7 +21,7 @@ const LabelPrinter: React.FC<LabelPrinterComponent> = ({ shipment, ...props }) =
 
     return (
         <>
-            <button className="button is-small" onClick={() => setIsActive(true)} {...props}>
+            <button className={className || "button is-small"} onClick={() => setIsActive(true)} {...props}>
                 <span>Print Label</span>
             </button>
 

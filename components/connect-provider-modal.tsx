@@ -5,12 +5,13 @@ import CheckBoxField from '@/components/generic/checkbox-field';
 import ButtonField from '@/components/generic/button-field';
 import SelectField from '@/components/generic/select-field';
 import { Collection, NotificationType } from '@/library/types';
-import { APIReference } from '@/components/data/references-query';
-import ConnectionMutation from '@/components/data/connection-mutation';
-import { UserConnectionType } from '@/components/data/user-connections-query';
+import { APIReference } from '@/context/references-query';
+import ConnectionMutation from '@/context/connection-mutation';
+import { UserConnectionType } from '@/context/user-connections-query';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 import { deepEqual } from '@/library/helper';
+import { AppMode } from '@/context/app-mode';
 
 interface ConnectProviderModalComponent {
     connection?: UserConnectionType;
@@ -18,16 +19,16 @@ interface ConnectProviderModalComponent {
     onUpdate?: () => void;
 }
 
-const DEFAULT_STATE: Partial<UserConnectionType> = { carrier_name: 'none', test: true };
-
 const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = ConnectionMutation<ConnectProviderModalComponent>(
     ({ children, connection, className, onUpdate, createConnection, updateConnection }) => {
         const { carriers } = useContext(APIReference);
         const { notify } = useContext(Notify);
         const { loading, setLoading } = useContext(Loading);
+        const { testMode } = useContext(AppMode);
+        const DEFAULT_STATE = (): Partial<UserConnectionType> => ({ carrier_name: 'none', test: testMode });
         const [key, setKey] = useState<string>(`connection-${Date.now()}`);
         const [isNew, _] = useState<boolean>(connection === null || connection === undefined);
-        const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(connection || DEFAULT_STATE);
+        const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(connection || DEFAULT_STATE());
         const [isActive, setIsActive] = useState<boolean>(false);
         const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
@@ -57,7 +58,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
             }
         };
         const close = (_?: React.MouseEvent) => {
-            if (isNew) setPayload(DEFAULT_STATE);
+            if (isNew) setPayload(DEFAULT_STATE());
             setKey(`connection-${Date.now()}`);
             setIsDisabled(false);
             setIsActive(false);
@@ -66,7 +67,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
             let new_state = { ...payload, [property]: e.target.value || undefined };
             if (property === 'carrier_name') {
                 setKey(`connection-${Date.now()}`);
-                new_state = { carrier_name: e.target.value, test: true };
+                new_state = { carrier_name: e.target.value, test: testMode };
             } else if (property == 'test') {
                 new_state = { ...payload, test: e.target.checked };
             }

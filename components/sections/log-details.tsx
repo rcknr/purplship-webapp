@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View } from '@/library/types';
 import StatusCode from '@/components/status-code-badge';
 import Prism from 'prismjs';
-import { Link } from '@reach/router';
 import { formatDateTime, isNone, notEmptyJSON } from '@/library/helper';
-import { Log } from '@/components/data/log-query';
+import { Log } from '@/context/log-query';
 import { Loading } from '@/components/loader';
+import NavLink from '@/components/generic/navlink';
 
 interface LogDetailsView extends View {
     logId?: string;
@@ -32,7 +32,7 @@ const LogDetails: React.FC<LogDetailsView> = ({ logId }) => {
         <>
             <nav className="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
                 <ul>
-                    <li><Link to="/api_logs">Logs</Link></li>
+                    <li><NavLink to="/api_logs">Logs</NavLink></li>
                     <li className="is-active"><a href="#" aria-current="page">details</a></li>
                 </ul>
             </nav>

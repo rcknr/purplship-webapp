@@ -28,7 +28,7 @@ Purplship custom styling
 .purplship-notification-loader {
     top: 0;
     left: 0;
-    animation-duration: 15s !important;
+    animation-duration: 10s !important;
     position: absolute;
     z-index: 100;
     margin: 0 !important;
@@ -110,18 +110,21 @@ Purplship custom styling
         min-width: 25%;
     }
     .status {
-        width: 15%;
-        min-width: 15%;
+        width: 12%;
+        min-width: 12%;
     }
     .carrier {
-        width: 15%;
-        min-width: 15%;
+        width: 13%;
+        min-width: 12%;
     }
     .last-event {
         width: 40%;
         max-width: 40%;
     }
-    .action {}
+    .action {
+        width: 10%;
+        max-width: 10%;
+    }
 }
 
 .webhooks-table {
@@ -157,6 +160,10 @@ hr {
     right: 0;
 }
 
+.mode-menu-item {
+    color: rgba(196, 76, 52, 0.7) !important;
+}
+
 .purplship-notifier {
     position: fixed;
     top: 0;
@@ -166,6 +173,29 @@ hr {
     opacity: 0.9;
     border-radius: 0;
     font-weight: 700;
+}
+
+.mode-indicator {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    border-top: 2px solid rgba(196, 76, 52, 0.7);
+    padding: 0;
+    text-align: center;
+    width: 100%;
+
+    .mode-indicator-container {
+        margin: 0 auto;
+        background: rgba(196, 76, 52, 0.7);
+        display: inline;
+        padding: 1px 10px;
+        border-radius: 0 0 5px 5px;
+
+        .mode-indicator-label {
+            font-size: 0.6rem;
+            color: white;
+        }
+    }
 }
 
 .table-container {
@@ -222,78 +252,4 @@ td > div.dropdown.is-active .dropdown-menu {
     &:hover {
         overflow-y: scroll;
     }
-}
-
-
-.is-aramex {
-    background-color: #dc291e !important;
-    color: #fff !important;
-}
-.is-australiapost {
-    background-color: #dc1928 !important;
-    color: #fff !important;
-}
-.is-boxknight {
-    background-color: #ddd !important;
-    color: #1890ff !important;
-}
-.is-canadapost {
-    background-color: #1a4183 !important;
-    color: #ddd !important;
-}
-.is-canpar {
-    background-color: #ddd !important;
-    color: #004890 !important;
-}
-.is-dicom {
-    background-color: #f26529 !important;
-    color: #005daa !important;
-}
-.is-dhl {
-    background-color: #fc0 !important;
-    color: #c00 !important;
-}
-.is-eshipper {
-    background-color: #472f92 !important;
-    color: #fff !important;
-}
-.is-fedex {
-    background-color: #4d148c !important;
-    color: #ddd !important;
-}
-.is-freightcom {
-    background-color: #0072bc !important;
-    color: #333 !important;
-}
-.is-purolator {
-    background-color: #001996 !important;
-    color: #e00000 !important;
-}
-.is-royalmail {
-    background-color: #dc3232 !important;
-    color: #fdda24 !important;
-}
-.is-sendle {
-    background-color: #ff6800 !important;
-    color: #fff !important;
-}
-.is-sf_express {
-    background-color: #dc1e32 !important;
-    color: #fff !important;
-}
-.is-ups {
-    background-color: #ffd100 !important;
-    color: #242424;
-}
-.is-usps {
-    background-color: #333366 !important;
-    color: #fff !important;
-}
-.is-yanwen {
-    background-color: #68b125 !important;
-    color: #fff !important;
-}
-.is-yunexpress {
-    background-color: #ddd !important;
-    color: #388280 !important;
 }

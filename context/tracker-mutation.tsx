@@ -1,6 +1,6 @@
 import { Operation, TrackingStatus } from '@/api/index';
 import { handleFailure } from '@/library/helper';
-import { RestClient } from '@/library/rest';
+import { RestClient } from '@/context/rest';
 import React, { useContext } from 'react';
 
 
@@ -16,8 +16,8 @@ const TrackerMutation = <T extends {}>(Component: React.FC<TrackerMutator<T>>) =
     const createTracker = async (tracking_number: string, carrier_name: string, test: boolean) => handleFailure(
       purplship.trackers.create({ carrierName: carrier_name, trackingNumber: tracking_number, test })
     );
-    const removeTracker = async (id: string) => handleFailure(
-      purplship.trackers.remove({ id })
+    const removeTracker = async (idOrTrackingNumber: string) => handleFailure(
+      purplship.trackers.remove({ idOrTrackingNumber })
     );
 
     return (

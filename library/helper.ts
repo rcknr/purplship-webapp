@@ -6,8 +6,7 @@ export function formatRef(s: string): string {
 }
 
 export function formatDate(date: string): string {
-    let [month, day, year] = (new Date(date)).toLocaleDateString().split("/");
-    return `${day}/${month}/${year}`;
+    return (new Date(date)).toLocaleDateString();
 }
 
 export function formatDateTime(date_string: string): string {
@@ -155,12 +154,20 @@ export async function handleFailure<T>(request: Promise<T>): Promise<T> {
 export function getCursorPagination(cursor?: string): { limit?: number; offset?: number; } {
     const [_, queryString] = (cursor || '').split('?');
     const params = (queryString || '').split('&');
-  
+
     const [_limit, limit] = (params.find(p => p.includes('limit')) || '').split('=');
     const [_offset, offset] = (params.find(p => p.includes('offset')) || '').split('=');
-  
-    return { 
-      ...(limit === undefined ? {} : { limit: parseInt(limit) }),
-      ...(offset === undefined ? {} : { offset: parseInt(offset) })
-     };
-  }
+
+    return {
+        ...(limit === undefined ? {} : { limit: parseInt(limit) }),
+        ...(offset === undefined ? {} : { offset: parseInt(offset) })
+    };
+}
+
+
+export function collectToken(): string {
+    const root = document.getElementById("root");
+    const token = (root as HTMLDivElement).getAttribute('data-token') as string;
+
+    return token;
+}

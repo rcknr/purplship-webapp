@@ -1,5 +1,5 @@
-import { NotificationType, View } from '@/library/types';
-import { Link, useNavigate } from '@reach/router';
+import { APIError, NotificationType, RequestError, View } from '@/library/types';
+import { useNavigate } from '@reach/router';
 import React, { useContext, useEffect, useState } from 'react';
 import CustomsInfoForm from '@/components/form-parts/customs-info-form';
 import AddressForm from '@/components/form-parts/address-form';
@@ -9,10 +9,13 @@ import LiveRates from '@/components/live-rates';
 import Tabs from '@/components/generic/tabs';
 import { Shipment, ShipmentStatusEnum } from '@/api/index';
 import { isNone } from '@/library/helper';
-import { APIReference } from '@/components/data/references-query';
-import { LabelData, } from '@/components/data/shipment-query';
-import { DefaultTemplatesData } from '@/components/data/default-templates-query';
-import { Notify } from '../notifier';
+import { APIReference } from '@/context/references-query';
+import { LabelData, } from '@/context/shipment-query';
+import { DefaultTemplatesData } from '@/context/default-templates-query';
+import { Notify } from '@/components/notifier';
+import NavLink from '@/components/generic/navlink';
+import { AppMode } from '@/context/app-mode';
+import ModeIndicator from '@/components/mode-indicator';
 
 
 interface LabelCreatorComponent extends View {
@@ -22,6 +25,7 @@ interface LabelCreatorComponent extends View {
 const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
     const navigate = useNavigate();
     const { notify } = useContext(Notify);
+    const { basePath } = useContext(AppMode);
     const { countries } = useContext(APIReference);
     const { shipment, loading, loadShipment, updateShipment } = useContext(LabelData);
     const { default_address, ...template } = useContext(DefaultTemplatesData);
@@ -37,12 +41,20 @@ const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
     useEffect(() => {
         if (!loading && shipment?.id !== id) {
             loadShipment(id)
-                .then(() => {
-                    if (isNone(shipment.status) || shipment.status === ShipmentStatusEnum.Created) {
+                .then(({ status, messages }) => {
+                    if (isNone(status) || status === ShipmentStatusEnum.Created) {
                         setKey(`${id}-${Date.now()}`);
+                        if ((messages || []).length > 0) {
+                            const error: APIError = {
+                                error: { code: "notes", details: { messages } as APIError['error']['details'] }
+                            };
+                            const message = new RequestError(error);
+
+                            notify({ type: NotificationType.warning, message });
+                        }
                     } else {
                         notify({ type: NotificationType.info, message: 'Label already purchased!' });
-                        navigate('/');
+                        navigate(basePath);
                     }
                 });
         }
@@ -52,9 +64,10 @@ const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
 
     return (
         <>
+            <ModeIndicator />
             <nav className="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
                 <ul>
-                    <li><Link to="/">Shipments</Link></li>
+                    <li><NavLink to="/">Shipments</NavLink></li>
                     <li className="is-active"><a href="#" aria-current="page">Create Label</a></li>
                 </ul>
             </nav>

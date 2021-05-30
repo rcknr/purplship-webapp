@@ -3,10 +3,10 @@ import InputField from '@/components/generic/input-field';
 import { NotificationType } from '@/library/types';
 import ButtonField from '@/components/generic/button-field';
 import SelectField from '@/components/generic/select-field';
-import { APIReference } from '@/components/data/references-query';
-import { UserConnections, UserConnectionType } from '@/components/data/user-connections-query';
-import { SystemConnections, SystemConnectionType } from '@/components/data/system-connections-query';
-import TrackerMutation from '@/components/data/tracker-mutation';
+import { APIReference } from '@/context/references-query';
+import { UserConnections, UserConnectionType } from '@/context/user-connections-query';
+import { SystemConnections, SystemConnectionType } from '@/context/system-connections-query';
+import TrackerMutation from '@/context/tracker-mutation';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 

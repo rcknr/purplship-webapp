@@ -19,7 +19,7 @@ const Notifier: React.FC = ({ children }) => {
     const notify = (notification: Notification) => {
         dismiss();
         setNotification(notification);
-        setTimer(setTimeout(dismiss, 15000));
+        setTimer(setTimeout(dismiss, 10000));
     };
 
     return (
@@ -48,7 +48,7 @@ const formatMessage = (msg: string | Error | RequestError) => {
                 return error.message;
             } else if (error?.details?.messages !== undefined) {
                 return (error.details.messages || []).map(msg => {
-                    const carrier_name = msg.carrier_name !== undefined ? `${msg.carrier_name} :` : '';
+                    const carrier_name = msg.carrier_name !== undefined ? `${msg.carrier_name} (${msg.carrier_id}) :` : '';
                     return <p>{carrier_name} {msg.message}</p>;
                 });
             } else {

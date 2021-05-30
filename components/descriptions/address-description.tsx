@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { formatAddressName, formatFullAddress } from '@/library/helper';
-import { APIReference } from '@/components/data/references-query';
+import { APIReference } from '@/context/references-query';
 import { AddressType, Collection } from '@/library/types';
 
 interface AddressDescriptionComponent {

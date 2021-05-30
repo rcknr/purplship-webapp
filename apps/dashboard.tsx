@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { graphClient } from '@/library/graphql';
 import { ApolloProvider } from '@apollo/client';
+import RestClientContext from '@/context/rest';
+import GraphClientContext, { graphqlClient } from '@/context/graphql';
+import FeatureFlagsContext from '@/context/feature-flags';
 import { Router } from "@reach/router";
 import ShipmentPage from '@/views/shipments';
 import TrackersPage from '@/views/trackers';
@@ -13,25 +15,27 @@ import Account from '@/views/account';
 import APISettings from '@/views/api-settings';
 import WebhooksPage from '@/views/webhooks';
 import CustomsInfoPage from '@/views/customs-infos';
-import UserQuery from '@/components/data/user-query';
-import TokenQuery from '@/components/data/token-query';
-import APIReferenceQuery from '@/components/data/references-query';
-import ParcelTemplatesQuery from '@/components/data/parcel-templates-query';
-import AddressTemplatesQuery from '@/components/data/address-templates-query';
-import CustomInfoTemplatesQuery from '@/components/data/customs-templates-query';
-import TemplatesQuery from '@/components/data/default-templates-query';
-import ShipmentsQuery from '@/components/data/shipments-query';
-import TrackersQuery from '@/components/data/trackers-query';
-import UserConnectionsQuery from '@/components/data/user-connections-query';
-import SystemConnectionsQuery from '@/components/data/system-connections-query';
-import LabelDataQuery from '@/components/data/shipment-query';
+import UserQuery from '@/context/user-query';
+import TokenQuery from '@/context/token-query';
+import APIReferenceQuery from '@/context/references-query';
+import AddressTemplatesQuery from '@/context/address-templates-query';
+import ParcelTemplatesQuery from '@/context/parcel-templates-query';
+import CustomInfoTemplatesQuery from '@/context/customs-templates-query';
+import TemplatesQuery from '@/context/default-templates-query';
+import ShipmentsQuery from '@/context/shipments-query';
+import TrackersQuery from '@/context/trackers-query';
+import UserConnectionsQuery from '@/context/user-connections-query';
+import SystemConnectionsQuery from '@/context/system-connections-query';
+import LabelDataQuery from '@/context/shipment-query';
+import OrganizationsQuery from '@/context/organizations-query';
 import ExpandedSidebar from '@/components/sidebars/expanded-sidebar';
 import LabelCreator from '@/components/label/label-creator';
 import Navbar from '@/components/navbar/navbar';
 import Loader from '@/components/loader';
 import Notifier from '@/components/notifier';
 import LocationTitle from '@/components/location-title';
-import '@/library/rest';
+import ShipmentDetails from '@/components/descriptions/shipment-details';
+import AppModeProvider, { computeBasePath } from '@/context/app-mode';
 import 'prismjs';
 import 'prismjs/components/prism-json';
 import 'prismjs/themes/prism.css';
@@ -40,8 +44,6 @@ import '@/style/dashboard.scss';
 
 
 const DATA_CONTEXTS = [
-    UserQuery,
-    TokenQuery,
     AddressTemplatesQuery,
     CustomInfoTemplatesQuery,
     ParcelTemplatesQuery,
@@ -54,6 +56,14 @@ const DATA_CONTEXTS = [
     TemplatesQuery,
     Loader,
     Notifier,
+    AppModeProvider,
+
+    UserQuery,
+    GraphClientContext,
+    RestClientContext,
+    OrganizationsQuery,
+    FeatureFlagsContext,
+    TokenQuery,
 ];
 
 
@@ -62,10 +72,10 @@ const DashboardContexts: React.FC = ({ children }) => {
 
     return (
         <>
-            <ApolloProvider client={graphClient}>{NestedContexts}</ApolloProvider>
+            <ApolloProvider client={graphqlClient}>{NestedContexts}</ApolloProvider>
         </>
     );
-}
+};
 
 const Dashboard: React.FC = () => {
     return (
@@ -78,10 +88,10 @@ const Dashboard: React.FC = () => {
                     <Notifier />
                     <Navbar />
 
-                    <div className="dashboard-content">
-                        <Router>
+                    <div className="dashboard-content" style={{ position: 'relative' }}>
+                        <Router basepath={computeBasePath()}>
                             <ShipmentPage path="/" />
-                            <TrackersPage path="/trackers" />
+                            <TrackersPage path="trackers" />
 
                             <AddressesPage path="configurations/addresses" />
                             <ConnectionsPage path="configurations/carriers" />
@@ -93,6 +103,7 @@ const Dashboard: React.FC = () => {
                             <APISettings path="settings/api" />
                             <WebhooksPage path="settings/webhooks" />
                             <LabelCreator path="buy_label/:id" />
+                            <ShipmentDetails path="shipments/:id" />
                         </Router>
                     </div>
 
