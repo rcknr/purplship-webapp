@@ -18,7 +18,7 @@ const ExpandedSidebar: React.FC<ExpandedSidebarComponent> = () => {
     return (
         <div className="plex-sidebar" ref={sidebar}>
             <div className="sidebar-header pl-5">
-                {!MULTI_ORGANIZATIONS && <img src="/static/branding/logo.svg" alt="Purplship" width="80" />}
+                {!MULTI_ORGANIZATIONS && <img src="/static/branding/logo.svg" width="80" />}
                 {MULTI_ORGANIZATIONS && <OrganizationDropdown />}
                 <button className="menu-icon v-5 is-open mobile-item is-block mobile-sidebar-trigger" onClick={dismiss}>
                     <span></span>

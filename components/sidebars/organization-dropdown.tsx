@@ -42,7 +42,7 @@ const OrganizationDropdown: React.FC = () => {
     };
 
     useEffect(() => { (!loading && load) && load(); }, []);
-    useEffect(() => { 
+    useEffect(() => {
         if ((organizations || []).length > 0) {
             const currentOrgId = getCookie("org_id");
             const current = organizations.find(org => org.id === currentOrgId)
@@ -56,27 +56,31 @@ const OrganizationDropdown: React.FC = () => {
     }, [token, organizations]);
 
     return (
-        <div className={`dropdown ${active ? 'is-active' : ''}`}>
-            <div className="dropdown-trigger">
-                <button className="button is-light" aria-haspopup="true" aria-controls="dropdown-menu" onClick={handleOnClick} ref={btn}>
-                    <i className="fas fa-store"></i>
-                    <span className="px-3">{selected?.name}</span>
-                    <span className="icon is-small">
-                        <i className="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
-            </div>
-            <div className="dropdown-menu" id="dropdown-menu" role="menu">
-                <div className="dropdown-content">
-                    {(organizations || []).map(org => (
-                        <a key={org.id} className={`dropdown-item ${(org.id === selected?.id) ? 'is-active' : ''}`} onClick={select(org)}>
-                            <i className="fas fa-store"></i>
-                            <span className="px-2">{org.name}</span>
-                        </a>
-                    ))}
+        <>
+            {((organizations || []).length > 0) && <div className={`dropdown ${active ? 'is-active' : ''}`}>
+                <div className="dropdown-trigger">
+                    <button className="button is-light" aria-haspopup="true" aria-controls="dropdown-menu" onClick={handleOnClick} ref={btn}>
+                        <i className="fas fa-store"></i>
+                        <span className="px-3">{selected?.name}</span>
+                        <span className="icon is-small">
+                            <i className="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
                 </div>
-            </div>
-        </div>
+                <div className="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div className="dropdown-content">
+                        {(organizations || []).map(org => (
+                            <a key={org.id} className={`dropdown-item ${(org.id === selected?.id) ? 'is-active' : ''}`} onClick={select(org)}>
+                                <i className="fas fa-store"></i>
+                                <span className="px-2">{org.name}</span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </div>}
+
+            {((organizations || []).length === 0) && <img src="/static/branding/logo.svg" width="80" />}
+        </>
     );
 };
 
