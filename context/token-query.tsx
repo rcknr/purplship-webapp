@@ -15,14 +15,14 @@ export const TokenData = React.createContext<TokenDataType>({ token: { key: coll
 const TokenQuery: React.FC = ({ children }) => {
   const [initialLoad, result] = useLazyQuery<GetToken>(GET_TOKEN, { notifyOnNetworkStatusChange: true });
 
-  const fetchMore = (options: any) => result?.fetchMore && result.fetchMore(options);
+  const fetchMore = (options: any) => result.called ? result.fetchMore(options) : initialLoad(options);
   const load = () => result.called ? fetchMore({}) : initialLoad({});
   const authenticateOrg = async (org_id: string, token: string) => {
     return fetchMore({
       variables: { org_id },
       context: { headers: { "X-org-id": org_id, authorization: `Token ${token}` } }
     })
-  }
+  };
 
   return (
     <TokenData.Provider value={{ load, authenticateOrg, token: (result?.data?.token || {} as TokenType), ...result }}>

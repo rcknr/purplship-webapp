@@ -44,12 +44,6 @@ import '@/style/dashboard.scss';
 
 
 const DATA_CONTEXTS = [
-    TokenQuery,
-    FeatureFlagsContext,
-    OrganizationsQuery,
-    GraphClientContext,
-    RestClientContext,
-    UserQuery,
     AddressTemplatesQuery,
     CustomInfoTemplatesQuery,
     ParcelTemplatesQuery,
@@ -63,6 +57,13 @@ const DATA_CONTEXTS = [
     Loader,
     Notifier,
     AppModeProvider,
+
+    UserQuery,
+    GraphClientContext,
+    RestClientContext,
+    OrganizationsQuery,
+    FeatureFlagsContext,
+    TokenQuery,
 ];
 
 
