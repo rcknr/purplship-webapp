@@ -453,6 +453,17 @@ export const GET_USER_CONNECTIONS = gql`
         partner_id
         check_word
       }
+      ... on TNTSettings {
+        id
+        carrier_id
+        carrier_name
+        test
+        active
+        username
+        password
+        account_number
+        account_country_code
+      }
       ... on UPSSettings {
         id
         carrier_id

@@ -19,6 +19,7 @@ const THEME: Collection = {
     'royalmail': 'is-royalmail',
     'sendle': 'is-sendle',
     'sf_express': 'is-sf_express',
+    'tnt': 'is-tnt',
     'ups': 'is-ups',
     'usps': 'is-usps',
     'yanwen': 'is-yanwen',

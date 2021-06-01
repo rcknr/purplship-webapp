@@ -187,6 +187,7 @@ function hasProperty(carrier_name: CarrierSettingsCarrierNameEnum, property: str
         [CarrierSettingsCarrierNameEnum.Royalmail]: ["carrier_id", "test", "client_id", "client_secret"],
         [CarrierSettingsCarrierNameEnum.Sendle]: ["carrier_id", "test", "sendle_id", "api_key"],
         [CarrierSettingsCarrierNameEnum.SfExpress]: ["carrier_id", "test", "partner_id", "check_word"],
+        [CarrierSettingsCarrierNameEnum.Tnt]: ["carrier_id", "test", "username", "password", "account_country_code", "account_number"],
         [CarrierSettingsCarrierNameEnum.Ups]: ["carrier_id", "test", "username", "password", "access_license_number", "account_number"],
         [CarrierSettingsCarrierNameEnum.Usps]: ["carrier_id", "test", "username", "password"],
         [CarrierSettingsCarrierNameEnum.Yanwen]: ["carrier_id", "test", "customer_number", "license_key"],
