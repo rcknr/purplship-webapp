@@ -36,10 +36,6 @@ import Notifier from '@/components/notifier';
 import LocationTitle from '@/components/location-title';
 import ShipmentDetails from '@/components/descriptions/shipment-details';
 import AppModeProvider, { computeBasePath } from '@/context/app-mode';
-import 'prismjs';
-import 'prismjs/components/prism-json';
-import 'prismjs/themes/prism.css';
-import 'prismjs/themes/prism-solarizedlight.css';
 import '@/style/dashboard.scss';
 
 
