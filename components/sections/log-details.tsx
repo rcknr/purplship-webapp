@@ -7,6 +7,7 @@ import { Loading } from '@/components/loader';
 import NavLink from '@/components/generic/navlink';
 import hljs from 'highlight.js/lib/core';
 import json from 'highlight.js/lib/languages/json';
+import 'highlight.js/styles/stackoverflow-light.css';
 
 hljs.registerLanguage('json', json);
 
