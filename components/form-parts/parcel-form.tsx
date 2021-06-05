@@ -88,12 +88,13 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
-            setLoading(true);
             try {
                 if (parcel.id !== undefined) {
+                    setLoading(true);
                     await updateParcel(parcel as Parcel);
                     notify({ type: NotificationType.success, message: 'Parcel successfully updated!' });
                     update({ refresh: true });
+                    setLoading(false);
                 } else {
                     update({ changes: { parcels: [parcel] } });
                     form.current?.dispatchEvent(
@@ -103,7 +104,6 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             }
-            setLoading(false);
         };
         const isDimensionRequired = (parcel: Parcel) => {
             return !(

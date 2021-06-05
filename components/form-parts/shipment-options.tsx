@@ -42,9 +42,9 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
     };
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setLoading(true);
         try {
             if (shipment.id !== undefined) {
+                setLoading(true);
                 await setOptions(shipment.id, options);
                 notify({ type: NotificationType.success, message: 'Shipment Options successfully updated!' });
                 update({refresh: true});

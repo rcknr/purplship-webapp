@@ -8,7 +8,7 @@ import { Collection, NotificationType } from '@/library/types';
 import { APIReference } from '@/context/references-query';
 import ConnectionMutation from '@/context/connection-mutation';
 import { UserConnectionType } from '@/context/user-connections-query';
-import { Notify } from '@/components/notifier';
+import Notifier, { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 import { deepEqual } from '@/library/helper';
 import { AppMode } from '@/context/app-mode';
@@ -49,7 +49,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     type: NotificationType.success,
                     message: `carrier connection ${isNew ? 'registered' : 'updated'} successfully`
                 });
-                close();
+                setTimeout(() => close(), 1500);
                 onUpdate && onUpdate();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
@@ -79,7 +79,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
         };
 
         return (
-            <>
+            <Notifier>
                 <button className={className} onClick={() => setIsActive(true)}>
                     {children}
                 </button>
@@ -166,7 +166,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     </form>
                     <button className="modal-close is-large" aria-label="close" onClick={close}></button>
                 </div>
-            </>
+            </Notifier>
         )
     });
 

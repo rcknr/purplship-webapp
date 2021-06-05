@@ -25,7 +25,7 @@ const DisconnectProviderButton: React.FC<DisconnectProviderButtonComponent> = Co
                     type: NotificationType.success,
                     message: 'Carrier account disconnected successfully!'
                 });
-                close();
+                setTimeout(() => close(), 1500);
                 whenDone && whenDone();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });

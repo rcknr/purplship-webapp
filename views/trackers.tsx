@@ -12,11 +12,11 @@ import ModeIndicator from '@/components/mode-indicator';
 import TrackingPreview from '@/components/descriptions/tracking-preview';
 
 
-interface TrackersView extends View {}
+interface TrackersView extends View { }
 
 const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ removeTracker }) => {
   const { setLoading } = useContext(Loading);
-  const { called, loading, results, load, loadMore, next, previous, refetch } = useContext(Trackers);
+  const { loading, results, load, loadMore, next, previous, refetch } = useContext(Trackers);
 
   const update = () => refetch && refetch();
   const remove = (id?: string) => async () => {
@@ -33,30 +33,27 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
 
       <header className="px-2 pt-1 pb-6">
         <span className="subtitle is-4">Trackers</span>
-        {called && <TrackShipmentModal className="button is-success is-pulled-right" onUpdate={update}>
+        <TrackShipmentModal className="button is-success is-pulled-right" onUpdate={update}>
           <span>Track a Shipment</span>
-        </TrackShipmentModal>}
+        </TrackShipmentModal>
       </header>
 
-      <div className="table-container">
+      {(results.length > 0) && <div className="table-container">
         <table className="table is-fullwidth">
 
-          <thead className="trackers-table">
+          <tbody className="trackers-table">
             <tr>
-              <th className="tracking-number">Tracking No</th>
-              <th className="status has-text-centered">status</th>
-              <th className="carrier has-text-centered">Carrier</th>
-              <th className="last-event">Last Event</th>
-              <th className="action"></th>
+              <td className="tracking-number has-text-weight-bold">Tracking No</td>
+              <td className="status has-text-centered has-text-weight-bold">status</td>
+              <td className="carrier has-text-centered has-text-weight-bold">Carrier</td>
+              <td className="last-event has-text-weight-bold">Last Event</td>
+              <td className="action"></td>
             </tr>
-          </thead>
-
-          <tbody>
 
             {results.map(tracker => (
               <tr key={tracker.id}>
-                <td>
-                  <p className="is-subtitle is-size-6 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</p>
+                <td className="tracking-number">
+                  <p className="is-subtitle is-size-7 has-text-weight-semibold has-text-grey">{tracker.tracking_number}</p>
                 </td>
                 <td className="status is-vcentered">
                   <strong className={`tag ${statusColor(tracker)}`} style={{ width: '100%', minWidth: '120px' }} >{formatSatus(tracker)}</strong>
@@ -64,8 +61,12 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
                 <td className="carrier is-vcentered">
                   <CarrierBadge carrier={tracker.carrier_name} className="tag" style={{ width: '100%', minWidth: '120px' }} />
                 </td>
-                <td className="py-1">
-                  <span className="is-subtitle is-size-7 has-text-weight-semibold text-wrapped">{formatEventDescription((tracker.events || [])[0])}</span><br/>
+                <td className="py-1 last-event">
+                  <p className="is-subtitle is-size-7 has-text-weight-semibold text-ellipsis"
+                    style={{ width: '300px' }}
+                    title={formatEventDescription((tracker.events || [])[0])}>
+                    {formatEventDescription((tracker.events || [])[0])}
+                  </p>
                   <span className="is-subtitle is-size-7 has-text-weight-semibold has-text-grey">{formatEventDate((tracker.events || [])[0])}</span>
                 </td>
                 <td className="action is-vcentered p-1">
@@ -88,7 +89,21 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
           </tbody>
 
         </table>
-      </div>
+
+        <footer className="px-2 py-2 is-vcentered">
+          <span className="is-size-7 has-text-weight-semibold">{results.length} results</span>
+
+          <div className="buttons has-addons is-centered is-pulled-right">
+            <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>
+              <span>Previous</span>
+            </button>
+            <button className="button is-small" onClick={() => loadMore(next)} disabled={isNone(next)}>
+              <span>Next</span>
+            </button>
+          </div>
+        </footer>
+        
+      </div>}
 
       {(!loading && results.length == 0) && <div className="card my-6">
 
@@ -98,17 +113,6 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
         </div>
 
       </div>}
-
-      <footer className="px-2 py-2 is-vcentered">
-        <div className="buttons has-addons is-centered">
-          <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>
-            <span>Previous</span>
-          </button>
-          <button className="button is-small" onClick={() => loadMore(next)} disabled={isNone(next)}>
-            <span>Next</span>
-          </button>
-        </div>
-      </footer>
 
     </>
   );

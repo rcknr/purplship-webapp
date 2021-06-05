@@ -6,7 +6,6 @@ import CarrierBadge from '@/components/carrier-badge';
 import ShipmentMutation from '@/context/shipment-mutation';
 import { Shipments } from '@/context/shipments-query';
 import { Loading } from '@/components/loader';
-import { Notify } from '@/components/notifier';
 import ModeIndicator from '@/components/mode-indicator';
 import NavLink from '@/components/generic/navlink';
 
@@ -18,12 +17,12 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
   const { loading, results, load, loadMore, previous, next } = useContext(Shipments);
 
   useEffect(() => { !loading && load(); }, []);
-  useEffect(() => { setLoading(loading); });
+  useEffect(() => { setLoading(loading); }, [loading]);
 
   return (
     <>
       <ModeIndicator />
-      
+
       <header className="px-2 pt-1 pb-6">
         <span className="subtitle is-4">Shipments</span>
         <NavLink className="button is-success is-pulled-right" to="/buy_label/new">
@@ -31,38 +30,33 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
         </NavLink>
       </header>
 
-      <div className="table-container">
+      {(results.length > 0) && <div className="table-container">
         <table className="table is-fullwidth">
-
-          <thead className="shipments-table">
-            <tr>
-              <th className="carrier has-text-centered">Carriers</th>
-              <th className="mode">Mode</th>
-              <th className="recipient">Recipient</th>
-              <th className="creation has-text-centered">Created</th>
-              <th className="status has-text-centered">Status</th>
-              <th className="action"></th>
-            </tr>
-          </thead>
-
           <tbody>
+
+            <tr>
+              <td className="carrier has-text-centered has-text-weight-bold">Carriers</td>
+              <td className="recipient has-text-weight-bold">Recipient</td>
+              <td className="creation has-text-centered has-text-weight-bold">Created</td>
+              <td className="status has-text-centered has-text-weight-bold">Status</td>
+              <td className="action"></td>
+            </tr>
 
             {results.map(shipment => (
               <tr key={shipment.id}>
-                <td className="is-vcentered">
+                <td className="carrier is-vcentered">
                   <CarrierBadge carrier={shipment.carrier_name as string} className="tag" style={{ width: '100%', minWidth: '120px' }} />
                 </td>
-                <td className="mode is-vcentered">
-                  {shipment.test_mode ? <span className="tag is-warning is-centered">Test</span> : <></>}
-                </td>
-                <td className="is-vcentered">
+                <td className="recipient is-vcentered">
                   <p className="is-subtitle is-size-6 my-1 has-text-weight-semibold has-text-grey">{formatAddress(shipment.recipient)}</p>
                 </td>
-                <td className="is-vcentered has-text-centered">{formatDate(shipment.created_at)}</td>
-                <td className="is-vcentered">
-                  <span className="tag is-info is-light" style={{ width: '100%' }}>{shipment.status?.toString().toUpperCase()}</span>
+                <td className="creation is-vcentered has-text-centered">
+                  <p className="is-subtitle is-size-6 my-1 has-text-weight-semibold has-text-grey">{formatDate(shipment.created_at)}</p>
                 </td>
-                <td className="is-vcentered">
+                <td className="status is-vcentered">
+                  <span className="tag is-info is-light has-text-weight-semibold" style={{ width: '100%' }}>{shipment.status?.toString().toUpperCase()}</span>
+                </td>
+                <td className="action is-vcentered">
                   <ShipmentMenu shipment={shipment} style={{ width: '100%' }} />
                 </td>
               </tr>
@@ -71,7 +65,21 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
           </tbody>
 
         </table>
-      </div>
+
+        <footer className="px-2 py-2 is-vcentered">
+          <span className="is-size-7 has-text-weight-semibold">{results.length} results</span>
+
+          <div className="buttons has-addons is-centered is-pulled-right">
+            <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>
+              <span>Previous</span>
+            </button>
+            <button className="button is-small" onClick={() => loadMore(next)} disabled={isNone(next)}>
+              <span>Next</span>
+            </button>
+          </div>
+        </footer>
+
+      </div>}
 
       {(!loading && results.length == 0) && <div className="card my-6">
 
@@ -81,17 +89,6 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
         </div>
 
       </div>}
-
-      <footer className="px-2 py-2 is-vcentered">
-        <div className="buttons has-addons is-centered">
-          <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>
-            <span>Previous</span>
-          </button>
-          <button className="button is-small" onClick={() => loadMore(next)} disabled={isNone(next)}>
-            <span>Next</span>
-          </button>
-        </div>
-      </footer>
 
     </>
   );

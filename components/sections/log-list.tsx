@@ -7,7 +7,7 @@ import { useNavigate } from '@reach/router';
 import { Log } from '@/context/log-query';
 import { Loading } from '@/components/loader';
 
-interface LogListView extends View {}
+interface LogListView extends View { }
 
 const LogList: React.FC<LogListView> = () => {
     const navigate = useNavigate();
@@ -30,18 +30,16 @@ const LogList: React.FC<LogListView> = () => {
                 <span className="subtitle is-4">API Logs</span>
             </header>
 
-            <div className="table-container">
+            {(logs.length > 0) && <div className="table-container">
                 <table className="table is-fullwidth is-hoverable is-size-7">
 
-                    <thead className="logs-table">
+                    <tbody className="logs-table">
                         <tr>
-                            <th className="status"><span className="ml-2">STATUS</span></th>
-                            <th className="description">DESCRIPTION</th>
-                            <th className="date has-text-right"><span className="mr-2">DATE</span></th>
+                            <td className="status has-text-weight-bold"><span className="ml-2">STATUS</span></td>
+                            <td className="description has-text-weight-bold">DESCRIPTION</td>
+                            <td className="date has-text-right has-text-weight-bold"><span className="mr-2">DATE</span></td>
                         </tr>
-                    </thead>
 
-                    <tbody>
                         {logs.map((log) => (
 
                             <tr key={log.id} onClick={selectLog(log)}>
@@ -56,10 +54,20 @@ const LogList: React.FC<LogListView> = () => {
                     </tbody>
 
                 </table>
-            </div>
+
+                <footer className="px-2 py-2 is-vcentered">
+                    <span className="is-size-7 has-text-weight-semibold">{logs.length} results</span>
+
+                    <div className="buttons has-addons is-centered is-pulled-right">
+                        <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>Previous</button>
+                        <button className="button is-small" onClick={() => loadMore(next)} disabled={isNone(next)}>Next</button>
+                    </div>
+                </footer>
+
+            </div>}
 
 
-            {(logs.length == 0) && <div className="card my-6">
+            {(!loading && logs.length == 0) && <div className="card my-6">
 
                 <div className="card-content has-text-centered">
                     <p>No API logs has been captured yet.</p>
@@ -67,17 +75,6 @@ const LogList: React.FC<LogListView> = () => {
                 </div>
 
             </div>}
-
-            <footer className="px-2 py-2 is-vcentered">
-                <div className="buttons is-centered has-addons">
-                    <button className="button is-small" onClick={() => loadMore(previous)} disabled={isNone(previous)}>
-                        Previous
-                    </button>
-                    <button className="button is-small" onClick={() => loadMore(next)} disabled={isNone(next)}>
-                        Next
-                    </button>
-                </div>
-            </footer>
 
         </>
     );

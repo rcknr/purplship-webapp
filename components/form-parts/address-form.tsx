@@ -64,9 +64,9 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
-            setLoading(true);
             try {
                 if (address.id !== undefined) {
+                    setLoading(true);
                     await updateAddress(address);
                     notify({ type: NotificationType.success, message: name + ' Address successfully updated!' });
                     update({ refresh: true });

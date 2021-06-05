@@ -5,7 +5,7 @@ import InputField from '@/components/generic/input-field';
 import { CustomsTemplateType, CustomsType, NotificationType } from '@/library/types';
 import TemplateMutation from '@/context/template-mutation';
 import CheckBoxField from '@/components/generic/checkbox-field';
-import { Notify } from './notifier';
+import Notifier, { Notify } from './notifier';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     customs: {
@@ -54,7 +54,7 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
                 notify({ type: NotificationType.success, message: 'Customs info successfully updated!' });
             }
 
-            close(undefined, true);
+            setTimeout(() => close(undefined, true), 1500);
         };
         const Extension: React.FC<{ onChange?: EventHandler<any>; customs?: ExtendedCustoms }> = ({ onChange, customs }) => (
             <>
@@ -71,7 +71,7 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
         );
 
         return (
-            <>
+            <Notifier>
                 <button className={className} onClick={open}>
                     {children}
                 </button>
@@ -92,7 +92,7 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
 
                     <button className="modal-close is-large" aria-label="close" onClick={close}></button>
                 </div>
-            </>
+            </Notifier>
         )
     });
 

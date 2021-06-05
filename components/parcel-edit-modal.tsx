@@ -5,7 +5,8 @@ import InputField from '@/components/generic/input-field';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import { NotificationType, ParcelTemplateType, ParcelType } from '@/library/types';
 import TemplateMutation from '@/context/template-mutation';
-import { Notify } from '@/components/notifier';
+import Notifier, { Notify } from '@/components/notifier';
+import { Loading } from './loader';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     parcel: {
@@ -24,8 +25,9 @@ interface ParcelEditModalComponent {
 }
 
 const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<ParcelEditModalComponent>(
-    ({ parcelTemplate, onUpdate, children, className, createTemplate, updateTemplate }) => {
+    ({ parcelTemplate, children, className, onUpdate, createTemplate, updateTemplate }) => {
         const { notify } = useContext(Notify);
+        const { loading, setLoading } = useContext(Loading);
         const [isActive, setIsActive] = useState<boolean>(false);
         const [key, setKey] = useState<string>(`parcel-${Date.now()}`);
         const [isNew, _] = useState<boolean>(isNone(parcelTemplate));
@@ -44,6 +46,7 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
             setKey(`parcel-${Date.now()}`);
         };
         const update = async ({ changes }: any) => {
+            setLoading(true);
             const { label, is_default, ...parcel } = (changes as { parcels: ExtendedParcel[] }).parcels[0];
             if (isNew) {
                 await createTemplate({ label, is_default, parcel: parcel as any });
@@ -54,7 +57,8 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
                 notify({ type: NotificationType.success, message: 'Parcel successfully updated!' });
             }
 
-            close(undefined, true);
+            setTimeout(() => close(undefined, true), 2500);
+            setLoading(false);
         };
         const Extension: React.FC<{ onChange?: EventHandler<any>; parcel?: ExtendedParcel }> = ({ onChange, parcel }) => (
             <>
@@ -70,7 +74,7 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
         );
 
         return (
-            <>
+            <Notifier>
                 <button className={className} onClick={open}>
                     {children}
                 </button>
@@ -91,7 +95,7 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
 
                     <button className="modal-close is-large" aria-label="close" onClick={close}></button>
                 </div>
-            </>
+            </Notifier>
         )
     });
 
