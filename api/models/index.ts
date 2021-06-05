@@ -51,3 +51,4 @@ export * from './TrackingStatus';
 export * from './Webhook';
 export * from './WebhookData';
 export * from './WebhookList';
+export * from './WebhookTestRequest';

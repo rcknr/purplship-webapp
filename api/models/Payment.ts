@@ -30,7 +30,7 @@ export interface Payment {
      * @type {string}
      * @memberof Payment
      */
-    currency: PaymentCurrencyEnum;
+    currency?: PaymentCurrencyEnum;
     /**
      * The payor account number
      * @type {string}
@@ -208,7 +208,7 @@ export function PaymentFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     return {
         
         'paid_by': !exists(json, 'paid_by') ? undefined : json['paid_by'],
-        'currency': json['currency'],
+        'currency': !exists(json, 'currency') ? undefined : json['currency'],
         'account_number': !exists(json, 'account_number') ? undefined : json['account_number'],
     };
 }

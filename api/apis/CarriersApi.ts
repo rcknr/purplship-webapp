@@ -107,7 +107,9 @@ export enum ListCarrierNameEnum {
     DhlExpress = 'dhl_express',
     DhlUniversal = 'dhl_universal',
     Dicom = 'dicom',
+    Eshipper = 'eshipper',
     Fedex = 'fedex',
+    Freightcom = 'freightcom',
     PurolatorCourier = 'purolator_courier',
     Royalmail = 'royalmail',
     Sendle = 'sendle',
@@ -116,7 +118,5 @@ export enum ListCarrierNameEnum {
     Ups = 'ups',
     Usps = 'usps',
     Yanwen = 'yanwen',
-    Yunexpress = 'yunexpress',
-    Eshipper = 'eshipper',
-    Freightcom = 'freightcom'
+    Yunexpress = 'yunexpress'
 }

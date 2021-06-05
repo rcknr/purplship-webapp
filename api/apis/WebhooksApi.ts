@@ -30,6 +30,9 @@ import {
     WebhookList,
     WebhookListFromJSON,
     WebhookListToJSON,
+    WebhookTestRequest,
+    WebhookTestRequestFromJSON,
+    WebhookTestRequestToJSON,
 } from '../models';
 
 export interface CreateRequest {
@@ -48,6 +51,11 @@ export interface RemoveRequest {
 
 export interface RetrieveRequest {
     id: string;
+}
+
+export interface TestRequest {
+    id: string;
+    data: WebhookTestRequest;
 }
 
 export interface UpdateRequest {
@@ -212,6 +220,49 @@ export class WebhooksApi extends runtime.BaseAPI {
      */
     async retrieve(requestParameters: RetrieveRequest): Promise<Webhook> {
         const response = await this.retrieveRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * test a webhook.
+     * Test a webhook
+     */
+    async testRaw(requestParameters: TestRequest): Promise<runtime.ApiResponse<Operation>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling test.');
+        }
+
+        if (requestParameters.data === null || requestParameters.data === undefined) {
+            throw new runtime.RequiredError('data','Required parameter requestParameters.data was null or undefined when calling test.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Token authentication
+        }
+
+        const response = await this.request({
+            path: `/v1/webhooks/{id}/test`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: WebhookTestRequestToJSON(requestParameters.data),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OperationFromJSON(jsonValue));
+    }
+
+    /**
+     * test a webhook.
+     * Test a webhook
+     */
+    async test(requestParameters: TestRequest): Promise<Operation> {
+        const response = await this.testRaw(requestParameters);
         return await response.value();
     }
 

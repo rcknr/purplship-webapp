@@ -16,88 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CarrierSettings
+ * @interface WebhookTestRequest
  */
-export interface CarrierSettings {
-    /**
-     * A unique address identifier
-     * @type {string}
-     * @memberof CarrierSettings
-     */
-    id: string;
-    /**
-     * Indicates a carrier (type)
-     * @type {string}
-     * @memberof CarrierSettings
-     */
-    carrier_name: CarrierSettingsCarrierNameEnum;
-    /**
-     * Indicates a specific carrier configuration name.
-     * @type {string}
-     * @memberof CarrierSettings
-     */
-    carrier_id: string;
+export interface WebhookTestRequest {
     /**
      * 
-     * The test flag indicates whether to use a carrier configured for test. 
-     * @type {boolean}
-     * @memberof CarrierSettings
+     * @type {object}
+     * @memberof WebhookTestRequest
      */
-    test: boolean;
-    /**
-     * 
-     * The active flag indicates whether the carrier account is active or not. 
-     * @type {boolean}
-     * @memberof CarrierSettings
-     */
-    active: boolean;
+    payload: object;
 }
 
-/**
-* @export
-* @enum {string}
-*/
-export enum CarrierSettingsCarrierNameEnum {
-    Aramex = 'aramex',
-    Australiapost = 'australiapost',
-    Canadapost = 'canadapost',
-    Canpar = 'canpar',
-    DhlExpress = 'dhl_express',
-    DhlUniversal = 'dhl_universal',
-    Dicom = 'dicom',
-    Eshipper = 'eshipper',
-    Fedex = 'fedex',
-    Freightcom = 'freightcom',
-    PurolatorCourier = 'purolator_courier',
-    Royalmail = 'royalmail',
-    Sendle = 'sendle',
-    SfExpress = 'sf_express',
-    Tnt = 'tnt',
-    Ups = 'ups',
-    Usps = 'usps',
-    Yanwen = 'yanwen',
-    Yunexpress = 'yunexpress'
+export function WebhookTestRequestFromJSON(json: any): WebhookTestRequest {
+    return WebhookTestRequestFromJSONTyped(json, false);
 }
 
-export function CarrierSettingsFromJSON(json: any): CarrierSettings {
-    return CarrierSettingsFromJSONTyped(json, false);
-}
-
-export function CarrierSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): CarrierSettings {
+export function WebhookTestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): WebhookTestRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'carrier_name': json['carrier_name'],
-        'carrier_id': json['carrier_id'],
-        'test': json['test'],
-        'active': json['active'],
+        'payload': json['payload'],
     };
 }
 
-export function CarrierSettingsToJSON(value?: CarrierSettings | null): any {
+export function WebhookTestRequestToJSON(value?: WebhookTestRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -106,11 +50,7 @@ export function CarrierSettingsToJSON(value?: CarrierSettings | null): any {
     }
     return {
         
-        'id': value.id,
-        'carrier_name': value.carrier_name,
-        'carrier_id': value.carrier_id,
-        'test': value.test,
-        'active': value.active,
+        'payload': value.payload,
     };
 }
 
