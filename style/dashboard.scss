@@ -128,16 +128,18 @@ Purplship custom styling
 }
 
 .webhooks-table {
-    .active {
-        width: 6%;
-    }
     .url {
+        width: 55%;
     }
     .mode {
-        width: 6%;
+        width: 10%;
+    }
+    .last-event {
+        width: 15%;
     }
     .action {
-        width: 10%;
+        width: 20%;
+        min-width: 185px;
     }
 }
 

@@ -23,6 +23,7 @@ import ParcelTemplatesQuery from '@/context/parcel-templates-query';
 import CustomInfoTemplatesQuery from '@/context/customs-templates-query';
 import TemplatesQuery from '@/context/default-templates-query';
 import ShipmentsQuery from '@/context/shipments-query';
+import WebhooksQuery from '@/context/webhooks-query';
 import TrackersQuery from '@/context/trackers-query';
 import UserConnectionsQuery from '@/context/user-connections-query';
 import SystemConnectionsQuery from '@/context/system-connections-query';
@@ -37,6 +38,7 @@ import LocationTitle from '@/components/location-title';
 import ShipmentDetails from '@/components/descriptions/shipment-details';
 import AppModeProvider, { computeBasePath } from '@/context/app-mode';
 import '@/style/dashboard.scss';
+import 'highlight.js/styles/stackoverflow-light.css';
 
 
 const DATA_CONTEXTS = [
@@ -45,6 +47,7 @@ const DATA_CONTEXTS = [
     ParcelTemplatesQuery,
     APIReferenceQuery,
     ShipmentsQuery,
+    WebhooksQuery,
     LabelDataQuery,
     TrackersQuery,
     UserConnectionsQuery,
@@ -79,8 +82,8 @@ const Dashboard: React.FC = () => {
             <LocationTitle />
             <ExpandedSidebar />
 
-            <div className="plex-wrapper">
-                <div className="wrapper-inner">
+            <div className="plex-wrapper pb-6">
+                <div className="wrapper-inner mb-6">
                     <Notifier />
                     <Navbar />
 

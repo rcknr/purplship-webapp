@@ -1,8 +1,8 @@
 import { AddressType, CommodityType, CustomsType, ParcelType, PresetCollection, RequestError } from "@/library/types";
 
 
-export function formatRef(s: string): string {
-    return s.replaceAll('_', ' ').toLocaleUpperCase();
+export function formatRef(s?: string): string {
+    return (s || "").replaceAll('_', ' ').toLocaleUpperCase();
 }
 
 export function formatDate(date: string): string {
