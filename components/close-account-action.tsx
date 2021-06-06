@@ -39,7 +39,7 @@ const CloseAccountAction: React.FC<CloseAccountActionComponent> = UserMutation<C
                         </div>
                     </section>
                 </form>
-                <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
             </div>
         </>
     )

@@ -164,7 +164,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                             }
                         </section>
                     </form>
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
             </Notifier>
         )

@@ -87,7 +87,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
                             </ButtonField>
                         </section>
                     </form>
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
             </Notifier>
         )

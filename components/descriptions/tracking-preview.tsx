@@ -108,7 +108,7 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
                     </section>
                 </div>
 
-                <button className="modal-close is-large" aria-label="close" onClick={dismiss}></button>
+                <button className="modal-close is-large has-background-dark" aria-label="close" onClick={dismiss}></button>
 
             </div>
         </>

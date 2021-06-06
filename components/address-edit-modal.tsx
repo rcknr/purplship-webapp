@@ -93,7 +93,7 @@ const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<A
 
                     </div>
 
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
             </Notifier>
         )
