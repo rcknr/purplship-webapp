@@ -14,14 +14,14 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    Address,
-    AddressFromJSON,
-    AddressFromJSONTyped,
-    AddressToJSON,
-    Parcel,
-    ParcelFromJSON,
-    ParcelFromJSONTyped,
-    ParcelToJSON,
+    AddressData,
+    AddressDataFromJSON,
+    AddressDataFromJSONTyped,
+    AddressDataToJSON,
+    ParcelData,
+    ParcelDataFromJSON,
+    ParcelDataFromJSONTyped,
+    ParcelDataToJSON,
 } from './';
 
 /**
@@ -32,22 +32,22 @@ import {
 export interface RateRequest {
     /**
      * 
-     * @type {Address}
+     * @type {AddressData}
      * @memberof RateRequest
      */
-    shipper: Address;
+    shipper: AddressData;
     /**
      * 
-     * @type {Address}
+     * @type {AddressData}
      * @memberof RateRequest
      */
-    recipient: Address;
+    recipient: AddressData;
     /**
      * The shipment's parcels
-     * @type {Array<Parcel>}
+     * @type {Array<ParcelData>}
      * @memberof RateRequest
      */
-    parcels: Array<Parcel>;
+    parcels: Array<ParcelData>;
     /**
      * 
      * The requested carrier service for the shipment.<br/>
@@ -92,9 +92,9 @@ export function RateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'shipper': AddressFromJSON(json['shipper']),
-        'recipient': AddressFromJSON(json['recipient']),
-        'parcels': ((json['parcels'] as Array<any>).map(ParcelFromJSON)),
+        'shipper': AddressDataFromJSON(json['shipper']),
+        'recipient': AddressDataFromJSON(json['recipient']),
+        'parcels': ((json['parcels'] as Array<any>).map(ParcelDataFromJSON)),
         'services': !exists(json, 'services') ? undefined : json['services'],
         'options': !exists(json, 'options') ? undefined : json['options'],
         'reference': !exists(json, 'reference') ? undefined : json['reference'],
@@ -111,9 +111,9 @@ export function RateRequestToJSON(value?: RateRequest | null): any {
     }
     return {
         
-        'shipper': AddressToJSON(value.shipper),
-        'recipient': AddressToJSON(value.recipient),
-        'parcels': ((value.parcels as Array<any>).map(ParcelToJSON)),
+        'shipper': AddressDataToJSON(value.shipper),
+        'recipient': AddressDataToJSON(value.recipient),
+        'parcels': ((value.parcels as Array<any>).map(ParcelDataToJSON)),
         'services': value.services,
         'options': value.options,
         'reference': value.reference,

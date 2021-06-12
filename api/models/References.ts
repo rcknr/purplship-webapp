@@ -78,7 +78,19 @@ export interface References {
      * @type {object}
      * @memberof References
      */
+    service_names: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof References
+     */
     options: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof References
+     */
+    option_names: object;
     /**
      * 
      * @type {object}
@@ -118,7 +130,9 @@ export function ReferencesFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'incoterms': json['incoterms'],
         'states': json['states'],
         'services': json['services'],
+        'service_names': json['service_names'],
         'options': json['options'],
+        'option_names': json['option_names'],
         'package_presets': json['package_presets'],
         'packaging_types': json['packaging_types'],
         'payment_types': json['payment_types'],
@@ -143,7 +157,9 @@ export function ReferencesToJSON(value?: References | null): any {
         'incoterms': value.incoterms,
         'states': value.states,
         'services': value.services,
+        'service_names': value.service_names,
         'options': value.options,
+        'option_names': value.option_names,
         'package_presets': value.package_presets,
         'packaging_types': value.packaging_types,
         'payment_types': value.payment_types,

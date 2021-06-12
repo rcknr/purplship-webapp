@@ -75,6 +75,7 @@ export enum CarrierSettingsCarrierNameEnum {
     Tnt = 'tnt',
     Ups = 'ups',
     Usps = 'usps',
+    UspsInternational = 'usps_international',
     Yanwen = 'yanwen',
     Yunexpress = 'yunexpress'
 }

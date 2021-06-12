@@ -117,6 +117,7 @@ export enum ListCarrierNameEnum {
     Tnt = 'tnt',
     Ups = 'ups',
     Usps = 'usps',
+    UspsInternational = 'usps_international',
     Yanwen = 'yanwen',
     Yunexpress = 'yunexpress'
 }
