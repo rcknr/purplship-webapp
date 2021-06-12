@@ -483,6 +483,21 @@ export const GET_USER_CONNECTIONS = gql`
         active
         username
         password
+        mailer_id
+        customer_registration_id
+        logistics_manager_mailer_id
+      }
+      ... on USPSInternationalSettings {
+        id
+        carrier_id
+        carrier_name
+        test
+        active
+        username
+        password
+        mailer_id
+        customer_registration_id
+        logistics_manager_mailer_id
       }
       ... on YanwenSettings {
         id

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ConnectProviderModal from '@/components/connect-provider-modal';
 import DisconnectProviderButton from '@/components/disconnect-provider-button';
 import CarrierBadge from '@/components/carrier-badge';
@@ -36,7 +36,7 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
   useEffect(() => { setLoading(loading); });
 
   return (
-    <Fragment>
+    <>
       <label className="checkbox p-2" style={{ position: 'absolute', top: 1, right: 1 }}>
         <span className="is-size-7 has-text-weight-semibold has-text-info px-2">Show {testMode ? 'live' : 'test'} connections</span>
         <input id="toggle" type="checkbox" defaultChecked={viewOtherMode} onChange={() => showOther(!viewOtherMode)} />
@@ -103,7 +103,7 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
 
       </div>}
 
-    </Fragment>
+    </>
   );
 });
 

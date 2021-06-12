@@ -762,6 +762,23 @@ export interface get_user_connections_user_connections_USPSSettings {
   active: boolean;
   username: string;
   password: string;
+  mailer_id: string | null;
+  customer_registration_id: string | null;
+  logistics_manager_mailer_id: string | null;
+}
+
+export interface get_user_connections_user_connections_USPSInternationalSettings {
+  __typename: "USPSInternationalSettings";
+  id: string;
+  carrier_id: string;  // eg. canadapost, dhl_express, fedex, purolator_courrier, ups...
+  carrier_name: string;
+  test: boolean;
+  active: boolean;
+  username: string;
+  password: string;
+  mailer_id: string | null;
+  customer_registration_id: string | null;
+  logistics_manager_mailer_id: string | null;
 }
 
 export interface get_user_connections_user_connections_YanwenSettings {
@@ -786,7 +803,7 @@ export interface get_user_connections_user_connections_YunExpressSettings {
   api_secret: string;
 }
 
-export type get_user_connections_user_connections = get_user_connections_user_connections_AramexSettings | get_user_connections_user_connections_AustraliaPostSettings | get_user_connections_user_connections_CanadaPostSettings | get_user_connections_user_connections_CanparSettings | get_user_connections_user_connections_DHLExpressSettings | get_user_connections_user_connections_DHLUniversalSettings | get_user_connections_user_connections_DicomSettings | get_user_connections_user_connections_EShipperSettings | get_user_connections_user_connections_FedexSettings | get_user_connections_user_connections_FreightcomSettings | get_user_connections_user_connections_PurolatorCourierSettings | get_user_connections_user_connections_RoyalMailSettings | get_user_connections_user_connections_SendleSettings | get_user_connections_user_connections_SFExpressSettings | get_user_connections_user_connections_TNTSettings | get_user_connections_user_connections_UPSSettings | get_user_connections_user_connections_USPSSettings | get_user_connections_user_connections_YanwenSettings | get_user_connections_user_connections_YunExpressSettings;
+export type get_user_connections_user_connections = get_user_connections_user_connections_AramexSettings | get_user_connections_user_connections_AustraliaPostSettings | get_user_connections_user_connections_CanadaPostSettings | get_user_connections_user_connections_CanparSettings | get_user_connections_user_connections_DHLExpressSettings | get_user_connections_user_connections_DHLUniversalSettings | get_user_connections_user_connections_DicomSettings | get_user_connections_user_connections_EShipperSettings | get_user_connections_user_connections_FedexSettings | get_user_connections_user_connections_FreightcomSettings | get_user_connections_user_connections_PurolatorCourierSettings | get_user_connections_user_connections_RoyalMailSettings | get_user_connections_user_connections_SendleSettings | get_user_connections_user_connections_SFExpressSettings | get_user_connections_user_connections_TNTSettings | get_user_connections_user_connections_UPSSettings | get_user_connections_user_connections_USPSSettings | get_user_connections_user_connections_USPSInternationalSettings | get_user_connections_user_connections_YanwenSettings | get_user_connections_user_connections_YunExpressSettings;
 
 export interface get_user_connections {
   user_connections: (get_user_connections_user_connections | null)[] | null;
@@ -1943,6 +1960,7 @@ export interface CreateConnectionInput {
   tntsettings?: TNTSettingsInput | null;
   upssettings?: UPSSettingsInput | null;
   uspssettings?: USPSSettingsInput | null;
+  uspsinternationalsettings?: USPSInternationalSettingsInput | null;
   yanwensettings?: YanwenSettingsInput | null;
   yunexpresssettings?: YunExpressSettingsInput | null;
   eshippersettings?: EShipperSettingsInput | null;
@@ -2115,6 +2133,22 @@ export interface USPSSettingsInput {
   active?: boolean | null;
   username: string;
   password: string;
+  mailer_id?: string | null;
+  customer_registration_id?: string | null;
+  logistics_manager_mailer_id?: string | null;
+}
+
+// null
+export interface USPSInternationalSettingsInput {
+  id?: string | null;
+  carrier_id: string;
+  test?: boolean | null;
+  active?: boolean | null;
+  username: string;
+  password: string;
+  mailer_id?: string | null;
+  customer_registration_id?: string | null;
+  logistics_manager_mailer_id?: string | null;
 }
 
 // null
@@ -2175,6 +2209,7 @@ export interface UpdateConnectionInput {
   tntsettings?: PartialTNTSettingsInput | null;
   upssettings?: PartialUPSSettingsInput | null;
   uspssettings?: PartialUSPSSettingsInput | null;
+  uspsinternationalsettings?: PartialUSPSInternationalSettingsInput | null;
   yanwensettings?: PartialYanwenSettingsInput | null;
   yunexpresssettings?: PartialYunExpressSettingsInput | null;
   eshippersettings?: PartialEShipperSettingsInput | null;
@@ -2347,6 +2382,22 @@ export interface PartialUSPSSettingsInput {
   active?: boolean | null;
   username?: string | null;
   password?: string | null;
+  mailer_id?: string | null;
+  customer_registration_id?: string | null;
+  logistics_manager_mailer_id?: string | null;
+}
+
+// null
+export interface PartialUSPSInternationalSettingsInput {
+  id?: string | null;
+  carrier_id?: string | null;
+  test?: boolean | null;
+  active?: boolean | null;
+  username?: string | null;
+  password?: string | null;
+  mailer_id?: string | null;
+  customer_registration_id?: string | null;
+  logistics_manager_mailer_id?: string | null;
 }
 
 // null
@@ -2424,7 +2475,7 @@ export interface PartialAddressModelSerializerInput {
   address_line1?: string | null;
   address_line2?: string | null;
   validate_location?: boolean | null;
-  validation?: string | null;
+  validation?: any | null;
 }
 
 // null
@@ -2442,7 +2493,7 @@ export interface PartialCustomsModelSerializerInput {
   invoice?: string | null;
   invoice_date?: any | null;
   signer?: string | null;
-  duty?: string | null;
+  duty?: any | null;
 }
 
 // null

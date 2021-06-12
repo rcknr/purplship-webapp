@@ -11,7 +11,7 @@ const Loader: React.FC = ({ children }) => {
     const [loading, changeLoading] = useState<boolean>(false);
 
     const setLoading = (loading: boolean) => setTimeout(
-        () => changeLoading(loading),
+        () => { changeLoading(loading); },
         loading ? 0 : 2000
     );
 

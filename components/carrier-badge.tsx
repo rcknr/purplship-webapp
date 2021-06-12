@@ -22,6 +22,7 @@ const THEME: Collection = {
     'tnt': 'is-tnt',
     'ups': 'is-ups',
     'usps': 'is-usps',
+    'usps_international': 'is-usps',
     'yanwen': 'is-yanwen',
     'yunexpress': 'is-yunexpress',
 };
