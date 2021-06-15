@@ -15,7 +15,7 @@ const THEME: Collection = {
     'eshipper': 'is-eshipper',
     'fedex': 'is-fedex',
     'freightcom': 'is-freightcom',
-    'purolator_courier': 'is-purolator',
+    'purolator': 'is-purolator',
     'royalmail': 'is-royalmail',
     'sendle': 'is-sendle',
     'sf_express': 'is-sf_express',

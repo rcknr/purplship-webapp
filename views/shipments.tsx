@@ -45,7 +45,7 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
             {results.map(shipment => (
               <tr key={shipment.id}>
                 <td className="carrier is-vcentered">
-                  <CarrierBadge carrier={shipment.carrier_name as string} className="tag" style={{ width: '100%', minWidth: '120px' }} />
+                  <CarrierBadge carrier={((shipment.meta as any)?.rate_provider || shipment.carrier_name) as string} className="tag" style={{ width: '100%', minWidth: '120px' }} />
                 </td>
                 <td className="recipient is-vcentered">
                   <p className="is-subtitle is-size-6 my-1 has-text-weight-semibold has-text-grey">{formatAddress(shipment.recipient)}</p>

@@ -415,7 +415,7 @@ export const GET_USER_CONNECTIONS = gql`
         username
         password
       }
-      ... on PurolatorCourierSettings {
+      ... on PurolatorSettings {
         id
         carrier_id
         carrier_name

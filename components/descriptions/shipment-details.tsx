@@ -45,12 +45,14 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id, children }) =
                     <div className="columns my-0">
                         <div className="column is-3 py-1">Service Courier</div>
                         <div className="column is-8 py-1">
-                            <CarrierBadge carrier={shipment.carrier_name as string} className="tag" />
+                            <CarrierBadge carrier={((shipment.meta as any)?.rate_provider || shipment.carrier_name) as string} className="tag" />
                         </div>
                     </div>
                     <div className="columns my-0">
                         <div className="column is-3 py-1">Service Level</div>
-                        <div className="column is-8 py-1 has-text-weight-semibold">{formatRef(shipment.selected_rate?.service as string)}</div>
+                        <div className="column is-8 py-1 has-text-weight-semibold">
+                            {formatRef(((shipment.selected_rate?.meta as any)?.service_name || shipment.selected_rate?.service) as string)}
+                        </div>
                     </div>
                     <div className="columns my-0">
                         <div className="column is-3 py-1">Service Charge</div>

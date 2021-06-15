@@ -110,7 +110,7 @@ export enum ListCarrierNameEnum {
     Eshipper = 'eshipper',
     Fedex = 'fedex',
     Freightcom = 'freightcom',
-    PurolatorCourier = 'purolator_courier',
+    Purolator = 'purolator',
     Royalmail = 'royalmail',
     Sendle = 'sendle',
     SfExpress = 'sf_express',

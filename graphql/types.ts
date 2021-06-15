@@ -681,8 +681,8 @@ export interface get_user_connections_user_connections_FreightcomSettings {
   password: string;
 }
 
-export interface get_user_connections_user_connections_PurolatorCourierSettings {
-  __typename: "PurolatorCourierSettings";
+export interface get_user_connections_user_connections_PurolatorSettings {
+  __typename: "PurolatorSettings";
   id: string;
   carrier_id: string;  // eg. canadapost, dhl_express, fedex, purolator_courrier, ups...
   carrier_name: string;
@@ -803,7 +803,7 @@ export interface get_user_connections_user_connections_YunExpressSettings {
   api_secret: string;
 }
 
-export type get_user_connections_user_connections = get_user_connections_user_connections_AramexSettings | get_user_connections_user_connections_AustraliaPostSettings | get_user_connections_user_connections_CanadaPostSettings | get_user_connections_user_connections_CanparSettings | get_user_connections_user_connections_DHLExpressSettings | get_user_connections_user_connections_DHLUniversalSettings | get_user_connections_user_connections_DicomSettings | get_user_connections_user_connections_EShipperSettings | get_user_connections_user_connections_FedexSettings | get_user_connections_user_connections_FreightcomSettings | get_user_connections_user_connections_PurolatorCourierSettings | get_user_connections_user_connections_RoyalMailSettings | get_user_connections_user_connections_SendleSettings | get_user_connections_user_connections_SFExpressSettings | get_user_connections_user_connections_TNTSettings | get_user_connections_user_connections_UPSSettings | get_user_connections_user_connections_USPSSettings | get_user_connections_user_connections_USPSInternationalSettings | get_user_connections_user_connections_YanwenSettings | get_user_connections_user_connections_YunExpressSettings;
+export type get_user_connections_user_connections = get_user_connections_user_connections_AramexSettings | get_user_connections_user_connections_AustraliaPostSettings | get_user_connections_user_connections_CanadaPostSettings | get_user_connections_user_connections_CanparSettings | get_user_connections_user_connections_DHLExpressSettings | get_user_connections_user_connections_DHLUniversalSettings | get_user_connections_user_connections_DicomSettings | get_user_connections_user_connections_EShipperSettings | get_user_connections_user_connections_FedexSettings | get_user_connections_user_connections_FreightcomSettings | get_user_connections_user_connections_PurolatorSettings | get_user_connections_user_connections_RoyalMailSettings | get_user_connections_user_connections_SendleSettings | get_user_connections_user_connections_SFExpressSettings | get_user_connections_user_connections_TNTSettings | get_user_connections_user_connections_UPSSettings | get_user_connections_user_connections_USPSSettings | get_user_connections_user_connections_USPSInternationalSettings | get_user_connections_user_connections_YanwenSettings | get_user_connections_user_connections_YunExpressSettings;
 
 export interface get_user_connections {
   user_connections: (get_user_connections_user_connections | null)[] | null;
@@ -1953,7 +1953,7 @@ export interface CreateConnectionInput {
   dhluniversalsettings?: DHLUniversalSettingsInput | null;
   dicomsettings?: DicomSettingsInput | null;
   fedexsettings?: FedexSettingsInput | null;
-  purolatorcouriersettings?: PurolatorCourierSettingsInput | null;
+  purolatorsettings?: PurolatorSettingsInput | null;
   royalmailsettings?: RoyalMailSettingsInput | null;
   sendlesettings?: SendleSettingsInput | null;
   sfexpresssettings?: SFExpressSettingsInput | null;
@@ -2060,7 +2060,7 @@ export interface FedexSettingsInput {
 }
 
 // null
-export interface PurolatorCourierSettingsInput {
+export interface PurolatorSettingsInput {
   id?: string | null;
   carrier_id: string;
   test?: boolean | null;
@@ -2202,7 +2202,7 @@ export interface UpdateConnectionInput {
   dhluniversalsettings?: PartialDHLUniversalSettingsInput | null;
   dicomsettings?: PartialDicomSettingsInput | null;
   fedexsettings?: PartialFedexSettingsInput | null;
-  purolatorcouriersettings?: PartialPurolatorCourierSettingsInput | null;
+  purolatorsettings?: PartialPurolatorSettingsInput | null;
   royalmailsettings?: PartialRoyalMailSettingsInput | null;
   sendlesettings?: PartialSendleSettingsInput | null;
   sfexpresssettings?: PartialSFExpressSettingsInput | null;
@@ -2309,7 +2309,7 @@ export interface PartialFedexSettingsInput {
 }
 
 // null
-export interface PartialPurolatorCourierSettingsInput {
+export interface PartialPurolatorSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
   test?: boolean | null;
