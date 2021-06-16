@@ -691,7 +691,7 @@ export interface get_user_connections_user_connections_PurolatorSettings {
   username: string;
   password: string;
   account_number: string;
-  user_token: string;
+  user_token: string | null;
 }
 
 export interface get_user_connections_user_connections_RoyalMailSettings {
@@ -2068,7 +2068,7 @@ export interface PurolatorSettingsInput {
   username: string;
   password: string;
   account_number: string;
-  user_token: string;
+  user_token?: string | null;
 }
 
 // null
