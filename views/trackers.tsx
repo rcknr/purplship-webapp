@@ -120,11 +120,13 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
 
 function statusColor(tracker: TrackingStatus): string {
   if (tracker.delivered) return 'is-success';
+  else if (tracker.pending) return 'is-dark';
   return 'is-info';
 }
 
 function formatSatus(tracker: TrackingStatus): string {
   if (tracker.delivered) return 'Delivered';
+  else if (tracker.pending) return 'Pending';
   return 'In Transit';
 }
 

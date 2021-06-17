@@ -68,6 +68,12 @@ export interface TrackingStatus {
      * @memberof TrackingStatus
      */
     test_mode: boolean;
+    /**
+     * Specified whether the shipment hasn't been picked up or is in an unknown state
+     * @type {boolean}
+     * @memberof TrackingStatus
+     */
+    pending?: boolean;
 }
 
 export function TrackingStatusFromJSON(json: any): TrackingStatus {
@@ -87,6 +93,7 @@ export function TrackingStatusFromJSONTyped(json: any, ignoreDiscriminator: bool
         'events': !exists(json, 'events') ? undefined : (json['events'] === null ? null : (json['events'] as Array<any>).map(TrackingEventFromJSON)),
         'delivered': !exists(json, 'delivered') ? undefined : json['delivered'],
         'test_mode': json['test_mode'],
+        'pending': !exists(json, 'pending') ? undefined : json['pending'],
     };
 }
 
@@ -106,6 +113,7 @@ export function TrackingStatusToJSON(value?: TrackingStatus | null): any {
         'events': value.events === undefined ? undefined : (value.events === null ? null : (value.events as Array<any>).map(TrackingEventToJSON)),
         'delivered': value.delivered,
         'test_mode': value.test_mode,
+        'pending': value.pending,
     };
 }
 

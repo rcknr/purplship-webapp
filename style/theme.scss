@@ -99,6 +99,10 @@ $footer-background-color: $white;
     background-color: #fc0 !important;
     color: #c00 !important;
 }
+.is-dhl_universal {
+    background-color: #fc0 !important;
+    color: #c00 !important;
+}
 .is-eshipper {
     background-color: #472f92 !important;
     color: #fff !important;
@@ -136,6 +140,10 @@ $footer-background-color: $white;
     color: #242424;
 }
 .is-usps {
+    background-color: #333366 !important;
+    color: #fff !important;
+}
+.is-usps_international {
     background-color: #333366 !important;
     color: #fff !important;
 }

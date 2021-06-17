@@ -214,6 +214,18 @@ export interface Shipment {
      * @memberof Shipment
      */
     messages?: Array<Message>;
+    /**
+     * The shipment is archived state
+     * @type {boolean}
+     * @memberof Shipment
+     */
+    archived?: boolean;
+    /**
+     * The selected service
+     * @type {string}
+     * @memberof Shipment
+     */
+    tracker_id?: string | null;
 }
 
 /**
@@ -271,6 +283,8 @@ export function ShipmentFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'created_at': json['created_at'],
         'test_mode': json['test_mode'],
         'messages': !exists(json, 'messages') ? undefined : ((json['messages'] as Array<any>).map(MessageFromJSON)),
+        'archived': !exists(json, 'archived') ? undefined : json['archived'],
+        'tracker_id': !exists(json, 'tracker_id') ? undefined : json['tracker_id'],
     };
 }
 
@@ -309,6 +323,8 @@ export function ShipmentToJSON(value?: Shipment | null): any {
         'created_at': value.created_at,
         'test_mode': value.test_mode,
         'messages': value.messages === undefined ? undefined : ((value.messages as Array<any>).map(MessageToJSON)),
+        'archived': value.archived,
+        'tracker_id': value.tracker_id,
     };
 }
 

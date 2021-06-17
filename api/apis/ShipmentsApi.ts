@@ -63,6 +63,7 @@ export interface CreateRequest {
 export interface ListRequest {
     testMode?: boolean;
     status?: string;
+    archived?: string;
     createdStart?: Date;
     createdEnd?: Date;
     carrierId?: string;
@@ -273,6 +274,10 @@ export class ShipmentsApi extends runtime.BaseAPI {
 
         if (requestParameters.status !== undefined) {
             queryParameters['status'] = requestParameters.status;
+        }
+
+        if (requestParameters.archived !== undefined) {
+            queryParameters['archived'] = requestParameters.archived;
         }
 
         if (requestParameters.createdStart !== undefined) {

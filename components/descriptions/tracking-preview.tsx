@@ -24,12 +24,12 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
     };
     const computeColor = (tracker: TrackingStatus) => {
         if (tracker.delivered) return "has-background-success";
-        else if ((tracker.events || []).length === 0) return "has-background-grey-dark";
+        else if (tracker.pending) return "has-background-grey-dark";
         else return "has-background-info";
     };
     const computeStatus = (tracker: TrackingStatus) => {
         if (tracker.delivered) return "Delivered";
-        else if ((tracker.events || []).length === 0) return "Pending";
+        else if (tracker.pending) return "Pending";
         else return "In-Transit";
     };
     const computeEvents = (tracker: TrackingStatus): DayEvents => {
