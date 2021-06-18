@@ -51,7 +51,7 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
                 <div className="modal-card">
                     <section className="modal-card-body">
                         <p className="has-text-centered pb-4">
-                            <CarrierBadge carrier={tracker.carrier_name} className="tag" />
+                            <img src={`/static/carriers/${tracker.carrier_name}_icon.svg`} alt={tracker.carrier_name} width="60" />
                         </p>
 
                         <p className="subtitle has-text-centered is-6">
