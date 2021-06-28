@@ -110,17 +110,6 @@ query get_default_templates {
 }
 `;
 
-export const GET_ORGANIZATIONS = gql`
-query get_organizations {
-  organizations {
-    id
-    name
-    slug
-    token
-  }
-}
-`;
-
 export const CREATE_CONNECTION = gql`
   mutation create_connection($data: CreateConnectionInput!) {
     create_connection(input: $data) {
@@ -133,7 +122,7 @@ export const CREATE_CONNECTION = gql`
   }
 `;
 
-export const UPDATED_CONNECTION = gql`
+export const UPDATE_CONNECTION = gql`
   mutation update_connection($data: UpdateConnectionInput!) {
     update_connection(input: $data) {
       id
@@ -145,10 +134,45 @@ export const UPDATED_CONNECTION = gql`
   }
 `;
 
+export const GET_ORGANIZATIONS = gql`
+query get_organizations {
+  organizations {
+    id
+    name
+    slug
+    token
+  }
+}
+`;
+
 export const DELETE_CONNECTION = gql`
   mutation delete_connection($data: DeleteConnectionInput!) {
     delete_connection(input: $data) {
       id
+    }
+  }
+`;
+
+export const CREATE_ORGANIZATION = gql`
+  mutation create_organization($data: CreateOrganizationInput!) {
+    create_organization(input: $data) {
+      id
+      errors {
+        field
+        messages
+      }
+    }
+  }
+`;
+
+export const UPDATE_ORGANIZATION = gql`
+  mutation update_organization($data: UpdateOrganizationInput!) {
+    update_organization(input: $data) {
+      id
+      errors {
+        field
+        messages
+      }
     }
   }
 `;

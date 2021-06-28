@@ -167,25 +167,6 @@ export interface get_default_templates {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: get_organizations
-// ====================================================
-
-export interface get_organizations_organizations {
-  id: string;
-  name: string;  // The name of the organization
-  slug: string;  // The name in all lowercase, suitable for URL identification
-  token: string;
-}
-
-export interface get_organizations {
-  organizations: (get_organizations_organizations | null)[] | null;
-}
-
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: create_connection
 // ====================================================
 
@@ -238,6 +219,25 @@ export interface update_connectionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: get_organizations
+// ====================================================
+
+export interface get_organizations_organizations {
+  id: string;
+  name: string;  // The name of the organization
+  slug: string;  // The name in all lowercase, suitable for URL identification
+  token: string;
+}
+
+export interface get_organizations {
+  organizations: (get_organizations_organizations | null)[] | null;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: delete_connection
 // ====================================================
 
@@ -251,6 +251,58 @@ export interface delete_connection {
 
 export interface delete_connectionVariables {
   data: DeleteConnectionInput;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: create_organization
+// ====================================================
+
+export interface create_organization_create_organization_errors {
+  field: string;
+  messages: string[];
+}
+
+export interface create_organization_create_organization {
+  id: string | null;
+  errors: (create_organization_create_organization_errors | null)[] | null;  // May contain more than one error for same field.
+}
+
+export interface create_organization {
+  create_organization: create_organization_create_organization | null;
+}
+
+export interface create_organizationVariables {
+  data: CreateOrganizationInput;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: update_organization
+// ====================================================
+
+export interface update_organization_update_organization_errors {
+  field: string;
+  messages: string[];
+}
+
+export interface update_organization_update_organization {
+  id: string | null;
+  errors: (update_organization_update_organization_errors | null)[] | null;  // May contain more than one error for same field.
+}
+
+export interface update_organization {
+  update_organization: update_organization_update_organization | null;
+}
+
+export interface update_organizationVariables {
+  data: UpdateOrganizationInput;
 }
 
 
@@ -2443,6 +2495,22 @@ export interface PartialFreightcomSettingsInput {
 // null
 export interface DeleteConnectionInput {
   id: string;
+  clientMutationId?: string | null;
+}
+
+// null
+export interface CreateOrganizationInput {
+  id?: string | null;
+  name: string;
+  slug: string;
+  clientMutationId?: string | null;
+}
+
+// null
+export interface UpdateOrganizationInput {
+  id?: string | null;
+  name?: string | null;
+  slug?: string | null;
   clientMutationId?: string | null;
 }
 

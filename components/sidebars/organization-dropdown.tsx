@@ -9,7 +9,7 @@ const OrganizationDropdown: React.FC = () => {
     const btn = useRef<HTMLButtonElement>(null);
     const { basePath } = useContext(AppMode);
     const { authenticateOrg, token } = useContext(TokenData);
-    const { organizations, load, loading } = useContext(Organizations);
+    const { organizations, organization, load, loading } = useContext(Organizations);
     const { setLoading } = useContext(Loading)
     const [active, setActive] = useState<boolean>(false);
     const [selected, setSelected] = useState<OrganizationType>();
@@ -42,13 +42,7 @@ const OrganizationDropdown: React.FC = () => {
     };
 
     useEffect(() => { (!loading && load) && load(); }, []);
-    useEffect(() => {
-        if ((organizations || []).length > 0) {
-            const currentOrgId = getCookie("org_id");
-            const current = organizations.find(org => org.id === currentOrgId)
-            !isNone(current) && setSelected(current);
-        }
-    }, [organizations]);
+    useEffect(() => { setSelected(organization); }, [organization]);
     useEffect(() => {
         if ((organizations || []).length > 0 && selected !== undefined && token !== undefined && selected?.token !== token.key) {
             load();
