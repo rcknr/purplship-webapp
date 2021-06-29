@@ -101,9 +101,9 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id, children }) =
 
                 </div>
 
-                <div className="pt-6 pb-4 px-4">
+                {!isNone(shipment.label) && <div className="pt-6 pb-4 px-4">
                     <LabelPrinter className="button is-info" shipment={shipment} />
-                </div>
+                </div>}
 
             </div>}
 
