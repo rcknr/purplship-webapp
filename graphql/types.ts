@@ -222,11 +222,25 @@ export interface update_connectionVariables {
 // GraphQL query operation: get_organizations
 // ====================================================
 
+export interface get_organizations_organizations_user {
+  email: string;
+  full_name: string;
+  is_admin: boolean;
+}
+
+export interface get_organizations_organizations_users {
+  email: string;
+  full_name: string;
+  is_admin: boolean;
+}
+
 export interface get_organizations_organizations {
   id: string;
   name: string;  // The name of the organization
   slug: string;  // The name in all lowercase, suitable for URL identification
   token: string;
+  user: get_organizations_organizations_user;
+  users: get_organizations_organizations_users[];
 }
 
 export interface get_organizations {

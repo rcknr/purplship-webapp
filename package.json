@@ -1,8 +1,8 @@
 {
   "name": "purplship-webapp",
-  "version": "2020.4.0",
-  "description": "Purplship Server web app",
-  "author": "Purplship Team",
+  "version": "2021.6.0",
+  "description": "purplship server web app",
+  "author": "purplship",
   "license": "Apache-2.0",
   "dependencies": {
     "@apollo/client": "^3.3.13",

@@ -1,14 +1,11 @@
 import { Organizations, OrganizationType } from '@/context/organizations-query';
 import { TokenData } from '@/context/token-query';
-import { getCookie, isNone } from '@/library/helper';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/loader';
-import { AppMode } from '@/context/app-mode';
 
 const OrganizationDropdown: React.FC = () => {
     const btn = useRef<HTMLButtonElement>(null);
-    const { basePath } = useContext(AppMode);
-    const { authenticateOrg, token } = useContext(TokenData);
+    const { authenticateOrg, token, ...state } = useContext(TokenData);
     const { organizations, organization, load, loading } = useContext(Organizations);
     const { setLoading } = useContext(Loading)
     const [active, setActive] = useState<boolean>(false);
@@ -32,22 +29,23 @@ const OrganizationDropdown: React.FC = () => {
             setActive(true);
             document.addEventListener('click', onBodyClick);
         }
+        e.preventDefault();
         e.stopPropagation();
 
         if (org.id === selected?.id) return;
         setLoading(true);
         setSelected(org);
         await authenticateOrg(org.id, org.token);
-        setTimeout(() => location.pathname = basePath, 1000);
+        setLoading(false);
     };
 
     useEffect(() => { (!loading && load) && load(); }, []);
     useEffect(() => { setSelected(organization); }, [organization]);
     useEffect(() => {
-        if ((organizations || []).length > 0 && selected !== undefined && token !== undefined && selected?.token !== token.key) {
+        if (!(loading || state.loading) && (selected?.token !== token?.key)) {
             load();
         }
-    }, [token, organizations]);
+    }, [token]);
 
     return (
         <>

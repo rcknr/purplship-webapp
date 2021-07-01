@@ -52,13 +52,17 @@ const OrganizationUpdateInput: React.FC<OrganizationUpdateInputComponent> = Orga
                         onChange={handleOnChange}
                         defaultValue={((organization || {}) as any)[propertyKey] || ""}
                         type={inputType}
-                        style={{ maxWidth: "60%" }} required />
+                        style={{ maxWidth: "60%" }}
+                        disabled={!organization?.user?.is_admin}
+                        required 
+                        />
 
                     <input className="button is-success is-small mr-1" type="submit" value="Save"
                         style={{ visibility: (hasChanged ? "visible" : "hidden") }} />
                     <button className="button is-small"
                         onClick={cancel}
                         hidden={!hasChanged}
+                        disabled={!organization?.user?.is_admin}
                         style={{ visibility: (hasChanged ? "visible" : "hidden") }}>
                         <span>Cancel</span>
                     </button>

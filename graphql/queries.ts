@@ -141,6 +141,16 @@ query get_organizations {
     name
     slug
     token
+    user {
+      email
+      full_name
+      is_admin
+    }
+    users {
+      email
+      full_name
+      is_admin
+    }
   }
 }
 `;

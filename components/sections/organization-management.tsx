@@ -3,8 +3,7 @@ import OrganizationUpdateInput from '@/components/organization-update-input';
 
 interface OrganizationManagementComponent { }
 
-const OrganizationManagement: React.FC<OrganizationManagementComponent> = ({ }) => {
-
+const OrganizationManagement: React.FC<OrganizationManagementComponent> = () => {
   return (
     <>
 

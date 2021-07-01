@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { LazyQueryResult, useLazyQuery } from '@apollo/client';
 import { GetToken, GetToken_token, GET_TOKEN } from '@/graphql';
 import { collectToken } from '@/library/helper';
+import { AppMode } from './app-mode';
 
 export type TokenType = GetToken_token;
 type TokenDataType = LazyQueryResult<GetToken, any> & {
@@ -13,15 +14,17 @@ type TokenDataType = LazyQueryResult<GetToken, any> & {
 export const TokenData = React.createContext<TokenDataType>({ token: { key: collectToken() } } as TokenDataType);
 
 const TokenQuery: React.FC = ({ children }) => {
+  const { basePath } = useContext(AppMode);
   const [initialLoad, result] = useLazyQuery<GetToken>(GET_TOKEN, { notifyOnNetworkStatusChange: true });
 
   const fetchMore = (options: any) => result.called ? result.fetchMore(options) : initialLoad(options);
   const load = () => result.called ? fetchMore({}) : initialLoad({});
   const authenticateOrg = async (org_id: string, token: string) => {
-    return fetchMore({
+    await fetchMore({
       variables: { org_id },
       context: { headers: { "X-org-id": org_id, authorization: `Token ${token}` } }
     })
+    setTimeout(() => location.pathname = basePath, 1000);
   };
 
   return (
