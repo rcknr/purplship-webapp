@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import CarrierBadge from '@/components/carrier-badge';
 import { SystemConnections } from '@/context/system-connections-query';
 
@@ -8,18 +8,16 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
   const { system_connections } = useContext(SystemConnections);
 
   return (
-    <Fragment>
+    <>
 
-      <table className="table is-fullwidth">
-
-        <thead className="connections-table">
-          <tr>
-            <th colSpan={4}>Carrier</th>
-            <th className="action"></th>
-          </tr>
-        </thead>
+      {((system_connections).length > 0) && <table className="table is-fullwidth">
 
         <tbody className="connections-table">
+          <tr>
+            <td className="has-text-weight-bold" colSpan={4}>Carrier</td>
+            <td className="action"></td>
+          </tr>
+
           {(system_connections || []).map((connection) => (
 
             <tr key={connection.id}>
@@ -41,7 +39,7 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
           ))}
         </tbody>
 
-      </table>
+      </table>}
 
       {((system_connections).length == 0) && <div className="card my-6">
 
@@ -51,7 +49,7 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
 
       </div>}
 
-    </Fragment>
+    </>
   );
 }
 

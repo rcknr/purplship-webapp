@@ -1,4 +1,4 @@
-import { Operation, Webhook, WebhookData } from '@/api/index';
+import { Operation, OperationConfirmation, Webhook, WebhookData } from '@/api/index';
 import { handleFailure } from '@/library/helper';
 import { RestClient } from '@/context/rest';
 import React, { useContext } from 'react';
@@ -7,6 +7,7 @@ import React, { useContext } from 'react';
 export type WebhookMutator<T> = T & {
   addWebhook: (data: WebhookData) => Promise<Webhook>;
   updateWebhook: (data: Partial<Webhook>) => Promise<Webhook>;
+  testWebhook: (id: string, payload: object) => Promise<OperationConfirmation>;
   removeWebhook: (id: string) => Promise<Operation>;
 }
 
@@ -20,6 +21,9 @@ const WebhookMutation = <T extends {}>(Component: React.FC<WebhookMutator<T>>) =
     const updateWebhook = async ({ id, ...data }: Partial<Webhook>) => handleFailure(
       purplship.webhooks.update({ id: id as string, data: data as any })
     );
+    const testWebhook = async (id: string, payload: object) => handleFailure(
+      purplship.webhooks.test({ id, data: {payload} })
+    );
     const removeWebhook = async (id: string) => handleFailure(
       purplship.webhooks.remove({ id })
     );
@@ -28,6 +32,7 @@ const WebhookMutation = <T extends {}>(Component: React.FC<WebhookMutator<T>>) =
       <Component {...props}
         addWebhook={addWebhook}
         updateWebhook={updateWebhook}
+        testWebhook={testWebhook}
         removeWebhook={removeWebhook}
       >
         {children}

@@ -6,6 +6,7 @@ import { NotificationType } from '@/library/types';
 import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import { Shipments } from '@/context/shipments-query';
+import { isNone } from '@/library/helper';
 
 
 interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement> {
@@ -52,10 +53,18 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
     return (
         <div className={`dropdown is-right buttons has-addons ${isActive ? 'is-active' : ''}`} key={`menu-${shipment.id}`} {...props}>
             <div className="dropdown-trigger" style={{ width: '100%' }}>
-                {shipment.status !== ShipmentStatusEnum.Created && <LabelPrinter shipment={shipment} style={{ width: '70%' }} />}
-                {shipment.status === ShipmentStatusEnum.Created && <a className="button is-small" onClick={createLabel} style={{ width: '70%' }}>
-                    <span>Buy Label</span>
-                </a>}
+                {shipment.status === ShipmentStatusEnum.Created && <>
+                    <a className="button is-small" onClick={createLabel} style={{ width: '70%' }}>
+                        <span>Buy Label</span>
+                    </a>
+                </>}
+                {!isNone(shipment.label) && <LabelPrinter shipment={shipment} style={{ width: '70%' }} />}
+                {isNone(shipment.label) && shipment.status === ShipmentStatusEnum.Cancelled && <>
+                    <a className="button is-small" onClick={displayDetails} style={{ width: '70%' }}>
+                        <span>View Shipment</span>
+                    </a>
+                </>}
+
                 <button
                     id={shipment.id}
                     className="button is-small"
@@ -72,7 +81,7 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
             <div className="dropdown-menu" id={`shipment-menu-${shipment.id}`} role="menu">
                 <div className="dropdown-content">
                     {shipment.status !== ShipmentStatusEnum.Created && <a className="dropdown-item" onClick={displayDetails}>View Shipment</a>}
-                    <a href="#" className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>
+                    {shipment.status !== ShipmentStatusEnum.Cancelled && <a href="#" className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>}
                 </div>
             </div>
         </div>

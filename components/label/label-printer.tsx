@@ -32,7 +32,7 @@ const LabelPrinter: React.FC<LabelPrinterComponent> = ({ shipment, className, ..
                     {isActive && <iframe src={source} height="100%" width="100%"></iframe>}
 
                 </div>
-                <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
             </div>
         </>
     )

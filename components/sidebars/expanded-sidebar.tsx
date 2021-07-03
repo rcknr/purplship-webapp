@@ -58,9 +58,9 @@ const ExpandedSidebar: React.FC<ExpandedSidebarComponent> = () => {
                     <span>API</span>
                 </NavLink>
 
-                {/* <NavLink className="menu-item ml-6" to="/settings/webhooks">
+                <NavLink className="menu-item ml-6" to="/settings/webhooks">
                     <span>Webhooks</span>
-                </NavLink> */}
+                </NavLink>
 
                 <NavLink className="menu-item ml-6" to="/api_logs">
                     <span>Logs</span>

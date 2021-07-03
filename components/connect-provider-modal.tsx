@@ -8,7 +8,7 @@ import { Collection, NotificationType } from '@/library/types';
 import { APIReference } from '@/context/references-query';
 import ConnectionMutation from '@/context/connection-mutation';
 import { UserConnectionType } from '@/context/user-connections-query';
-import { Notify } from '@/components/notifier';
+import Notifier, { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 import { deepEqual } from '@/library/helper';
 import { AppMode } from '@/context/app-mode';
@@ -49,7 +49,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     type: NotificationType.success,
                     message: `carrier connection ${isNew ? 'registered' : 'updated'} successfully`
                 });
-                close();
+                setTimeout(() => close(), 1500);
                 onUpdate && onUpdate();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
@@ -57,14 +57,16 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                 setLoading(false);
             }
         };
-        const close = (_?: React.MouseEvent) => {
+        const close = (e?: React.MouseEvent) => {
+            console.log(e, "triggered")
+            e?.preventDefault();
             if (isNew) setPayload(DEFAULT_STATE());
             setKey(`connection-${Date.now()}`);
             setIsDisabled(false);
             setIsActive(false);
         };
         const handleOnChange = (property: string) => (e: React.ChangeEvent<any>) => {
-            let new_state = { ...payload, [property]: e.target.value || undefined };
+            let new_state = { ...payload, [property]: e.target.value || null };
             if (property === 'carrier_name') {
                 setKey(`connection-${Date.now()}`);
                 new_state = { carrier_name: e.target.value, test: testMode };
@@ -79,7 +81,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
         };
 
         return (
-            <>
+            <Notifier>
                 <button className={className} onClick={() => setIsActive(true)}>
                     {children}
                 </button>
@@ -145,7 +147,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
                                     {has("user_key") && <InputField label="User Key" defaultValue={payload.user_key} onChange={handleOnChange("user_key")} className="is-small" />}
 
-                                    {has("user_token") && <InputField label="User Token" defaultValue={payload.user_token} onChange={handleOnChange("user_token")} className="is-small" required />}
+                                    {has("user_token") && <InputField label="User Token" defaultValue={payload.user_token} onChange={handleOnChange("user_token")} className="is-small" />}
 
                                     {has("access_license_number") && <InputField label="Access License Number" defaultValue={payload.access_license_number} onChange={handleOnChange("access_license_number")} className="is-small" required />}
 
@@ -155,18 +157,24 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
                                     {has("account_country_code") && <InputField label="Account Country Code" defaultValue={payload.account_country_code} onChange={handleOnChange("account_country_code")} className="is-small" required />}
 
+                                    {has("mailer_id") && <InputField label="Mailer ID" defaultValue={payload.mailer_id} onChange={handleOnChange("mailer_id")} className="is-small" />}
+
+                                    {has("customer_registration_id") && <InputField label="Customer Registration ID" defaultValue={payload.customer_registration_id} onChange={handleOnChange("customer_registration_id")} className="is-small" />}
+
+                                    {has("logistics_manager_mailer_id") && <InputField label="Logistics Manager Mailer ID" defaultValue={payload.logistics_manager_mailer_id} onChange={handleOnChange("logistics_manager_mailer_id")} className="is-small" />}
+
                                     {/* Carrier specific fields END */}
 
                                     <CheckBoxField defaultChecked={payload.test} onChange={handleOnChange("test")}>Test Mode</CheckBoxField>
 
-                                    <ButtonField className={`mt-2 ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered" disabled={isDisabled}>Submit</ButtonField>
+                                    <ButtonField className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={isDisabled}>Submit</ButtonField>
                                 </>
                             }
                         </section>
                     </form>
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="" onClick={close}></button>
                 </div>
-            </>
+            </Notifier>
         )
     });
 
@@ -183,12 +191,14 @@ function hasProperty(carrier_name: CarrierSettingsCarrierNameEnum, property: str
         [CarrierSettingsCarrierNameEnum.Eshipper]: ["carrier_id", "test", "username", "password"],
         [CarrierSettingsCarrierNameEnum.Freightcom]: ["carrier_id", "test", "username", "password"],
         [CarrierSettingsCarrierNameEnum.Fedex]: ["carrier_id", "test", "user_key", "password", "meter_number", "account_number"],
-        [CarrierSettingsCarrierNameEnum.PurolatorCourier]: ["carrier_id", "test", "username", "password", "account_number", "user_token"],
+        [CarrierSettingsCarrierNameEnum.Purolator]: ["carrier_id", "test", "username", "password", "account_number", "user_token"],
         [CarrierSettingsCarrierNameEnum.Royalmail]: ["carrier_id", "test", "client_id", "client_secret"],
         [CarrierSettingsCarrierNameEnum.Sendle]: ["carrier_id", "test", "sendle_id", "api_key"],
         [CarrierSettingsCarrierNameEnum.SfExpress]: ["carrier_id", "test", "partner_id", "check_word"],
+        [CarrierSettingsCarrierNameEnum.Tnt]: ["carrier_id", "test", "username", "password", "account_country_code", "account_number"],
         [CarrierSettingsCarrierNameEnum.Ups]: ["carrier_id", "test", "username", "password", "access_license_number", "account_number"],
-        [CarrierSettingsCarrierNameEnum.Usps]: ["carrier_id", "test", "username", "password"],
+        [CarrierSettingsCarrierNameEnum.Usps]: ["carrier_id", "test", "username", "password", "mailer_id", "customer_registration_id", "logistics_manager_mailer_id"],
+        [CarrierSettingsCarrierNameEnum.UspsInternational]: ["carrier_id", "test", "username", "password", "mailer_id", "customer_registration_id", "logistics_manager_mailer_id"],
         [CarrierSettingsCarrierNameEnum.Yanwen]: ["carrier_id", "test", "customer_number", "license_key"],
         [CarrierSettingsCarrierNameEnum.Yunexpress]: ["carrier_id", "test", "customer_number", "api_secret"]
     }[carrier_name] || []).includes(property)

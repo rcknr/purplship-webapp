@@ -110,17 +110,6 @@ query get_default_templates {
 }
 `;
 
-export const GET_ORGANIZATIONS = gql`
-query get_organizations {
-  organizations {
-    id
-    name
-    slug
-    token
-  }
-}
-`;
-
 export const CREATE_CONNECTION = gql`
   mutation create_connection($data: CreateConnectionInput!) {
     create_connection(input: $data) {
@@ -133,7 +122,7 @@ export const CREATE_CONNECTION = gql`
   }
 `;
 
-export const UPDATED_CONNECTION = gql`
+export const UPDATE_CONNECTION = gql`
   mutation update_connection($data: UpdateConnectionInput!) {
     update_connection(input: $data) {
       id
@@ -145,10 +134,55 @@ export const UPDATED_CONNECTION = gql`
   }
 `;
 
+export const GET_ORGANIZATIONS = gql`
+query get_organizations {
+  organizations {
+    id
+    name
+    slug
+    token
+    user {
+      email
+      full_name
+      is_admin
+    }
+    users {
+      email
+      full_name
+      is_admin
+    }
+  }
+}
+`;
+
 export const DELETE_CONNECTION = gql`
   mutation delete_connection($data: DeleteConnectionInput!) {
     delete_connection(input: $data) {
       id
+    }
+  }
+`;
+
+export const CREATE_ORGANIZATION = gql`
+  mutation create_organization($data: CreateOrganizationInput!) {
+    create_organization(input: $data) {
+      id
+      errors {
+        field
+        messages
+      }
+    }
+  }
+`;
+
+export const UPDATE_ORGANIZATION = gql`
+  mutation update_organization($data: UpdateOrganizationInput!) {
+    update_organization(input: $data) {
+      id
+      errors {
+        field
+        messages
+      }
     }
   }
 `;
@@ -415,7 +449,7 @@ export const GET_USER_CONNECTIONS = gql`
         username
         password
       }
-      ... on PurolatorCourierSettings {
+      ... on PurolatorSettings {
         id
         carrier_id
         carrier_name
@@ -453,6 +487,17 @@ export const GET_USER_CONNECTIONS = gql`
         partner_id
         check_word
       }
+      ... on TNTSettings {
+        id
+        carrier_id
+        carrier_name
+        test
+        active
+        username
+        password
+        account_number
+        account_country_code
+      }
       ... on UPSSettings {
         id
         carrier_id
@@ -472,6 +517,21 @@ export const GET_USER_CONNECTIONS = gql`
         active
         username
         password
+        mailer_id
+        customer_registration_id
+        logistics_manager_mailer_id
+      }
+      ... on USPSInternationalSettings {
+        id
+        carrier_id
+        carrier_name
+        test
+        active
+        username
+        password
+        mailer_id
+        customer_registration_id
+        logistics_manager_mailer_id
       }
       ... on YanwenSettings {
         id

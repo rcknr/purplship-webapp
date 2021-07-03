@@ -6,7 +6,7 @@ import InputField from '@/components/generic/input-field';
 import CheckBoxField from './generic/checkbox-field';
 import { AddressTemplate, NotificationType } from '@/library/types';
 import TemplateMutation from '@/context/template-mutation';
-import { Notify } from '@/components/notifier';
+import Notifier, { Notify } from '@/components/notifier';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     address: {
@@ -56,7 +56,7 @@ const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<A
                 notify({ type: NotificationType.success, message: 'Address successfully updated!' });
             }
 
-            close(undefined, true);
+            setTimeout(() => close(undefined, true), 1500);
         };
         const Extension: React.FC<{ onChange?: EventHandler<any>; address?: ExtendedAddress }> = ({ onChange, address }) => (
             <>
@@ -72,7 +72,7 @@ const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<A
         );
 
         return (
-            <>
+            <Notifier>
                 <button className={className} onClick={open}>
                     {children}
                 </button>
@@ -93,9 +93,9 @@ const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<A
 
                     </div>
 
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
-            </>
+            </Notifier>
         )
     });
 

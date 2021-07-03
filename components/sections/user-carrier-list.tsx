@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ConnectProviderModal from '@/components/connect-provider-modal';
 import DisconnectProviderButton from '@/components/disconnect-provider-button';
 import CarrierBadge from '@/components/carrier-badge';
@@ -36,21 +36,20 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
   useEffect(() => { setLoading(loading); });
 
   return (
-    <Fragment>
+    <>
       <label className="checkbox p-2" style={{ position: 'absolute', top: 1, right: 1 }}>
         <span className="is-size-7 has-text-weight-semibold has-text-info px-2">Show {testMode ? 'live' : 'test'} connections</span>
         <input id="toggle" type="checkbox" defaultChecked={viewOtherMode} onChange={() => showOther(!viewOtherMode)} />
       </label>
-      <table className="table is-fullwidth">
 
-        <thead className="connections-table">
-          <tr>
-            <th colSpan={4}>Carrier</th>
-            <th className="action"></th>
-          </tr>
-        </thead>
+      {(user_connections.length > 0) && <table className="table is-fullwidth">
 
         <tbody className="connections-table">
+          <tr>
+            <td className="has-text-weight-bold" colSpan={4}>Carrier</td>
+            <td className="action"></td>
+          </tr>
+
           {user_connections.map((connection) => (
 
             <tr key={`${connection.id}-${Date.now()}`} style={{ display: (testMode === connection.test || viewOtherMode === connection.test) ? 'table-row' : 'none' }}>
@@ -93,9 +92,9 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
           ))}
         </tbody>
 
-      </table>
+      </table>}
 
-      {(user_connections.length == 0) && <div className="card my-6">
+      {(!loading && user_connections.length == 0) && <div className="card my-6">
 
         <div className="card-content has-text-centered">
           <p>No carriers have been connected yet.</p>
@@ -104,7 +103,7 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
 
       </div>}
 
-    </Fragment>
+    </>
   );
 });
 

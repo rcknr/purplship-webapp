@@ -1,4 +1,4 @@
-import { Address, Commodity, Customs, Message, Parcel, ParcelDimensionUnitEnum, ParcelWeightUnitEnum, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment } from '@/api/index';
+import { Address, Commodity, Customs, Message, Parcel, ParcelDimensionUnitEnum, ParcelWeightUnitEnum, PaymentCurrencyEnum, PaymentPaidByEnum, Shipment, WebhookEnabledEventsEnum } from '@/api/index';
 import { get_address_templates_address_templates_edges_node, get_address_templates_address_templates_edges_node_address, get_customs_info_templates_customs_templates_edges_node, get_customs_info_templates_customs_templates_edges_node_customs, get_customs_info_templates_customs_templates_edges_node_customs_commodities, get_logs_logs_edges_node, get_parcel_templates_parcel_templates_edges_node, get_parcel_templates_parcel_templates_edges_node_parcel } from '@/graphql';
 
 
@@ -63,6 +63,11 @@ export const DIMENSION_UNITS = Array.from(new Set(
 export const WEIGHT_UNITS = Array.from(new Set(
     Object
         .values(ParcelWeightUnitEnum)
+));
+
+export const WEBHOOK_EVENTS: string[] = Array.from(new Set(
+    Object
+        .values(WebhookEnabledEventsEnum)
 ));
 
 export type ErrorMessage = Message & {

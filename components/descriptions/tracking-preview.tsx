@@ -24,12 +24,12 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
     };
     const computeColor = (tracker: TrackingStatus) => {
         if (tracker.delivered) return "has-background-success";
-        else if ((tracker.events || []).length === 0) return "has-background-grey-dark";
+        else if (tracker.pending) return "has-background-grey-dark";
         else return "has-background-info";
     };
     const computeStatus = (tracker: TrackingStatus) => {
         if (tracker.delivered) return "Delivered";
-        else if ((tracker.events || []).length === 0) return "Pending";
+        else if (tracker.pending) return "Pending";
         else return "In-Transit";
     };
     const computeEvents = (tracker: TrackingStatus): DayEvents => {
@@ -51,7 +51,7 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
                 <div className="modal-card">
                     <section className="modal-card-body">
                         <p className="has-text-centered pb-4">
-                            <CarrierBadge carrier={tracker.carrier_name} className="tag" />
+                            <img src={`/static/carriers/${tracker.carrier_name}_icon.svg`} alt={tracker.carrier_name} width="60" />
                         </p>
 
                         <p className="subtitle has-text-centered is-6">
@@ -108,7 +108,7 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
                     </section>
                 </div>
 
-                <button className="modal-close is-large" aria-label="close" onClick={dismiss}></button>
+                <button className="modal-close is-large has-background-dark" aria-label="close" onClick={dismiss}></button>
 
             </div>
         </>

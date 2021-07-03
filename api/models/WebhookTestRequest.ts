@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TokenRefresh
+ * @interface WebhookTestRequest
  */
-export interface TokenRefresh {
+export interface WebhookTestRequest {
     /**
      * 
-     * @type {string}
-     * @memberof TokenRefresh
+     * @type {object}
+     * @memberof WebhookTestRequest
      */
-    refresh: string;
+    payload: object;
 }
 
-export function TokenRefreshFromJSON(json: any): TokenRefresh {
-    return TokenRefreshFromJSONTyped(json, false);
+export function WebhookTestRequestFromJSON(json: any): WebhookTestRequest {
+    return WebhookTestRequestFromJSONTyped(json, false);
 }
 
-export function TokenRefreshFromJSONTyped(json: any, ignoreDiscriminator: boolean): TokenRefresh {
+export function WebhookTestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): WebhookTestRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'refresh': json['refresh'],
+        'payload': json['payload'],
     };
 }
 
-export function TokenRefreshToJSON(value?: TokenRefresh | null): any {
+export function WebhookTestRequestToJSON(value?: WebhookTestRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +50,7 @@ export function TokenRefreshToJSON(value?: TokenRefresh | null): any {
     }
     return {
         
-        'refresh': value.refresh,
+        'payload': value.payload,
     };
 }
 

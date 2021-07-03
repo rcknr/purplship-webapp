@@ -1,7 +1,7 @@
 import { NotificationType } from '@/library/types';
 import React, { useContext, useState } from 'react';
 import UserMutation from '@/context/user-mutation';
-import { Notify } from './notifier';
+import { Notify } from '@/components/notifier';
 
 interface CloseAccountActionComponent extends React.InputHTMLAttributes<HTMLDivElement> {}
 
@@ -16,6 +16,7 @@ const CloseAccountAction: React.FC<CloseAccountActionComponent> = UserMutation<C
         evt.preventDefault();
         try {
             await closeAccount();
+            window.location.pathname = '/logout';
         } catch(err) {
             notify({ type: NotificationType.error, message: err });
         }
@@ -39,7 +40,7 @@ const CloseAccountAction: React.FC<CloseAccountActionComponent> = UserMutation<C
                         </div>
                     </section>
                 </form>
-                <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
             </div>
         </>
     )

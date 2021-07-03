@@ -1,19 +1,17 @@
 # purplship-webapp
 
-Purplship-server is an On-prem or cloud Multi-carrier Shipping API. The server is in Python, but you can use any 
+purplship-server is an On-prem or cloud Multi-carrier Shipping API. The server is in Python, but you can use any 
 programming language to send API requests to any supported shipping carriers (Canada Post, DHL, FedEx, UPS, Purolator...), 
 from your application.
 
-**This project hosts the webapp client code. Please file issues at [/purplship-server](https://github.com/Purplship/purplship-server),
+**This project hosts the webapp client code. Please file issues at [/purplship-server](https://github.com/purplship/purplship-server),
 which hosts the server code.**
 
 
 ## Screenshots
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Purplship/purplship-server/main/artifacts/dashboard1.png" width="400">
-  <img src="https://raw.githubusercontent.com/Purplship/purplship-server/main/artifacts/dashboard2.png" width="400">
-</p>
+<img src="https://github.com/purplship/purplship-server/raw/main/artifacts/shipping-dashboard.jpeg">
+<img src="https://github.com/purplship/purplship-server/raw/main/artifacts/tracking-dashboard.jpeg">
 
 
 ## Deployment
@@ -25,9 +23,9 @@ Use our Docker image [purplship/purplship-server](https://hub.docker.com/reposit
 
 ### `Heroku`
 
-Host your own Purplship server for FREE with [One-Click Deploy](https://heroku.com/deploy).
+Host your own purplship server for FREE with [One-Click Deploy](https://heroku.com/deploy).
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Purplship/purplship-heroku/tree/main/)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/purplship/purplship-heroku/tree/main/)
 
 
 
@@ -35,9 +33,9 @@ Host your own Purplship server for FREE with [One-Click Deploy](https://heroku.c
 
 - **Documentation** - Learn more at [docs.purplship.com](https://docs.purplship.com)
 - **Community** - Feature requests, general questions on [Discord](https://discord.gg/kXEa3UMRHd)
-- **Bug Tracker** - [File bugs](https://github.com/Purplship/purplship-server/issues)
-- **Blog** - Get the latest updates from the [Puprlship blog](https://blog.purplship.com).
-- **Twitter** - Follow [Purplship](https://twitter.com/purplship).
+- **Bug Tracker** - [File bugs](https://github.com/purplship/purplship-server/issues)
+- **Blog** - Get the latest updates from the [purplship blog](https://blog.purplship.com).
+- **Twitter** - Follow [PurplShip](https://twitter.com/PurplShip).
 
 
 ## License

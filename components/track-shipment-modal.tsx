@@ -7,7 +7,7 @@ import { APIReference } from '@/context/references-query';
 import { UserConnections, UserConnectionType } from '@/context/user-connections-query';
 import { SystemConnections, SystemConnectionType } from '@/context/system-connections-query';
 import TrackerMutation from '@/context/tracker-mutation';
-import { Notify } from '@/components/notifier';
+import Notifier, { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 
 type Connection = UserConnectionType | SystemConnectionType;
@@ -27,7 +27,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
         const [key, setKey] = useState<string>(`tracker-${Date.now()}`);
         const [carrier, setCarrier] = useState<Connection>();
         const [trackingNumber, setTrackingNumber] = useState<string>();
-        
+
         const close = (_?: React.MouseEvent) => {
             setCarrier(undefined);
             setTrackingNumber(undefined);
@@ -57,7 +57,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
         useEffect(() => { if (!system.loading) system.load(); }, []);
 
         return (
-            <>
+            <Notifier>
                 <button className={className} onClick={() => setIsActive(true)}>
                     {children}
                 </button>
@@ -73,11 +73,13 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
                             <SelectField label="Carrier" onChange={e => updateCarrier(e.target.value)} className="is-fullwidth" required>
                                 <option value="">Select a carrier</option>
 
-                                {[...(user_connections || []), ...(system_connections || [])].map((carrier, index) => (
-                                    <option key={index} value={carrier.carrier_id}>
-                                        {`${(carriers as any)[carrier.carrier_name]} ${carrier.test ? '(Sandbox)' : ''}`}
-                                    </option>
-                                ))}
+                                {[...(user_connections || []), ...(system_connections || [])]
+                                    .filter(c => c.active)
+                                    .map((carrier, index) => (
+                                        <option key={index} value={carrier.carrier_id}>
+                                            {`${(carriers as any)[carrier.carrier_name]} ${carrier.test ? '(Sandbox)' : ''}`}
+                                        </option>
+                                    ))}
                             </SelectField>
 
                             <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-6">
@@ -85,9 +87,9 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
                             </ButtonField>
                         </section>
                     </form>
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
-            </>
+            </Notifier>
         )
     });
 

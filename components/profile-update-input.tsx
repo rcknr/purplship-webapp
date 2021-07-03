@@ -1,5 +1,5 @@
 import { NotificationType } from '@/library/types';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserData, UserType } from '@/context/user-query';
 import UserMutation from '@/context/user-mutation';
 import { Notify } from './notifier';
@@ -33,7 +33,6 @@ const ProfileUpdateInput: React.FC<ProfileUpdateInputComponent> = UserMutation<P
                 type: NotificationType.success, message: `${propertyValue} updated successfully!` 
             });
         } catch(error) {
-            // TODO:: add support for graphql error type
             notify({ type: NotificationType.error, message: error });
         }
     };
@@ -41,8 +40,6 @@ const ProfileUpdateInput: React.FC<ProfileUpdateInputComponent> = UserMutation<P
         setPropertyValue(e.target.value);
         setHasChanged(e.target.value !== (user as any)[propertyKey]);
     };
-
-    useEffect(() => { }, [user])
 
     return (
         <form className="field" onSubmit={handleSubmit} key={key}>

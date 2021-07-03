@@ -1,8 +1,8 @@
 {
   "name": "purplship-webapp",
-  "version": "2020.4.0",
-  "description": "Purplship Server web app",
-  "author": "Purplship Team",
+  "version": "2021.6.0",
+  "description": "purplship server web app",
+  "author": "purplship",
   "license": "Apache-2.0",
   "dependencies": {
     "@apollo/client": "^3.3.13",
@@ -10,8 +10,8 @@
     "@reactivex/rxjs": "^6.6.3",
     "bulma": "^0.9.2",
     "graphql": "^15.5.0",
+    "highlight.js": "^11.0.0",
     "libphonenumber-js": "^1.9.6",
-    "prismjs": "^1.23.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rxjs": "^6.6.3"

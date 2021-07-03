@@ -25,7 +25,7 @@ const DisconnectProviderButton: React.FC<DisconnectProviderButtonComponent> = Co
                     type: NotificationType.success,
                     message: 'Carrier account disconnected successfully!'
                 });
-                close();
+                setTimeout(() => close(), 1500);
                 whenDone && whenDone();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
@@ -50,7 +50,7 @@ const DisconnectProviderButton: React.FC<DisconnectProviderButtonComponent> = Co
                             </div>
                         </section>
                     </form>
-                    <button className="modal-close is-large" aria-label="close" onClick={close}></button>
+                    <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
             </>
         )

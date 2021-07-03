@@ -1,11 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View } from '@/library/types';
 import StatusCode from '@/components/status-code-badge';
-import Prism from 'prismjs';
 import { formatDateTime, isNone, notEmptyJSON } from '@/library/helper';
 import { Log } from '@/context/log-query';
 import { Loading } from '@/components/loader';
 import NavLink from '@/components/generic/navlink';
+import hljs from 'highlight.js/lib/core';
+import json from 'highlight.js/lib/languages/json';
+
+hljs.registerLanguage('json', json);
+
 
 interface LogDetailsView extends View {
     logId?: string;
@@ -26,7 +30,7 @@ const LogDetails: React.FC<LogDetailsView> = ({ logId }) => {
             setResponse(JSON.stringify(JSON.parse(log.response || '{}'), null, 2));
             setData(JSON.stringify(JSON.parse(log.data || '{}'), null, 2));
         }
-    }, []);
+    });
 
     return (
         <>
@@ -68,11 +72,10 @@ const LogDetails: React.FC<LogDetailsView> = ({ logId }) => {
                 </div>
 
                 <div className="card-content py-3">
-                    <pre className={`language-json`}>
+                    <pre>
                         <code
-                            className={`language-json`}
                             dangerouslySetInnerHTML={{
-                                __html: Prism.highlight(query_params as string, Prism.languages.json, 'json'),
+                                __html: hljs.highlight(query_params as string, {language: 'json'}).value,
                             }}
                         />
                     </pre>
@@ -87,11 +90,10 @@ const LogDetails: React.FC<LogDetailsView> = ({ logId }) => {
                 </div>
 
                 <div className="card-content py-3">
-                    <pre className={`language-json`}>
+                    <pre>
                         <code
-                            className={`language-json`}
                             dangerouslySetInnerHTML={{
-                                __html: Prism.highlight(data as string, Prism.languages.json, 'json'),
+                                __html: hljs.highlight(data as string, {language: 'json'}).value,
                             }}
                         />
                     </pre>
@@ -106,11 +108,10 @@ const LogDetails: React.FC<LogDetailsView> = ({ logId }) => {
                 </div>
 
                 <div className="card-content py-3">
-                    <pre className={`language-json`}>
+                    <pre>
                         <code
-                            className={`language-json`}
                             dangerouslySetInnerHTML={{
-                                __html: Prism.highlight(response as string, Prism.languages.json, 'json'),
+                                __html: hljs.highlight(response as string, {language: 'json'}).value,
                             }}
                         />
                     </pre>

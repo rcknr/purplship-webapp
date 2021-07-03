@@ -66,6 +66,9 @@ $footer-background-color: $white;
     .container {
         margin: 0;
     }
+    .modal-card {
+        height: 100vh;
+    }
 }
 
 .is-aramex {
@@ -85,14 +88,18 @@ $footer-background-color: $white;
     color: #ddd !important;
 }
 .is-canpar {
-    background-color: #ddd !important;
-    color: #004890 !important;
+    background-color: #004890 !important;
+    color: #fff !important;
 }
 .is-dicom {
     background-color: #f26529 !important;
     color: #005daa !important;
 }
 .is-dhl {
+    background-color: #fc0 !important;
+    color: #c00 !important;
+}
+.is-dhl_universal {
     background-color: #fc0 !important;
     color: #c00 !important;
 }
@@ -124,11 +131,19 @@ $footer-background-color: $white;
     background-color: #dc1e32 !important;
     color: #fff !important;
 }
+.is-tnt {
+    background-color: #fff !important;
+    color: #ff6600;
+}
 .is-ups {
-    background-color: #ffd100 !important;
-    color: #242424;
+    background-color: #341B14 !important;
+    color: #FFB406 !important;
 }
 .is-usps {
+    background-color: #333366 !important;
+    color: #fff !important;
+}
+.is-usps_international {
     background-color: #333366 !important;
     color: #fff !important;
 }

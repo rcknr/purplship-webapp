@@ -66,13 +66,14 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
         };
         const handleSubmit = async (e: FormEvent) => {
             e.preventDefault();
-            setLoading(true);
             try {
                 if (customs.id === undefined && shipment?.id !== undefined) {
+                    setLoading(true);
                     await addCustoms(shipment.id, customs);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration added updated!' });
                 } else if (customs.id !== undefined) {
+                    setLoading(true);
                     await updateCustoms(customs);
                     update({ refresh: true });
                     notify({ type: NotificationType.success, message: 'Customs Declaration successfully updated!' });

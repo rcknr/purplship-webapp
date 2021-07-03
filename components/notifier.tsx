@@ -13,13 +13,14 @@ const Notifier: React.FC = ({ children }) => {
 
     const dismiss = (evt?: React.MouseEvent) => {
         evt?.preventDefault();
+        evt?.stopPropagation();
         setNotification(undefined);
         timer && clearTimeout(timer as NodeJS.Timeout);
     };
     const notify = (notification: Notification) => {
         dismiss();
         setNotification(notification);
-        setTimer(setTimeout(dismiss, 10000));
+        setTimer(setTimeout(() => { dismiss() }, 10000));
     };
 
     return (
