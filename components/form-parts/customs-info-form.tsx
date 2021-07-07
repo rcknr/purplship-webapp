@@ -45,6 +45,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
         const { incoterms, customs_content_type } = useContext(APIReference);
         const [editCommodity, setEditCommodity] = useState<boolean>(false);
         const [commodity, setCommodity] = useState<CommodityType>();
+        
         const [customs, dispatch] = useReducer((state: any, { name, value }: { name: string, value: string | boolean | object }) => {
             switch (name) {
                 case 'hasDuty':
