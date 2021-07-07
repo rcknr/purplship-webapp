@@ -3,12 +3,13 @@ import { NotificationType, WEBHOOK_EVENTS } from '@/library/types';
 import ButtonField from '@/components/generic/button-field';
 import WebhookMutation from '@/context/webhook-mutation';
 import { Webhook, WebhookData } from '@/api/index';
-import Notifier, { Notify } from './notifier';
-import InputField from './generic/input-field';
-import TextAreaField from './generic/textarea-field';
-import CheckBoxField from './generic/checkbox-field';
+import Notifier, { Notify } from '@/components/notifier';
+import InputField from '@/components/generic/input-field';
+import TextAreaField from '@/components/generic/textarea-field';
+import CheckBoxField from '@/components/generic/checkbox-field';
 import { deepEqual } from '@/library/helper';
-import { Loading } from './loader';
+import { Loading } from '@/components/loader';
+import { AppMode } from '@/context/app-mode';
 
 type stateValue = string | boolean | string[] | Partial<(Webhook | WebhookData)>;
 interface WebhookEditModalComponent {
@@ -16,7 +17,6 @@ interface WebhookEditModalComponent {
     className?: string;
     onUpdate?: () => void;
 }
-const DEFAULT_STATE = {} as (Webhook | WebhookData);
 
 function reducer(state: any, { name, value }: { name: string, value: stateValue }) {
     switch (name) {
@@ -31,6 +31,8 @@ const WebhookEditModal: React.FC<WebhookEditModalComponent> = WebhookMutation<We
     ({ webhook, children, className, onUpdate, addWebhook, updateWebhook }) => {
         const { notify } = useContext(Notify);
         const { setLoading, loading } = useContext(Loading);
+        const { testMode } = useContext(AppMode);
+        const DEFAULT_STATE = { test_mode: testMode } as (Webhook | WebhookData);
         const [isActive, setIsActive] = useState<boolean>(false);
         const [key, setKey] = useState<string>(`webhook-${Date.now()}`);
         const [isNew, _] = useState<boolean>(webhook === null || webhook === undefined);
