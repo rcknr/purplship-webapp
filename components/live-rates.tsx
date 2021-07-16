@@ -30,6 +30,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
     const [selected_rate_id, setSelectedRate] = useState<string | undefined>(shipment?.selected_rate_id || undefined);
     const [label_type, setLabelType] = useState<ShipmentLabelTypeEnum>(shipment?.label_type || ShipmentLabelTypeEnum.Pdf);
     const [payment, setPayment] = useState<Partial<Payment>>(DEFAULT_PAYMENT);
+    const [reference, setReference] = useState(shipment?.reference);
 
     const computeDisabled = (shipment: Shipment) => {
         return (
@@ -43,7 +44,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
         if (computeDisabled(shipment)) return;
         try {
             setLoading(true);
-            let payload = { ...shipment };
+            let payload = { ...shipment, reference };
             const response = await fetchRates(payload);
             if (payload.id === undefined) navigate('' + response.id);
             update(response, true);
@@ -58,8 +59,8 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
 
                 notify({ type: NotificationType.warning, message });
             }
-        } catch (err) {
-            notify({ type: NotificationType.error, message: err });
+        } catch (message) {
+            notify({ type: NotificationType.error, message });
         } finally {
             setLoading(false);
         }
@@ -70,15 +71,16 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
             let currency = (shipment.options || {} as any).currency || PaymentCurrencyEnum.Cad;
             await buyLabel({
                 ...shipment,
-                label_type: label_type,
-                selected_rate_id: selected_rate_id as string,
+                reference,
+                label_type,
+                selected_rate_id,
                 payment: { ...payment, currency }
             });
             update(shipment as Shipment);
             notify({ type: NotificationType.success, message: 'Label successfully purchased!' });
             navigate(basePath);
-        } catch (err) {
-            notify({ type: NotificationType.error, message: err });
+        } catch (message) {
+            notify({ type: NotificationType.error, message });
         } finally {
             setLoading(false);
         }
@@ -95,6 +97,21 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
                         <span>Fetch Rates</span>
                     </button>
                 </div>
+
+                <div className="column is-12 py-2">
+
+                    <InputField 
+                        label="reference" 
+                        name="reference"
+                        defaultValue={shipment?.reference as string} 
+                        onChange={e => setReference(e.target.value || null)} 
+                        placeholder="shipment reference" 
+                        className="is-small"
+                        autoComplete="off"/>
+
+                </div>
+
+                <hr className="column p-0 mx-3 my-1"/>
 
                 <div className="column is-12 py-1" style={shipment.shipper.address_line1 === undefined ? { display: 'none' } : {}}>
 
@@ -162,7 +179,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
 
                 <div className="column is-12 py-2" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
 
-                    <h6 className="is-title is-size-6 mt-1 mb-4 has-text-weight-semibold">Select your label type</h6>
+                    <h6 className="is-title is-size-6 mt-1 mb-2 has-text-weight-semibold">Select your label type</h6>
                     <div className="control">
                         <label className="radio">
                             <input className="mr-1" type="radio" name="label_type" defaultChecked={label_type === ShipmentLabelTypeEnum.Pdf} onChange={() => setLabelType(ShipmentLabelTypeEnum.Pdf)} />
@@ -178,7 +195,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
 
                 <div className="column is-12 py-2" style={{ display: `${(shipment.rates || []).length === 0 ? 'none' : 'block'}` }}>
 
-                    <h6 className="is-title is-size-6 mt-1 mb-4 has-text-weight-semibold">Shipment Paid By</h6>
+                    <h6 className="is-title is-size-6 mt-1 mb-2 has-text-weight-semibold">Shipment Paid By</h6>
 
                     <div className="control">
                         <label className="radio">
