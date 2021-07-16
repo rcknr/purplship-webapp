@@ -16,53 +16,53 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface OperationConfirmation
+ * @interface ShipmentRateData
  */
-export interface OperationConfirmation {
+export interface ShipmentRateData {
     /**
-     * Operation performed
+     * 
+     * The requested carrier service for the shipment.
+     * 
+     * Please consult [the reference](#operation/references) for specific carriers services.<br/>
+     * Note that this is a list because on a Multi-carrier rate request you could specify a service per carrier.
+     * @type {Array<string>}
+     * @memberof ShipmentRateData
+     */
+    services?: Array<string> | null;
+    /**
+     * 
+     * The list of configured carriers you wish to get rates from.
+     * 
+     * *Note that the request will be sent to all carriers in nothing is specified*
+     * @type {Array<string>}
+     * @memberof ShipmentRateData
+     */
+    carrier_ids?: Array<string> | null;
+    /**
+     * The shipment reference
      * @type {string}
-     * @memberof OperationConfirmation
+     * @memberof ShipmentRateData
      */
-    operation: string;
-    /**
-     * Specify whether the operation was successful
-     * @type {boolean}
-     * @memberof OperationConfirmation
-     */
-    success: boolean;
-    /**
-     * The operation carrier
-     * @type {string}
-     * @memberof OperationConfirmation
-     */
-    carrier_name: string;
-    /**
-     * The targeted carrier's name (unique identifier)
-     * @type {string}
-     * @memberof OperationConfirmation
-     */
-    carrier_id: string;
+    reference?: string | null;
 }
 
-export function OperationConfirmationFromJSON(json: any): OperationConfirmation {
-    return OperationConfirmationFromJSONTyped(json, false);
+export function ShipmentRateDataFromJSON(json: any): ShipmentRateData {
+    return ShipmentRateDataFromJSONTyped(json, false);
 }
 
-export function OperationConfirmationFromJSONTyped(json: any, ignoreDiscriminator: boolean): OperationConfirmation {
+export function ShipmentRateDataFromJSONTyped(json: any, ignoreDiscriminator: boolean): ShipmentRateData {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'operation': json['operation'],
-        'success': json['success'],
-        'carrier_name': json['carrier_name'],
-        'carrier_id': json['carrier_id'],
+        'services': !exists(json, 'services') ? undefined : json['services'],
+        'carrier_ids': !exists(json, 'carrier_ids') ? undefined : json['carrier_ids'],
+        'reference': !exists(json, 'reference') ? undefined : json['reference'],
     };
 }
 
-export function OperationConfirmationToJSON(value?: OperationConfirmation | null): any {
+export function ShipmentRateDataToJSON(value?: ShipmentRateData | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -71,10 +71,9 @@ export function OperationConfirmationToJSON(value?: OperationConfirmation | null
     }
     return {
         
-        'operation': value.operation,
-        'success': value.success,
-        'carrier_name': value.carrier_name,
-        'carrier_id': value.carrier_id,
+        'services': value.services,
+        'carrier_ids': value.carrier_ids,
+        'reference': value.reference,
     };
 }
 
