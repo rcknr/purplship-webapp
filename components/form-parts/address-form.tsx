@@ -115,7 +115,7 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
                 </div>
 
                 <div className="columns mb-0">
-                    <AddressAutocompleteInput label="Street (Line 1)" name="address_line1" onValueChange={(value) => dispatch({ name: "partial", value })} value={address.address_line1} fieldClass="column mb-0 px-2 py-2" required />
+                    <AddressAutocompleteInput label="Street (Line 1)" name="address_line1" onValueChange={(value) => dispatch({ name: "partial", value })} value={address.address_line1}  country_code={address.country_code} fieldClass="column mb-0 px-2 py-2" required />
                 </div>
 
                 <div className="columns is-multiline mb-0">
@@ -123,7 +123,7 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
 
                     <InputField label="city" name="city" onChange={handleChange} value={address.city} fieldClass="column is-6 mb-0 px-2 py-2" required />
 
-                    <StateInput label="province or state" onValueChange={value => dispatch({ name: "state_code", value: value as string })} value={address.state_code} fieldClass="column is-6 mb-0 px-2 py-2" required={Object.keys(states || {}).includes(address.country_code)} />
+                    <StateInput label="province or state" onValueChange={value => dispatch({ name: "state_code", value: value as string })} value={address.state_code} fieldClass="column is-6 mb-0 px-2 py-2" country_code={address.country_code} required={Object.keys(states || {}).includes(address.country_code)} />
 
                     <PostalInput label="postal code" onValueChange={value => dispatch({ name: "postal_code", value: value as string })} value={address.postal_code} country={address.country_code} fieldClass="column is-6 mb-0 px-2 py-2" required={COUNTRY_WITH_POSTAL_CODE.includes(address.country_code)} />
                 </div>
