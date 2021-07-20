@@ -14,6 +14,7 @@ import { LabelData } from '@/context/shipment-query';
 import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 import { AppMode } from '@/context/app-mode';
+import RateDescription from './descriptions/rate-description';
 
 interface LiveRatesComponent {
     update: (payload: {}, refresh?: boolean) => void;
@@ -161,11 +162,7 @@ const LiveRates: React.FC<LiveRatesComponent> = ShipmentMutation<LiveRatesCompon
                                         {(rate.id === selected_rate_id) ? <i className="fas fa-check-square"></i> : <i className="fas fa-square"></i>}
                                     </span>
 
-                                    <div className="column px-1 py-0 is-size-7 has-text-weight-semibold">
-                                        <h6 className="has-text-weight-bold">{formatRef(((rate.meta as any)?.service_name || rate.service) as string)}</h6>
-                                        <span>{rate.total_charge} {rate.currency}</span>
-                                        {!isNone(rate.transit_days) && <span> - {rate.transit_days} Transit days</span>}
-                                    </div>
+                                    <RateDescription rate={rate} />
 
                                     {rate.test_mode && <div className="has-text-warning p-1">
                                         <i className="fas fa-exclamation-circle"></i>

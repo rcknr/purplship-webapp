@@ -26,7 +26,7 @@ const LogList: React.FC<LogListView> = () => {
     return (
         <>
 
-            <header className="px-2 pt-1 pb-6">
+            <header className="px-2 pt-1 pb-4">
                 <span className="subtitle is-4">API Logs</span>
             </header>
 

@@ -78,7 +78,7 @@ const ExpandedSidebar: React.FC<ExpandedSidebarComponent> = () => {
                     </a>
                 }
 
-                <NavLink className="menu-item bottom-menu-item" to="/settings/account">
+                <NavLink to="/settings/account">
                     <i className="fas fa-cog"></i>
                     <span>Account Settings</span>
                 </NavLink>

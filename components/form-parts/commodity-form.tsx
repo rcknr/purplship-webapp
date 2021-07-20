@@ -11,6 +11,7 @@ import { deepEqual, isNone } from "@/library/helper";
 import CountryInput from "@/components/generic/country-input";
 import ShipmentMutation from "@/context/shipment-mutation";
 import { Loading } from "@/components/loader";
+import TextAreaField from "@/components/generic/textarea-field";
 
 
 type stateValue = string | boolean | Partial<CommodityType>;
@@ -40,7 +41,7 @@ const CommodityForm: React.FC<CommodityTypeFormComponent> = ShipmentMutation<Com
     const [key, setKey] = useState<string>(`commodity-${Date.now()}`);
     const [commodity, dispatch] = useReducer(reducer, value, () => value || DEFAULT_COMMODITY_CONTENT);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | any>) => {
         event.preventDefault();
         const target = event.target;
         let name: string = target.name;
@@ -77,6 +78,8 @@ const CommodityForm: React.FC<CommodityTypeFormComponent> = ShipmentMutation<Com
                     {CURRENCY_OPTIONS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                 </SelectField>
 
+                <TextAreaField label="description" value={commodity?.description} onChange={handleChange} name="description" fieldClass="column mb-0 is-12 px-2 py-1" placeholder="item description" rows={2} />
+
             </div>
 
             <h6 className="is-size-7 mx-2 my-3 has-text-weight-bold">Weight</h6>
@@ -91,7 +94,12 @@ const CommodityForm: React.FC<CommodityTypeFormComponent> = ShipmentMutation<Com
 
             </div>
 
-            <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(value, commodity)}>
+            <div className="p-3 my-5"></div>
+            <ButtonField type="submit" 
+                className={`is-primary ${loading ? 'is-loading' : ''} m-0`}
+                fieldClass="form-floating-footer p-3"
+                controlClass="has-text-centered"
+                disabled={deepEqual(value, commodity)}>
                 <span>{(commodity.id || '').includes('new-') ? 'Add' : 'Save'}</span>
             </ButtonField>
 

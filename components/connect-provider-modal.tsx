@@ -90,7 +90,10 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     <div className="modal-background" onClick={close}></div>
                     <form className="modal-card" onSubmit={handleSubmit}>
                         <section className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'Connect a Carrier' : 'Update a Carrier Connection'}</h3>
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'Connect a Carrier' : 'Update a Carrier Connection'}</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
 
                             <SelectField value={payload.carrier_name} onChange={handleOnChange("carrier_name")} disabled={!isNew} key={`select-${key}`} className="is-fullwidth" required>
                                 <option value='none'>Select Carrier</option>

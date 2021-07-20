@@ -84,8 +84,11 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
                     <div className="modal-card">
 
                         <section className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Parcel</h3>
-                            <hr />
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Parcel</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
+
                             {payload !== undefined && <ParcelForm value={payload as any} update={update}>
                                 <Extension />
                             </ParcelForm>}

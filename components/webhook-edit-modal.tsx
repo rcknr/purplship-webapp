@@ -88,7 +88,10 @@ const WebhookEditModal: React.FC<WebhookEditModalComponent> = WebhookMutation<We
                     <div className="modal-background" onClick={close}></div>
                     <form className="modal-card" onSubmit={handleSubmit}>
                         <section className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'Add ' : 'Update '} a Webhook endpoint</h3>
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'Add ' : 'Update '} a Webhook endpoint</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
 
                             <InputField label="Endpoint URL" name="url" value={payload?.url} onChange={handleChange} className="is-small" required />
 
@@ -111,10 +114,12 @@ const WebhookEditModal: React.FC<WebhookEditModalComponent> = WebhookMutation<We
 
                             <CheckBoxField name="test_mode" defaultChecked={payload.test_mode} onChange={handleChange}>Test Mode</CheckBoxField>
 
+                            <div className="p-3 my-5"></div>
                             <ButtonField
                                 type="submit"
                                 className={`is-primary ${loading ? 'is-loading' : ''}`}
-                                fieldClass="has-text-centered mt-6"
+                                fieldClass="form-floating-footer p-3"
+                                controlClass="has-text-centered"
                                 disabled={deepEqual(payload, webhook) || loading}>
                                 <span>Submit</span>
                             </ButtonField>

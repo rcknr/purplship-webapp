@@ -58,7 +58,7 @@ function find(states?: Collection<Collection<string>>, code_or_name?: string, cu
     );
 
     return (Object
-        .entries(states ? states[country_code] : {})
+        .entries(states ? states[country_code] || {} : {})
         .find(([code, name]) => code === code_or_name || name === code_or_name) || []
     );
 }

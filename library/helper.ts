@@ -95,7 +95,13 @@ export function isNone(value: any): boolean {
 }
 
 export function deepEqual(value1?: object | null, value2?: object | null): boolean {
-    return JSON.stringify(value1, Object.keys(value1 || {}).sort()) === JSON.stringify(value2, Object.keys(value2 || {}).sort());
+    const clean_value1 = Object.entries(value1 || {}).reduce((p, [k, v]) => ({ ...p, [k]: v === null ? undefined : v }), {});
+    const clean_value2 = Object.entries(value2 || {}).reduce((p, [k, v]) => ({ ...p, [k]: v === null ? undefined : v }), {});
+
+    return (
+        JSON.stringify(clean_value1, Object.keys(clean_value1 || {}).sort()) === 
+        JSON.stringify(clean_value2, Object.keys(clean_value2 || {}).sort())
+    );
 }
 
 // Remove undefined values from objects

@@ -44,7 +44,7 @@ const WebhooksPage: React.FC<WebhooksView> = WebhookMutation<WebhooksView>(({ re
     <>
       <ModeIndicator />
 
-      <header className="px-2 pt-1 pb-6">
+      <header className="px-2 pt-1 pb-4">
         <span className="subtitle is-4">Endpoints</span>
         <WebhookEditModal className="button is-default is-pulled-right" onUpdate={refresh}>
           <span className="icon"><i className="fas fa-plus"></i></span>

@@ -135,8 +135,13 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
                     </CheckBoxField>
 
                 </div>
-
-                <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(value || {}, address)}>
+                
+                <div className="p-3 my-5"></div>
+                <ButtonField type="submit"
+                    className={`is-primary ${loading ? 'is-loading' : ''} m-0`}
+                    fieldClass="form-floating-footer p-3"
+                    controlClass="has-text-centered"
+                    disabled={deepEqual(value || DEFAULT_ADDRESS_CONTENT, address)}>
                     <span>Save</span>
                 </ButtonField>
 

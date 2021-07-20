@@ -26,7 +26,7 @@ const ConnectionsPage: React.FC<ConnectionsView> = ( ) => {
     <Fragment>
       <ModeIndicator />
 
-      <header className="px-2 pt-1 pb-6">
+      <header className="px-2 pt-1 pb-4">
         <span className="subtitle is-4">Carriers</span>
         <ConnectProviderModal className="button is-success is-pulled-right" onUpdate={update}>
           <span>Connect a Carrier</span>

@@ -82,8 +82,11 @@ const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<A
                     <div className="modal-card">
 
                         <form className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Address</h3>
-                            <hr />
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Address</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
+                            
                             {payload !== undefined && <AddressForm value={payload as any} name="template" update={update}>
 
                                 <Extension />

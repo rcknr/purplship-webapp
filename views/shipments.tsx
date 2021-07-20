@@ -23,7 +23,7 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
     <>
       <ModeIndicator />
 
-      <header className="px-2 pt-1 pb-6">
+      <header className="px-2 pt-1 pb-4">
         <span className="subtitle is-4">Shipments</span>
         <NavLink className="button is-success is-pulled-right" to="/buy_label/new">
           <span>Create Label</span>

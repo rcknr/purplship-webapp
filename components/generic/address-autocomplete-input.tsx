@@ -35,7 +35,7 @@ const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({
             ) as Partial<Address>;
             
             onValueChange(address);
-            if (isNone(prediction) && (value || "").length > 4) {
+            if (isNone(prediction) && (value || "").length > 3) {
                 predictor.getPlacePredictions(
                     { input: value }, (newPredictions) => setPredictions(newPredictions)
                 );

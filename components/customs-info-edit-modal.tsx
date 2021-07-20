@@ -5,7 +5,7 @@ import InputField from '@/components/generic/input-field';
 import { CustomsTemplateType, CustomsType, NotificationType } from '@/library/types';
 import TemplateMutation from '@/context/template-mutation';
 import CheckBoxField from '@/components/generic/checkbox-field';
-import Notifier, { Notify } from './notifier';
+import Notifier, { Notify } from '@/components/notifier';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     customs: {
@@ -81,8 +81,11 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
                     <div className="modal-card">
 
                         <section className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Customs Info</h3>
-                            <hr />
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Customs Info</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
+
                             {payload !== undefined && <CustomsInfoForm value={payload as any} update={update} cannotOptOut={true} commodityDiscarded={deleteCommodity}>
                                 <Extension />
                             </CustomsInfoForm>}

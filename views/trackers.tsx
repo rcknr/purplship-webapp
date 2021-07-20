@@ -31,7 +31,7 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
     <>
       <ModeIndicator />
 
-      <header className="px-2 pt-1 pb-6">
+      <header className="px-2 pt-1 pb-4">
         <span className="subtitle is-4">Trackers</span>
         <TrackShipmentModal className="button is-success is-pulled-right" onUpdate={update}>
           <span>Track a Shipment</span>

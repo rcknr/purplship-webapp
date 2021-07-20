@@ -217,7 +217,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
 
                                 <thead className="commodities-table">
                                     <tr>
-                                        <th className="commodity">Customs Commodities</th>
+                                        <th className="commodity px-0">Customs Commodities</th>
                                         <th className="action">
                                             <button className="button is-small is-light is-success is-pulled-right" onClick={e => { e.preventDefault(); toggleCommodity(); return false; }}>
                                                 <span className="icon is-small"><i className="fas fa-plus"></i></span>
@@ -230,7 +230,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                                     {(customs?.commodities || []).map((commodity: CommodityType) => (
 
                                         <tr key={`${commodity.id}-${Date.now()}`}>
-                                            <td className="commodity">
+                                            <td className="commodity px-0">
                                                 <CommodityDescription commodity={commodity} />
                                             </td>
                                             <td className="action is-vcentered">
@@ -281,7 +281,7 @@ const CustomsInfoForm: React.FC<CustomsInfoFormComponent> = ShipmentMutation<Cus
                     </div>
 
                     <ButtonField type="submit"
-                        className={`is-primary ${loading ? 'is-loading' : ''}`}
+                        className={`is-primary ${loading ? 'is-loading' : ''} m-0`}
                         fieldClass="form-floating-footer p-3"
                         controlClass="has-text-centered"
                         disabled={deepEqual(value, customs) && deepEqual(value?.duty, customs?.duty)}>

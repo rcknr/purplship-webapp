@@ -167,7 +167,7 @@ hr {
 }
 
 .mode-menu-item {
-    color: rgba(196, 76, 52, 0.7) !important;
+    color: rgb(196, 76, 52) !important;
 }
 
 .purplship-notifier {
@@ -181,26 +181,32 @@ hr {
     font-weight: 700;
 }
 
-.mode-indicator {
-    position: absolute;
+.static-nav {
     top: 0;
     z-index: 1;
-    border-top: 2px solid rgba(196, 76, 52, 0.7);
+    position: sticky;
+    background-color: white;
+}
+
+.mode-indicator {    
+    position: sticky;
+    top: 60px;
+    z-index: 1;
+    border-top: 1px solid rgb(196,76,52);
     padding: 0;
     text-align: center;
     width: 100%;
+    display: flex;
 
-    .mode-indicator-container {
+    .mode-indicator-label {
         margin: 0 auto;
-        background: rgba(196, 76, 52, 0.7);
+        background: rgb(196,76,52);
         display: inline;
-        padding: 1px 10px;
+        padding: 2px 14px;
         border-radius: 0 0 5px 5px;
-
-        .mode-indicator-label {
-            font-size: 0.6rem;
-            color: white;
-        }
+        color: white;
+        font-size: .55em;
+        font-weight: bold;
     }
 }
 
@@ -210,6 +216,17 @@ hr {
 
 td > div.dropdown.is-active .dropdown-menu {
     top: 75%;
+}
+
+.dropdown-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 240px;
+    overflow: hidden;
+}
+
+.dropdown-panel {
+    max-height: 190px;
 }
 
 .label-container {
@@ -232,6 +249,7 @@ td > div.dropdown.is-active .dropdown-menu {
 
 .tab-content {
     display: none;
+    overflow: hidden;
 
     &.is-active {
         display: block;
@@ -243,13 +261,23 @@ td > div.dropdown.is-active .dropdown-menu {
     overflow-y: auto;
 }
 
+.form-floating-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
 .form-floating-footer {
     position: absolute;
     bottom: 0;
     right: 0;
     left: 0;
+    z-index: 5;
     background: white;
-    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
 }
 
 .rates-list-box {
