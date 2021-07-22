@@ -21,7 +21,7 @@ const LabelPrinter: React.FC<LabelPrinterComponent> = ({ shipment, className, ..
 
     return (
         <>
-            <button className={className || "button is-small"} onClick={() => setIsActive(true)} {...props}>
+            <button className={`button ${className || "is-small"}`} onClick={() => setIsActive(true)} {...props}>
                 <span>Print Label</span>
             </button>
 

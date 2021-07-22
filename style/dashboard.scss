@@ -37,19 +37,31 @@ Purplship custom styling
 
 .shipments-table {
     .carrier {
-        width: 15%;
+        width: 8%;
+    }
+    .service {
+        width: 20%;
+    }
+    .status {
+        width: 10%;
     }
     .recipient {
         min-width: 40%;
     }
-    .creation {
-        width: 15%;
-    }
-    .status {
-        width: 15%;
+    .date {
+        width: 13%;
     }
     .action {
         width: 15%;
+        min-width: 160px;
+    }
+
+    tbody > tr.items {
+        cursor: pointer;
+    }
+
+    tbody > tr.items:hover {
+        background-color: #eeeeee;
     }
 }
 

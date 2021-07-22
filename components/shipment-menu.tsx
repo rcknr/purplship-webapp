@@ -14,7 +14,7 @@ interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement
 }
 
 
-const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentMenuComponent>(({ shipment, voidLabel, ...props }) => {
+const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentMenuComponent>(({ shipment, voidLabel, className, ...props }) => {
     const navigate = useNavigate();
     const { notify } = useContext(Notify);
     const shipments = useContext(Shipments)
@@ -26,6 +26,7 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
             setIsActive(true);
             document.addEventListener('click', onBodyClick);
         }
+        e.preventDefault();
         e.stopPropagation();
     };
     const onBodyClick = (e: MouseEvent) => {
@@ -51,37 +52,40 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
     };
 
     return (
-        <div className={`dropdown is-right buttons has-addons ${isActive ? 'is-active' : ''}`} key={`menu-${shipment.id}`} {...props}>
-            <div className="dropdown-trigger" style={{ width: '100%' }}>
-                {shipment.status === ShipmentStatusEnum.Created && <>
-                    <a className="button is-small" onClick={createLabel} style={{ width: '70%' }}>
-                        <span>Buy Label</span>
-                    </a>
-                </>}
-                {!isNone(shipment.label) && <LabelPrinter shipment={shipment} style={{ width: '70%' }} />}
-                {isNone(shipment.label) && shipment.status === ShipmentStatusEnum.Cancelled && <>
-                    <a className="button is-small" onClick={displayDetails} style={{ width: '70%' }}>
-                        <span>View Shipment</span>
-                    </a>
-                </>}
+        <div className={`buttons has-addons ${className}`} {...props}>
 
-                <button
-                    id={shipment.id}
-                    className="button is-small"
-                    aria-haspopup="true"
-                    aria-controls={`shipment-menu-${shipment.id}`}
-                    onClick={handleOnClick}
-                    ref={btn}>
-                    <span className="icon is-small">
-                        <i className="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
-            </div>
+            {!isNone(shipment.label) && <LabelPrinter shipment={shipment}  className="is-small" style={{ width: '70%' }} />}
+            {isNone(shipment.label) && shipment.status === ShipmentStatusEnum.Created && <>
+                <a className="button is-small" onClick={createLabel} style={{ width: '70%' }}>
+                    <span>Buy Label</span>
+                </a>
+            </>}
+            {isNone(shipment.label) && shipment.status === ShipmentStatusEnum.Cancelled && <>
+                <a className="button is-small" onClick={displayDetails} style={{ width: '70%' }}>
+                    <span>View Shipment</span>
+                </a>
+            </>}
 
-            <div className="dropdown-menu" id={`shipment-menu-${shipment.id}`} role="menu">
-                <div className="dropdown-content">
-                    {shipment.status !== ShipmentStatusEnum.Created && <a className="dropdown-item" onClick={displayDetails}>View Shipment</a>}
-                    {shipment.status !== ShipmentStatusEnum.Cancelled && <a href="#" className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>}
+            <div className={`dropdown is-right ${isActive ? 'is-active' : ''}`} key={`menu-${shipment.id}`}>
+                <div className="dropdown-trigger">
+                    <button
+                        id={shipment.id}
+                        className="button is-small"
+                        aria-haspopup="true"
+                        aria-controls={`shipment-menu-${shipment.id}`}
+                        onClick={handleOnClick}
+                        ref={btn}>
+                        <span className="icon is-small">
+                            <i className="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <div className="dropdown-menu" id={`shipment-menu-${shipment.id}`} role="menu">
+                    <div className="dropdown-content">
+                        <a className="dropdown-item" onClick={displayDetails}>View Shipment</a>
+                        {shipment.status !== ShipmentStatusEnum.Cancelled && <a href="#" className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>}
+                    </div>
                 </div>
             </div>
         </div>

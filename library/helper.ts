@@ -1,18 +1,20 @@
 import { AddressType, CommodityType, CustomsType, ParcelType, PresetCollection, RequestError } from "@/library/types";
 
 
+const DATE_FORMAT = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit' });
+const DATE_TIME_FORMAT = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit', hour: "2-digit", minute: "2-digit" });
+
+
 export function formatRef(s?: string): string {
     return (s || "").replaceAll('_', ' ').toLocaleUpperCase();
 }
 
-export function formatDate(date: string): string {
-    return (new Date(date)).toLocaleDateString();
+export function formatDate(date_string: string): string {
+    return DATE_FORMAT.format(new Date(date_string));
 }
 
 export function formatDateTime(date_string: string): string {
-    const date = new Date(date_string);
-    let [hour, minute, second] = date.toLocaleTimeString().split(/:| /);
-    return `${formatDate(date_string)}, ${hour}:${minute}:${second}`;
+    return DATE_TIME_FORMAT.format(new Date(date_string));
 }
 
 export function notEmptyJSON(value?: string | null): boolean {
@@ -21,9 +23,8 @@ export function notEmptyJSON(value?: string | null): boolean {
 
 export function formatAddress(address: AddressType): string {
     return [
-        address.person_name,
+        address.person_name || address.company_name,
         address.city,
-        address.postal_code,
         address.country_code
     ].filter(a => !isNone(a) && a !== "").join(', ');
 }
@@ -32,6 +33,7 @@ export function formatFullAddress(address: AddressType, countries?: { [country_c
     const country = countries === undefined ? address.country_code : countries[address.country_code];
     return [
         address.address_line1,
+        address.address_line2,
         address.city,
         address.state_code,
         address.postal_code,
