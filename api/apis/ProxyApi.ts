@@ -65,6 +65,7 @@ export interface CancelPickupRequest {
 
 export interface FetchRatesRequest {
     data: RateRequest;
+    test?: boolean | null;
 }
 
 export interface SchedulePickupRequest {
@@ -192,6 +193,10 @@ export class ProxyApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.test !== undefined) {
+            queryParameters['test'] = requestParameters.test;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

@@ -37,8 +37,11 @@ export interface CreateRequest {
 
 export interface ListRequest {
     testMode?: boolean;
+    status?: ListStatusEnum;
+    carrierId?: string;
     limit?: number;
     offset?: number;
+    carrierName?: ListCarrierNameEnum;
 }
 
 export interface RemoveRequest {
@@ -109,12 +112,24 @@ export class TrackersApi extends runtime.BaseAPI {
             queryParameters['test_mode'] = requestParameters.testMode;
         }
 
+        if (requestParameters.status !== undefined) {
+            queryParameters['status'] = requestParameters.status;
+        }
+
+        if (requestParameters.carrierId !== undefined) {
+            queryParameters['carrier_id'] = requestParameters.carrierId;
+        }
+
         if (requestParameters.limit !== undefined) {
             queryParameters['limit'] = requestParameters.limit;
         }
 
         if (requestParameters.offset !== undefined) {
             queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.carrierName !== undefined) {
+            queryParameters['carrier_name'] = requestParameters.carrierName;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -214,4 +229,41 @@ export class TrackersApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ListStatusEnum {
+    Pending = 'pending',
+    InTransit = 'in-transit',
+    Incident = 'incident',
+    Delivered = 'delivered'
+}
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ListCarrierNameEnum {
+    Aramex = 'aramex',
+    Australiapost = 'australiapost',
+    Canadapost = 'canadapost',
+    Canpar = 'canpar',
+    DhlExpress = 'dhl_express',
+    DhlUniversal = 'dhl_universal',
+    Dicom = 'dicom',
+    Fedex = 'fedex',
+    Purolator = 'purolator',
+    Royalmail = 'royalmail',
+    Sendle = 'sendle',
+    SfExpress = 'sf_express',
+    Tnt = 'tnt',
+    Ups = 'ups',
+    Usps = 'usps',
+    UspsInternational = 'usps_international',
+    Yanwen = 'yanwen',
+    Yunexpress = 'yunexpress',
+    Eshipper = 'eshipper',
+    Freightcom = 'freightcom'
 }

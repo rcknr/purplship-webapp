@@ -65,7 +65,7 @@ export interface CreateRequest {
 
 export interface ListRequest {
     testMode?: boolean;
-    status?: string;
+    status?: ListStatusEnum;
     createdStart?: Date;
     createdEnd?: Date;
     carrierId?: string;
@@ -73,7 +73,7 @@ export interface ListRequest {
     reference?: string;
     limit?: number;
     offset?: number;
-    carrierName?: string;
+    carrierName?: ListCarrierNameEnum;
 }
 
 export interface PurchaseRequest {
@@ -502,4 +502,43 @@ export class ShipmentsApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ListStatusEnum {
+    Created = 'created',
+    Purchased = 'purchased',
+    Cancelled = 'cancelled',
+    Shipped = 'shipped',
+    InTransit = 'in-transit',
+    Delivered = 'delivered'
+}
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ListCarrierNameEnum {
+    Aramex = 'aramex',
+    Australiapost = 'australiapost',
+    Canadapost = 'canadapost',
+    Canpar = 'canpar',
+    DhlExpress = 'dhl_express',
+    DhlUniversal = 'dhl_universal',
+    Dicom = 'dicom',
+    Fedex = 'fedex',
+    Purolator = 'purolator',
+    Royalmail = 'royalmail',
+    Sendle = 'sendle',
+    SfExpress = 'sf_express',
+    Tnt = 'tnt',
+    Ups = 'ups',
+    Usps = 'usps',
+    UspsInternational = 'usps_international',
+    Yanwen = 'yanwen',
+    Yunexpress = 'yunexpress',
+    Eshipper = 'eshipper',
+    Freightcom = 'freightcom'
 }

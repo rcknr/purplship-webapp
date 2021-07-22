@@ -69,11 +69,24 @@ export interface TrackingStatus {
      */
     test_mode: boolean;
     /**
-     * Specified whether the shipment hasn't been picked up or is in an unknown state
-     * @type {boolean}
+     * The current tracking status
+     * @type {string}
      * @memberof TrackingStatus
      */
-    pending?: boolean;
+    status?: TrackingStatusStatusEnum;
+}
+
+/**
+* @export
+* @enum {string}
+*/
+export enum TrackingStatusStatusEnum {
+    Created = 'created',
+    Purchased = 'purchased',
+    Cancelled = 'cancelled',
+    Shipped = 'shipped',
+    InTransit = 'in-transit',
+    Delivered = 'delivered'
 }
 
 export function TrackingStatusFromJSON(json: any): TrackingStatus {
@@ -93,7 +106,7 @@ export function TrackingStatusFromJSONTyped(json: any, ignoreDiscriminator: bool
         'events': !exists(json, 'events') ? undefined : (json['events'] === null ? null : (json['events'] as Array<any>).map(TrackingEventFromJSON)),
         'delivered': !exists(json, 'delivered') ? undefined : json['delivered'],
         'test_mode': json['test_mode'],
-        'pending': !exists(json, 'pending') ? undefined : json['pending'],
+        'status': !exists(json, 'status') ? undefined : json['status'],
     };
 }
 
@@ -113,7 +126,7 @@ export function TrackingStatusToJSON(value?: TrackingStatus | null): any {
         'events': value.events === undefined ? undefined : (value.events === null ? null : (value.events as Array<any>).map(TrackingEventToJSON)),
         'delivered': value.delivered,
         'test_mode': value.test_mode,
-        'pending': value.pending,
+        'status': value.status,
     };
 }
 

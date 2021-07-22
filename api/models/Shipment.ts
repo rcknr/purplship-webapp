@@ -188,16 +188,16 @@ export interface Shipment {
      */
     carrier_ids?: Array<string> | null;
     /**
-     * provider specific metadata
-     * @type {object}
+     * The attached tracker id
+     * @type {string}
      * @memberof Shipment
      */
-    meta?: object | null;
+    tracker_id?: string | null;
     /**
      * 
-     * The shipment creation date
+     * The shipment creation datetime
      * 
-     * Date Format: `YYYY-MM-DD`
+     * Date Format: `YYYY-MM-DD HH:MM:SS.mmmmmmz`
      * @type {string}
      * @memberof Shipment
      */
@@ -209,17 +209,17 @@ export interface Shipment {
      */
     test_mode: boolean;
     /**
+     * provider specific metadata
+     * @type {object}
+     * @memberof Shipment
+     */
+    meta?: object | null;
+    /**
      * The list of note or warning messages
      * @type {Array<Message>}
      * @memberof Shipment
      */
     messages?: Array<Message>;
-    /**
-     * The selected service
-     * @type {string}
-     * @memberof Shipment
-     */
-    tracker_id?: string | null;
 }
 
 /**
@@ -231,7 +231,7 @@ export enum ShipmentStatusEnum {
     Purchased = 'purchased',
     Cancelled = 'cancelled',
     Shipped = 'shipped',
-    Transit = 'transit',
+    InTransit = 'in-transit',
     Delivered = 'delivered'
 }/**
 * @export
@@ -274,11 +274,11 @@ export function ShipmentFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'reference': !exists(json, 'reference') ? undefined : json['reference'],
         'label_type': !exists(json, 'label_type') ? undefined : json['label_type'],
         'carrier_ids': !exists(json, 'carrier_ids') ? undefined : json['carrier_ids'],
-        'meta': !exists(json, 'meta') ? undefined : json['meta'],
+        'tracker_id': !exists(json, 'tracker_id') ? undefined : json['tracker_id'],
         'created_at': json['created_at'],
         'test_mode': json['test_mode'],
+        'meta': !exists(json, 'meta') ? undefined : json['meta'],
         'messages': !exists(json, 'messages') ? undefined : ((json['messages'] as Array<any>).map(MessageFromJSON)),
-        'tracker_id': !exists(json, 'tracker_id') ? undefined : json['tracker_id'],
     };
 }
 
@@ -313,11 +313,11 @@ export function ShipmentToJSON(value?: Shipment | null): any {
         'reference': value.reference,
         'label_type': value.label_type,
         'carrier_ids': value.carrier_ids,
-        'meta': value.meta,
+        'tracker_id': value.tracker_id,
         'created_at': value.created_at,
         'test_mode': value.test_mode,
+        'meta': value.meta,
         'messages': value.messages === undefined ? undefined : ((value.messages as Array<any>).map(MessageToJSON)),
-        'tracker_id': value.tracker_id,
     };
 }
 
