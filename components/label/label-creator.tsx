@@ -16,7 +16,7 @@ import { Notify } from '@/components/notifier';
 import NavLink from '@/components/generic/navlink';
 import { AppMode } from '@/context/app-mode';
 import ModeIndicator from '@/components/mode-indicator';
-import Spinner from '../Spinner';
+import Spinner from '@/components/spinner';
 
 
 interface LabelCreatorComponent extends View {

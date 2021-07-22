@@ -11,8 +11,10 @@ const StatusBadge: React.FC<StatusBadgeComponent> = ({ status, className, ...pro
         "purchased": "is-info is-ligh",
         "cancelled": "is-light",
         "shipped": "is-link is-light",
-        "transit": "is-link is-light",
+        "in-transit": "is-link is-light",
+        "pending": "is-info is-light",
         "delivered": "is-success is-light",
+        "incident": "is-error is-light",
     }[status || ""] || "is-light";
    
     return (

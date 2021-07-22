@@ -10,7 +10,8 @@ import NavLink from '@/components/generic/navlink';
 import { useLocation, useNavigate } from '@reach/router';
 import StatusBadge from '@/components/status-badge';
 import { Shipment } from '@/api/index';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
+import { ListStatusEnum } from '@/api/apis/ShipmentsApi';
 
 
 interface ShipmentsView extends View { }
@@ -20,7 +21,7 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
   const location = useLocation();
   const { setLoading } = useContext(Loading);
   const { loading, results, load, loadMore, previous, next, called } = useContext(Shipments);
-  const [status, setStatus] = React.useState<string>();
+  const [status, setStatus] = React.useState<ListStatusEnum>();
 
   const viewShipment = (id: string) => (_: React.MouseEvent) => {
     navigate('shipments/' + id);
@@ -28,7 +29,7 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
 
   useEffect(() => { setLoading(loading); }, [loading]);
   useEffect(() => {
-    const newStatus = (new URLSearchParams(location.search)).get('status') || undefined;
+    const newStatus = (new URLSearchParams(location.search)).get('status') as ListStatusEnum || undefined;
     setStatus(newStatus);
     (!loading) && (called ? loadMore : load)({ status: newStatus, cursor: '' });
   }, [location.search]);

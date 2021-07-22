@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { TrackingEvent, TrackingStatus } from '@/api/index';
 import CarrierBadge from '@/components/carrier-badge';
+import { ListStatusEnum } from '@/api/apis/TrackersApi';
 
 type DayEvents = { [k: string]: TrackingEvent[] };
 
@@ -24,12 +25,12 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
     };
     const computeColor = (tracker: TrackingStatus) => {
         if (tracker.delivered) return "has-background-success";
-        else if (tracker.pending) return "has-background-grey-dark";
+        else if (tracker.status === ListStatusEnum.Pending.toString()) return "has-background-grey-dark";
         else return "has-background-info";
     };
     const computeStatus = (tracker: TrackingStatus) => {
         if (tracker.delivered) return "Delivered";
-        else if (tracker.pending) return "Pending";
+        else if (tracker.status === ListStatusEnum.Pending.toString()) return "Pending";
         else return "In-Transit";
     };
     const computeEvents = (tracker: TrackingStatus): DayEvents => {
