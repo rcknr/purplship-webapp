@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import ConnectProviderModal from '@/components/connect-provider-modal';
-import DisconnectProviderButton from '@/components/disconnect-provider-button';
+import { ConnectProviderModalContext } from '@/components/connect-provider-modal';
 import CarrierBadge from '@/components/carrier-badge';
 import { UserConnections, UserConnectionType } from '@/context/user-connections-query';
 import ConnectionMutation from '@/context/connection-mutation';
@@ -8,17 +7,21 @@ import { Loading } from '@/components/loader';
 import { Notify } from '@/components/notifier';
 import { NotificationType } from '@/library/types';
 import { AppMode, computeMode } from '@/context/app-mode';
+import { ConfirmModalContext } from '@/components/confirm-modal';
+import Spinner from '@/components/spinner';
 
 interface UserConnectionListView { }
 
-const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<UserConnectionListView>(({ updateConnection }) => {
+const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<UserConnectionListView>(({ updateConnection, deleteConnection }) => {
   const { notify } = useContext(Notify);
   const { setLoading } = useContext(Loading);
   const { testMode } = useContext(AppMode);
+  const { confirmDeletion } = useContext(ConfirmModalContext);
+  const { editConnection } = useContext(ConnectProviderModalContext);
   const { user_connections, loading, refetch } = useContext(UserConnections);
   const [viewOtherMode, showOther] = useState<boolean>(computeMode());
 
-  const update = async (_?: React.MouseEvent) => refetch && await refetch();
+  const onUpdate = async () => refetch && await refetch();
   const toggle = ({ __typename, active, id }: UserConnectionType) => async () => {
     try {
       const data = { [__typename.toLowerCase()]: { id, active: !active } };
@@ -27,7 +30,19 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
         type: NotificationType.success,
         message: `carrier connection ${!active ? 'activated' : 'deactivated'}!`
       });
-      update();
+      onUpdate();
+    } catch (message) {
+      notify({ type: NotificationType.error, message });
+    }
+  };
+  const onDelete = (id: string) => async () => {
+    try {
+      await deleteConnection(id);
+      notify({
+        type: NotificationType.success,
+        message: `carrier connection deleted!`
+      });
+      onUpdate();
     } catch (message) {
       notify({ type: NotificationType.error, message });
     }
@@ -42,7 +57,9 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
         <input id="toggle" type="checkbox" defaultChecked={viewOtherMode} onChange={() => showOther(!viewOtherMode)} />
       </label>
 
-      {(user_connections.length > 0) && <table className="table is-fullwidth">
+      {loading && <Spinner />}
+
+      {(!loading && user_connections.length > 0) && <table className="table is-fullwidth">
 
         <tbody className="connections-table">
           <tr>
@@ -75,16 +92,22 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
               </td>
               <td className="action is-vcentered">
                 <div className="buttons is-centered">
-                  <ConnectProviderModal connection={connection} className="button is-white" onUpdate={update}>
+                  <button className="button is-white" onClick={() => editConnection({
+                    connection, onConfirm: onUpdate
+                  })}>
                     <span className="icon is-small">
                       <i className="fas fa-pen"></i>
                     </span>
-                  </ConnectProviderModal>
-                  <DisconnectProviderButton connection={connection} whenDone={update}>
+                  </button>
+                  <button className="button is-white" onClick={() => confirmDeletion({
+                    identifier: connection.id,
+                    label: `Carrier connection`,
+                    onConfirm: onDelete(connection.id),
+                  })}>
                     <span className="icon is-small">
                       <i className="fas fa-trash"></i>
                     </span>
-                  </DisconnectProviderButton>
+                  </button>
                 </div>
               </td>
             </tr>

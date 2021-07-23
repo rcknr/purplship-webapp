@@ -10,28 +10,45 @@ import ConnectionMutation from '@/context/connection-mutation';
 import { UserConnectionType } from '@/context/user-connections-query';
 import Notifier, { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
-import { deepEqual } from '@/library/helper';
+import { deepEqual, isNone } from '@/library/helper';
 import { AppMode } from '@/context/app-mode';
+
+type OperationType = {
+    connection?: UserConnectionType;
+    onConfirm?: () => Promise<any>;
+};
+type ConnectProviderModalContextType = {
+    editConnection: (operation: OperationType) => void,
+};
+
+export const ConnectProviderModalContext = React.createContext<ConnectProviderModalContextType>({} as ConnectProviderModalContextType);
 
 interface ConnectProviderModalComponent {
     connection?: UserConnectionType;
-    className?: string;
-    onUpdate?: () => void;
 }
 
 const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = ConnectionMutation<ConnectProviderModalComponent>(
-    ({ children, connection, className, onUpdate, createConnection, updateConnection }) => {
+    ({ children, createConnection, updateConnection }) => {
         const { carriers } = useContext(APIReference);
         const { notify } = useContext(Notify);
         const { loading, setLoading } = useContext(Loading);
         const { testMode } = useContext(AppMode);
         const DEFAULT_STATE = (): Partial<UserConnectionType> => ({ carrier_name: 'none', test: testMode });
         const [key, setKey] = useState<string>(`connection-${Date.now()}`);
-        const [isNew, _] = useState<boolean>(connection === null || connection === undefined);
-        const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(connection || DEFAULT_STATE());
+        const [isNew, setIsNew] = useState<boolean>(true);
+        const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(DEFAULT_STATE());
         const [isActive, setIsActive] = useState<boolean>(false);
         const [isDisabled, setIsDisabled] = useState<boolean>(true);
+        const [operation, setOperation] = useState<OperationType>({} as OperationType);
 
+        const editConnection = (operation: OperationType): void => {
+            setIsActive(true);
+            setIsDisabled(true);
+            setPayload(operation.connection || DEFAULT_STATE());
+            setIsNew(isNone(operation.connection));
+            setOperation(operation);
+            setKey(`connection-${Date.now()}`);
+        };
         const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
             evt.preventDefault();
             setLoading(true);
@@ -49,8 +66,8 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     type: NotificationType.success,
                     message: `carrier connection ${isNew ? 'registered' : 'updated'} successfully`
                 });
-                setTimeout(() => close(), 1500);
-                onUpdate && onUpdate();
+                setTimeout(() => close(), 500);
+                operation.onConfirm && operation.onConfirm();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             } finally {
@@ -58,11 +75,10 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
             }
         };
         const close = (e?: React.MouseEvent) => {
-            console.log(e, "triggered")
             e?.preventDefault();
             if (isNew) setPayload(DEFAULT_STATE());
             setKey(`connection-${Date.now()}`);
-            setIsDisabled(false);
+            setIsDisabled(true);
             setIsActive(false);
         };
         const handleOnChange = (property: string) => (e: React.ChangeEvent<any>) => {
@@ -74,7 +90,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                 new_state = { ...payload, test: e.target.checked };
             }
             setPayload(new_state);
-            setIsDisabled(deepEqual((connection || DEFAULT_STATE), new_state));
+            setIsDisabled(deepEqual((operation.connection || DEFAULT_STATE), new_state));
         };
         const has = (property: string) => {
             return hasProperty(payload.carrier_name as CarrierSettingsCarrierNameEnum, property);
@@ -82,9 +98,9 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
         return (
             <Notifier>
-                <button className={className} onClick={() => setIsActive(true)}>
+                <ConnectProviderModalContext.Provider value={{ editConnection }}>
                     {children}
-                </button>
+                </ConnectProviderModalContext.Provider>
 
                 <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                     <div className="modal-background" onClick={close}></div>
@@ -170,7 +186,11 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
                                     <CheckBoxField defaultChecked={payload.test} onChange={handleOnChange("test")}>Test Mode</CheckBoxField>
 
-                                    <ButtonField className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={isDisabled}>Submit</ButtonField>
+                                    <ButtonField className={`is-primary ${loading ? 'is-loading' : ''}`} 
+                                        fieldClass="has-text-centered mt-3" 
+                                        disabled={isDisabled}>
+                                            <span>Submit</span>
+                                    </ButtonField>
                                 </>
                             }
                         </section>
