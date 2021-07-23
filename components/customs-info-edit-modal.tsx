@@ -6,6 +6,7 @@ import { CustomsTemplateType, CustomsType, NotificationType } from '@/library/ty
 import TemplateMutation from '@/context/template-mutation';
 import CheckBoxField from '@/components/generic/checkbox-field';
 import Notifier, { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     customs: {
@@ -15,34 +16,47 @@ const DEFAULT_TEMPLATE_CONTENT = {
     }
 } as CustomsTemplateType;
 
-type ExtendedCustoms = CustomsType & { label: string; is_default?: boolean; };
-interface CustomsInfoEditModalComponent {
+
+type OperationType = {
     customsTemplate?: CustomsTemplateType;
-    className: string;
-    onUpdate?: () => void;
-}
+    onConfirm: () => Promise<any>;
+};
+type CustomsInfoEditContextType = {
+    editCustomsInfo: (operation: OperationType) => void,
+};
+type ExtendedCustoms = CustomsType & { label: string; is_default?: boolean; };
+
+export const CustomsInfoEditContext = React.createContext<CustomsInfoEditContextType>({} as CustomsInfoEditContextType);
+
+interface CustomsInfoEditModalComponent {}
 
 const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMutation<CustomsInfoEditModalComponent>(
-    ({ customsTemplate, onUpdate, children, className, createTemplate, updateTemplate, deleteCommodity }) => {
+    ({ children, createTemplate, updateTemplate, deleteCommodity }) => {
         const { notify } = useContext(Notify);
+        const { setLoading } = useContext(Loading);
         const [isActive, setIsActive] = useState<boolean>(false);
         const [key, setKey] = useState<string>(`customs-${Date.now()}`);
-        const [isNew, _] = useState<boolean>(isNone(customsTemplate));
+        const [isNew, setIsNew] = useState<boolean>(true);
         const [payload, setPayload] = useState<CustomsType | undefined>();
+        const [operation, setOperation] = useState<OperationType | undefined>();
 
-        const open = () => {
+        const editCustomsInfo = (operation: OperationType) => {
+            const { label, is_default, customs } = operation.customsTemplate || DEFAULT_TEMPLATE_CONTENT;
+
             setIsActive(true);
-            const { label, is_default, customs } = customsTemplate || DEFAULT_TEMPLATE_CONTENT;
-
-            setPayload({ ...customs, is_default, label } as ExtendedCustoms);
+            setOperation(operation);
+            setIsNew(isNone(operation.customsTemplate));
+            setPayload({ ...customs, label, is_default } as CustomsType);
+            setKey(`address-${Date.now()}`);
         };
         const close = (_?: React.MouseEvent, changed?: boolean) => {
             if (isNew) setPayload(undefined);
-            if (changed && onUpdate !== undefined) onUpdate();
+            if (changed && operation?.onConfirm !== undefined) operation?.onConfirm();
             setIsActive(false);
             setKey(`customs-${Date.now()}`);
         };
         const update = async ({ changes }: any) => {
+            setLoading(true);
             const { label, is_default, duty, ...data } = (changes as { customs: ExtendedCustoms }).customs;
             const payload = { ...data, ...(isNone(duty) ? { duty: null } : { duty: JSON.stringify(duty) }) };
             if (isNew) {
@@ -50,11 +64,12 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
                 notify({ type: NotificationType.success, message: 'Customs info successfully added!' });
             }
             else {
-                await updateTemplate({ label, is_default, customs: payload as any, id: customsTemplate?.id as string });
+                await updateTemplate({ label, is_default, customs: payload as any, id: operation?.customsTemplate?.id as string });
                 notify({ type: NotificationType.success, message: 'Customs info successfully updated!' });
             }
 
-            setTimeout(() => close(undefined, true), 1500);
+            setTimeout(() => close(undefined, true), 2000);
+            setLoading(false);
         };
         const Extension: React.FC<{ onChange?: EventHandler<any>; customs?: ExtendedCustoms }> = ({ onChange, customs }) => (
             <>
@@ -72,9 +87,9 @@ const CustomsInfoEditModal: React.FC<CustomsInfoEditModalComponent> = TemplateMu
 
         return (
             <Notifier>
-                <button className={className} onClick={open}>
+                <CustomsInfoEditContext.Provider value={{ editCustomsInfo }}>
                     {children}
-                </button>
+                </CustomsInfoEditContext.Provider>
 
                 <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                     <div className="modal-background" onClick={close}></div>

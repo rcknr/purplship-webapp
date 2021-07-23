@@ -8,7 +8,7 @@ interface StatusBadgeComponent extends React.AllHTMLAttributes<HTMLSpanElement> 
 const StatusBadge: React.FC<StatusBadgeComponent> = ({ status, className, ...props }) => {
     const color = {
         "created": "is-info is-light",
-        "purchased": "is-info is-ligh",
+        "purchased": "is-info is-light",
         "cancelled": "is-light",
         "shipped": "is-link is-light",
         "in-transit": "is-link is-light",

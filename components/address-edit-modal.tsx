@@ -7,6 +7,7 @@ import CheckBoxField from './generic/checkbox-field';
 import { AddressTemplate, NotificationType } from '@/library/types';
 import TemplateMutation from '@/context/template-mutation';
 import Notifier, { Notify } from '@/components/notifier';
+import { Loading } from '@/components/loader';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     address: {
@@ -16,47 +17,60 @@ const DEFAULT_TEMPLATE_CONTENT = {
     }
 } as AddressTemplate;
 
+type OperationType = {
+    addressTemplate?: AddressTemplate;
+    onConfirm: () => Promise<any>;
+};
+type AddressEditContextType = {
+    editAddress: (operation: OperationType) => void,
+};
 type ExtendedAddress = AddressTemplate['address'] & { label: string; is_default?: boolean; };
 type ExtendedShipment = Shipment & { template: ExtendedAddress; };
 
-interface AddressEditModalComponent {
-    addressTemplate?: AddressTemplate;
-    className: string;
-    onUpdate?: () => void;
-}
+export const AddressEditContext = React.createContext<AddressEditContextType>({} as AddressEditContextType);
+
+interface AddressEditModalComponent {}
 
 const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<AddressEditModalComponent>(
-    ({ addressTemplate, onUpdate, children, className, createTemplate, updateTemplate }) => {
+    ({ children, createTemplate, updateTemplate }) => {
         const { notify } = useContext(Notify);
+        const { setLoading } = useContext(Loading);
         const [isActive, setIsActive] = useState<boolean>(false);
         const [key, setKey] = useState<string>(`address-${Date.now()}`);
-        const [isNew, _] = useState<boolean>(isNone(addressTemplate));
+        const [isNew, setIsNew] = useState<boolean>(true);
         const [payload, setPayload] = useState<ExtendedAddress | undefined>();
+        const [operation, setOperation] = useState<OperationType | undefined>();
 
-        const open = () => {
+        const editAddress = (operation: OperationType) => {
+            const { label, is_default, address } = operation.addressTemplate || DEFAULT_TEMPLATE_CONTENT;
+
             setIsActive(true);
-            const { label, is_default, address } = addressTemplate || DEFAULT_TEMPLATE_CONTENT;
-
+            setOperation(operation);
+            setIsNew(isNone(operation.addressTemplate));
             setPayload({ ...address, label, is_default } as ExtendedAddress);
+            setKey(`address-${Date.now()}`);
         };
         const close = (_?: React.MouseEvent, changed?: boolean) => {
             if (isNew) setPayload(undefined);
-            if (changed && onUpdate !== undefined) onUpdate();
+            if (changed && operation?.onConfirm !== undefined) operation?.onConfirm();
             setIsActive(false);
+            setOperation(undefined);
             setKey(`address-${Date.now()}`);
         };
         const update = async ({ changes }: any) => {
+            setLoading(true);
             const { label, is_default, ...address } = (changes as ExtendedShipment).template;
             if (isNew) {
                 await createTemplate({ label, is_default, address: address });
                 notify({ type: NotificationType.success, message: 'Address successfully added!' });
             }
             else {
-                await updateTemplate({ label, is_default, address: address, id: addressTemplate?.id as string });
+                await updateTemplate({ label, is_default, address: address, id: operation?.addressTemplate?.id as string });
                 notify({ type: NotificationType.success, message: 'Address successfully updated!' });
             }
 
-            setTimeout(() => close(undefined, true), 1500);
+            setTimeout(() => close(undefined, true), 2000);
+            setLoading(false);
         };
         const Extension: React.FC<{ onChange?: EventHandler<any>; address?: ExtendedAddress }> = ({ onChange, address }) => (
             <>
@@ -73,9 +87,9 @@ const AddressEditModal: React.FC<AddressEditModalComponent> = TemplateMutation<A
 
         return (
             <Notifier>
-                <button className={className} onClick={open}>
+                <AddressEditContext.Provider value={{ editAddress }}>
                     {children}
-                </button>
+                </AddressEditContext.Provider>
 
                 <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                     <div className="modal-background" onClick={close}></div>
