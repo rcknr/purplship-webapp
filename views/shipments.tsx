@@ -12,6 +12,7 @@ import StatusBadge from '@/components/status-badge';
 import { Shipment } from '@/api/index';
 import Spinner from '@/components/spinner';
 import { ListStatusEnum } from '@/api/apis/ShipmentsApi';
+import LabelPrinter from '@/components/label/label-printer';
 
 
 interface ShipmentsView extends View { }
@@ -30,12 +31,13 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
   useEffect(() => { setLoading(loading); }, [loading]);
   useEffect(() => {
     const newStatus = (new URLSearchParams(location.search)).get('status') as ListStatusEnum || undefined;
+
     setStatus(newStatus);
     (!loading) && (called ? loadMore : load)({ status: newStatus, cursor: '' });
   }, [location.search]);
 
   return (
-    <>
+    <LabelPrinter>
       <ModeIndicator />
 
       <header className="px-2 pt-1 pb-4">
@@ -136,7 +138,7 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
 
       </div>}
 
-    </>
+    </LabelPrinter>
   );
 });
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
 import { Shipment, ShipmentStatusEnum } from '@/api/index';
-import LabelPrinter from '@/components/label/label-printer';
+import { LabelPrinterContext } from '@/components/label/label-printer';
 import { useNavigate } from '@reach/router';
 import { NotificationType } from '@/library/types';
 import ShipmentMutation from '@/context/shipment-mutation';
@@ -17,7 +17,8 @@ interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement
 const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentMenuComponent>(({ shipment, voidLabel, className, ...props }) => {
     const navigate = useNavigate();
     const { notify } = useContext(Notify);
-    const shipments = useContext(Shipments)
+    const { printLabel } = useContext(LabelPrinterContext);
+    const shipments = useContext(Shipments);
     const btn = useRef<HTMLButtonElement>(null);
     const [isActive, setIsActive] = useState(false);
 
@@ -54,7 +55,11 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
     return (
         <div className={`buttons has-addons ${className}`} {...props}>
 
-            {!isNone(shipment.label) && <LabelPrinter shipment={shipment}  className="is-small" style={{ width: '70%' }} />}
+            {!isNone(shipment.label) && <>
+                <a className="button is-small" onClick={() => printLabel(shipment)} style={{ width: '70%' }}>
+                    <span>Print Label</span>
+                </a>
+            </>}
             {isNone(shipment.label) && shipment.status === ShipmentStatusEnum.Created && <>
                 <a className="button is-small" onClick={createLabel} style={{ width: '70%' }}>
                     <span>Buy Label</span>

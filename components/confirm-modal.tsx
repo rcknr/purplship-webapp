@@ -27,6 +27,7 @@ const ConfirmModal: React.FC<ConfirmModalComponent> = ({ children }) => {
     const close = (evt?: React.MouseEvent) => {
         evt?.preventDefault();
         setIsActive(false);
+        setOperation(undefined);
     };
     const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
