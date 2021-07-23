@@ -15,7 +15,7 @@ const Account: React.FC<AccountView> = () => {
     <>
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">Account Settings</span>
+        <span className="title is-4">Account Settings</span>
       </header>
 
 

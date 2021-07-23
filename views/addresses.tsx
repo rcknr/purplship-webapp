@@ -27,7 +27,7 @@ const AddressesPage: React.FC<AddressesView> = TemplateMutation<AddressesView>((
     <>
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">Addresses</span>
+        <span className="title is-4">Addresses</span>
         <AddressEditModal className="button is-success is-pulled-right" onUpdate={update}>
           <span>New Address</span>
         </AddressEditModal>
@@ -38,7 +38,7 @@ const AddressesPage: React.FC<AddressesView> = TemplateMutation<AddressesView>((
 
           <tbody className="templates-table">
             <tr>
-              <td className="has-text-weight-bold" colSpan={2}>Address Templates</td>
+              <td className="is-size-7" colSpan={2}>ADDRESS TEMPLATES</td>
               <td className="action"></td>
             </tr>
 

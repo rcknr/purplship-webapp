@@ -27,7 +27,7 @@ const CustomsInfoPage: React.FC<CustomsInfosView> = TemplateMutation<CustomsInfo
     <>
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">Customs</span>
+        <span className="title is-4">Customs</span>
         <CustomsInfoEditModal className="button is-success is-pulled-right" onUpdate={refresh}>
           <span>New Customs Info</span>
         </CustomsInfoEditModal>
@@ -38,7 +38,7 @@ const CustomsInfoPage: React.FC<CustomsInfosView> = TemplateMutation<CustomsInfo
 
           <tbody className="templates-table">
             <tr>
-              <td className="has-text-weight-bold" colSpan={2}>Customs Info Templates</td>
+              <td className="is-size-7" colSpan={2}>CUSTOMS INFO TEMPLATES</td>
               <td className="action"></td>
             </tr>
 

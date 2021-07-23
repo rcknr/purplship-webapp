@@ -35,9 +35,9 @@ const LogList: React.FC<LogListView> = () => {
 
                     <tbody className="logs-table">
                         <tr>
-                            <td className="status has-text-weight-bold"><span className="ml-2">STATUS</span></td>
-                            <td className="description has-text-weight-bold">DESCRIPTION</td>
-                            <td className="date has-text-right has-text-weight-bold"><span className="mr-2">DATE</span></td>
+                            <td className="status is-size-7"><span className="ml-2">STATUS</span></td>
+                            <td className="description is-size-7">DESCRIPTION</td>
+                            <td className="date has-text-right is-size-7"><span className="mr-2">DATE</span></td>
                         </tr>
 
                         {logs.map((log) => (

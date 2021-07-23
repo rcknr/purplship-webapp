@@ -27,7 +27,7 @@ const ParcelsPage: React.FC<ParcelsView> = TemplateMutation<ParcelsView>(({ dele
     <>
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">Parcels</span>
+        <span className="title is-4">Parcels</span>
         <ParcelEditModal className="button is-success is-pulled-right" onUpdate={refresh}>
           <span>New Parcel</span>
         </ParcelEditModal>
@@ -38,7 +38,7 @@ const ParcelsPage: React.FC<ParcelsView> = TemplateMutation<ParcelsView>(({ dele
 
           <tbody className="templates-table">
             <tr>
-              <td className="has-text-weight-bold" colSpan={2}>Parcel Templates</td>
+              <td className="is-size-7" colSpan={2}>PARCEL TEMPLATES</td>
               <td className="action"></td>
             </tr>
 

@@ -45,7 +45,7 @@ const WebhooksPage: React.FC<WebhooksView> = WebhookMutation<WebhooksView>(({ re
       <ModeIndicator />
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">Endpoints</span>
+        <span className="title is-4">Endpoints</span>
         <WebhookEditModal className="button is-default is-pulled-right" onUpdate={refresh}>
           <span className="icon"><i className="fas fa-plus"></i></span>
           <span>Add endpoint</span>
@@ -57,9 +57,9 @@ const WebhooksPage: React.FC<WebhooksView> = WebhookMutation<WebhooksView>(({ re
 
           <tbody>
             <tr>
-              <td className="url has-text-weight-bold">URL</td>
-              <td className="mode has-text-weight-bold">Mode</td>
-              <td className="last_event has-text-weight-bold">Last Event</td>
+              <td className="url is-size-7">URL</td>
+              <td className="mode is-size-7">MODE</td>
+              <td className="last_event is-size-7">LAST EVENT</td>
               <td className="action"></td>
             </tr>
 

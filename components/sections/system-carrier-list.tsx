@@ -14,7 +14,7 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
 
         <tbody className="connections-table">
           <tr>
-            <td className="has-text-weight-bold" colSpan={4}>Carrier</td>
+            <td className="is-size-7" colSpan={4}>ACCOUNTS</td>
             <td className="action"></td>
           </tr>
 

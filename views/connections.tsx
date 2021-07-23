@@ -27,7 +27,7 @@ const ConnectionsPage: React.FC<ConnectionsView> = ( ) => {
       <ModeIndicator />
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">Carriers</span>
+        <span className="title is-4">Carriers</span>
         <ConnectProviderModal className="button is-success is-pulled-right" onUpdate={update}>
           <span>Connect a Carrier</span>
         </ConnectProviderModal>
@@ -35,7 +35,7 @@ const ConnectionsPage: React.FC<ConnectionsView> = ( ) => {
 
       <div className="table-container">
 
-        <Tabs tabs={['Your Connections', 'System Connections']} style={{ position: 'relative' }}>
+        <Tabs tabs={['Your Connections', 'System Connections']} tabClass="is-capitalized has-text-weight-semibold" style={{ position: 'relative' }}>
 
           <UserConnectionList />
 
