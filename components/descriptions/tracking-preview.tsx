@@ -1,23 +1,32 @@
 import React, { useRef, useState } from 'react';
 import { TrackingEvent, TrackingStatus } from '@/api/index';
-import CarrierBadge from '@/components/carrier-badge';
 import { ListStatusEnum } from '@/api/apis/TrackersApi';
+import { isNone } from '@/library/helper';
 
 type DayEvents = { [k: string]: TrackingEvent[] };
+type TrackingPreviewContextType = {
+    previewTracker: (tracker: TrackingStatus) => void,
+};
 
-interface TrackingPreviewComponent {
-    tracker: TrackingStatus;
-}
+interface TrackingPreviewComponent {}
 
-const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children }) => {
+export const TrackingPreviewContext = React.createContext<TrackingPreviewContextType>({} as TrackingPreviewContextType);
+
+const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ children }) => {
     const link = useRef<HTMLAnchorElement>(null);
     const linkShare = useRef<HTMLInputElement>(null);
     const [isActive, setIsActive] = useState<boolean>(false);
     const [key, setKey] = useState<string>(`tracker-${Date.now()}`);
+    const [tracker, setTracker] = useState<TrackingStatus>();
 
+    const previewTracker = (tracker: TrackingStatus) => {
+        setTracker(tracker);
+        setIsActive(true);
+    };
     const dismiss = (_?: React.MouseEvent) => {
         setKey(`tracker-${Date.now()}`);
         setIsActive(false);
+        setTracker(undefined);
     };
     const copy = (_: React.MouseEvent) => {
         linkShare.current?.select();
@@ -42,25 +51,25 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
 
     return (
         <>
-            <button className="button is-white" onClick={() => setIsActive(true)}>
+            <TrackingPreviewContext.Provider value={{ previewTracker }}>
                 {children}
-            </button>
+            </TrackingPreviewContext.Provider>
 
             <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                 <div className="modal-background" onClick={dismiss}></div>
 
-                <div className="modal-card">
+                {!isNone(tracker) && <div className="modal-card">
                     <section className="modal-card-body">
                         <p className="has-text-centered pb-4">
-                            <img src={`/static/carriers/${tracker.carrier_name}_icon.svg`} alt={tracker.carrier_name} width="60" />
+                            <img src={`/static/carriers/${tracker?.carrier_name}_icon.svg`} alt={tracker?.carrier_name} width="60" />
                         </p>
 
                         <p className="subtitle has-text-centered is-6">
-                            <span>Tracking ID</span> <strong>{tracker.tracking_number}</strong>
+                            <span>Tracking ID</span> <strong>{tracker?.tracking_number}</strong>
                         </p>
 
-                        <p className={computeColor(tracker) + " block has-text-centered has-text-white is-size-4 py-3"}>
-                            {computeStatus(tracker)}
+                        <p className={computeColor(tracker as TrackingStatus) + " block has-text-centered has-text-white is-size-4 py-3"}>
+                            {computeStatus(tracker as TrackingStatus)}
                         </p>
 
                         <hr />
@@ -69,7 +78,7 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
 
                             <aside className="menu">
                                 <ul className="menu-list mb-5" style={{ maxWidth: "28rem;" }}>
-                                    {Object.entries(computeEvents(tracker)).map(([day, events]) => <li>
+                                    {Object.entries(computeEvents(tracker as TrackingStatus)).map(([day, events]) => <li>
                                         <p className="menu-label is-size-6 is-capitalized">{day}</p>
 
                                         {events.map((event) => <ul>
@@ -100,14 +109,14 @@ const TrackingPreview: React.FC<TrackingPreviewComponent> = ({ tracker, children
                                 <button className="button is-small is-light mx-1" onClick={copy}>
                                     <span className="icon is-small"><i className="fas fa-copy"></i></span>
                                 </button>
-                                <a className="button is-small is-light" href={`/tracking/${tracker.id}`} ref={link} target="blank">
+                                <a className="button is-small is-light" href={`/tracking/${tracker?.id}`} ref={link} target="blank">
                                     <span className="icon is-small"><i className="fas fa-share-square"></i></span>
                                 </a>
                             </div>
                         </div>
 
                     </section>
-                </div>
+                </div>}
 
                 <button className="modal-close is-large has-background-dark" aria-label="close" onClick={dismiss}></button>
 
