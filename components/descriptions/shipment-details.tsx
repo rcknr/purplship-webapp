@@ -1,115 +1,228 @@
 import React, { useContext, useEffect, useState } from 'react';
-import CarrierBadge from '@/components/carrier-badge';
-import NavLink from '@/components/generic/navlink';
 import { View } from '@/library/types';
 import { LabelData } from '@/context/shipment-query';
-import { formatRef, isNone } from '@/library/helper';
+import { formatAddressLocation, formatCustomsLabel, formatDate, formatDateTime, formatDimension, formatParcelLabel, formatRef, formatWeight, isNone, shipmentCarrier } from '@/library/helper';
 import LabelPrinter, { LabelPrinterContext } from '@/components/label/label-printer';
-import AddressDescription from '@/components/descriptions/address-description';
-import ParcelDescription from '@/components/descriptions/parcel-description';
-import OptionsDescription from '@/components/descriptions/options-description';
-import CustomsInfoDescription from '@/components/descriptions/customs-info-description';
+import { useNavigate } from '@reach/router';
+import { AppMode } from '@/context/app-mode';
+import StatusBadge from '@/components/status-badge';
+import { Customs, ShipmentStatusEnum } from '@/api/index';
+import ModeIndicator from '@/components/mode-indicator';
 
 interface ShipmentDetailsComponent extends View {
     id?: string;
 }
 
-const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id, children }) => {
+const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
+    const navigate = useNavigate();
+    const { basePath } = useContext(AppMode);
     const [key] = useState<string>(`shipment-${Date.now()}`);
     const { shipment, loading, loadShipment } = useContext(LabelData);
+
+    const buyLabel = (_: React.MouseEvent) => {
+        navigate(basePath + '/buy_label/' + shipment.id);
+    };
+    const copyId = (_: React.MouseEvent) => {
+        var input = document.createElement('input');
+        input.setAttribute('value', shipment.id as string);
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+    };
 
     useEffect(() => { if (!loading && shipment?.id !== id) loadShipment(id); }, []);
 
     return (
         <LabelPrinter>
+            <ModeIndicator />
             <LabelPrinterContext.Consumer>{({ printLabel }) => <>
 
-                <nav className="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
-                    <ul>
-                        <li><NavLink to="/">Shipments</NavLink></li>
-                        <li className="is-active"><a href="#" aria-current="page">details</a></li>
-                    </ul>
-                </nav>
-
-                {!isNone(shipment.id) && <div className="card">
-
-                    <div className="log-card-header px-5 pt-5 pb-3">
-                        <p className="subtitle is-6">Label</p>
-                        <p className="title is-5">
-                            <span>{shipment.id}</span>
-                            <span className="ml-2 tag is-info is-light">
-                                {shipment.status?.toString().toUpperCase()}
-                            </span>
-                        </p>
-                    </div>
-
-                    <div className="card-content py-3">
-                        <div className="columns my-0">
-                            <div className="column is-3 py-1">Service Courier</div>
-                            <div className="column is-8 py-1">
-                                <CarrierBadge carrier={((shipment.meta as any)?.rate_provider || shipment.carrier_name) as string} className="tag" />
-                            </div>
+                {!isNone(shipment.id) && <>
+                    <div className="columns my-1">
+                        <div className="column is-6">
+                            <span className="subtitle is-size-7 has-text-weight-semibold">SHIPMENT</span>
+                            <br />
+                            <span className="title is-4 mr-2">{shipment.tracking_number || "NOT COMPLETED"}</span>
+                            <StatusBadge status={shipment.status} />
                         </div>
-                        <div className="columns my-0">
-                            <div className="column is-3 py-1">Service Level</div>
-                            <div className="column is-8 py-1 has-text-weight-semibold">
-                                {formatRef(((shipment.selected_rate?.meta as any)?.service_name || shipment.selected_rate?.service) as string)}
-                            </div>
-                        </div>
-                        <div className="columns my-0">
-                            <div className="column is-3 py-1">Service Charge</div>
-                            <div className="column is-8 py-1 is-subtitle is-size-6 my-1 has-text-weight-semibold has-text-grey">
-                                <strong>{shipment.selected_rate?.total_charge} {shipment.selected_rate?.currency}</strong>
-                            </div>
+
+                        <div className="column is-6 has-text-right pb-0">
+                            <a className="button is-white is-small"
+                                style={{ padding: '0', height: '20px' }}
+                                data-id={shipment.id}
+                                onClick={copyId}
+                                title="Copy ID">
+                                <span className="mr-1">{shipment.id}</span>
+                                <i className="fas fa-clipboard"></i>
+                            </a>
+                            <br />
+                            {!isNone(shipment.label) && <button className="button is-default is-small" onClick={() => printLabel(shipment)}>
+                                <i className="fas fa-print"></i>
+                                <span className="ml-1">Print Label</span>
+                            </button>}
+                            {(isNone(shipment.label) && shipment.status === ShipmentStatusEnum.Created) &&
+                                <button className="button is-default is-small" onClick={buyLabel}>Buy Label</button>}
                         </div>
                     </div>
 
-                    <div className="card-content py-3">
+                    <hr className="mt-1 mb-2" style={{ height: '1px' }} />
 
-                        <div className="is-12 py-1" style={{ display: `${shipment.recipient.address_line1 === undefined ? 'none' : 'block'}` }}>
-
-                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">Shipped To</p>
-                            <AddressDescription address={shipment.recipient} />
-
+                    <div className="columns mb-4">
+                        <div className="p-4 mr-4">
+                            <span className="subtitle is-size-7 my-4">Date</span><br />
+                            <span className="subtitle is-size-7 has-text-weight-semibold">{formatDateTime(shipment.created_at)}</span>
                         </div>
 
-                        <div className="is-12 py-1" style={shipment.shipper.address_line1 === undefined ? { display: 'none' } : {}}>
+                        {!isNone(shipment.service) && <>
+                            <div className="my-2" style={{ width: '1px', backgroundColor: '#ddd' }}></div>
+                            <div className="p-4 mr-4">
+                                <span className="subtitle is-size-7 my-4">Courier</span><br />
+                                <img src={`/static/carriers/${shipmentCarrier(shipment)}_logo.svg`} style={{ width: "100px" }} className="mt-1" />
+                            </div>
 
-                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">Shipped From</p>
-                            <AddressDescription address={shipment.shipper} />
+                            <div className="my-2" style={{ width: '1px', backgroundColor: '#ddd' }}></div>
+                            <div className="p-4 mr-4">
+                                <span className="subtitle is-size-7 my-4">Service Level</span><br />
+                                <span className="subtitle is-size-7 has-text-weight-semibold">
+                                    {((shipment.meta as any)?.rate_provider !== shipment.carrier_name) && <span>{formatRef(shipment.carrier_name as string)} </span>}
+                                    {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
+                                </span>
+                            </div>
+                        </>}
 
+                        {!isNone(shipment.reference) && <>
+                            <div className="my-2" style={{ width: '1px', backgroundColor: '#ddd' }}></div>
+                            <div className="p-4 mr-4">
+                                <span className="subtitle is-size-7 my-4">Reference</span><br />
+                                <span className="subtitle is-size-7 has-text-weight-semibold">{shipment.reference}</span>
+                            </div>
+                        </>}
+                    </div>
+
+                    {!isNone(shipment.selected_rate) && <>
+
+                        <h2 className="title is-5 my-4">Service Details</h2>
+                        <hr className="mt-1 mb-2" style={{ height: '1px' }} />
+
+                        <div className="mt-3 mb-6">
+                            <div className="columns my-0">
+                                <div className="column is-3 is-size-6 py-1">Service Level</div>
+                                <div className="column is-size-6 has-text-weight-semibold py-1">
+                                    {((shipment.meta as any)?.rate_provider !== shipment.carrier_name) && <span>{formatRef(shipment.carrier_name as string)} </span>}
+                                    {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
+                                </div>
+                            </div>
+                            <div className="columns my-0">
+                                <div className="column is-3 is-size-6 py-1">Cost</div>
+                                <div className="column is-size-6 py-1">
+                                    <span className="has-text-weight-semibold mr-1">{shipment.selected_rate?.total_charge}</span>
+                                    <span>{shipment.selected_rate?.currency}</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="is-12 py-1" style={{ display: `${shipment.parcels.length == 0 ? 'none' : 'block'}` }}>
+                    </>}
 
-                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">Parcel</p>
-                            <ParcelDescription parcel={shipment.parcels[0]} />
 
+                    <h2 className="title is-5 my-4">Shipment Details</h2>
+                    <hr className="mt-1 mb-2" style={{ height: '1px' }} />
+
+                    <div className="mt-3 mb-6">
+
+                        <div className="columns my-0">
+                            <div className="column is-6 is-size-6 py-1">
+                                <p className="is-title is-size-6 my-2 has-text-weight-semibold">ADDRESS</p>
+
+                                <p className="is-size-6 my-1">{shipment.shipper.person_name}</p>
+                                <p className="is-size-6 my-1">{shipment.shipper.company_name}</p>
+                                <p className="is-size-6 my-1 has-text-info">{shipment.shipper.email}</p>
+                                <p className="is-size-6 my-1 has-text-info">{shipment.shipper.phone_number}</p>
+                                <p className="is-size-6 my-1">
+                                    <span>{shipment.shipper.address_line1}</span>
+                                    {!isNone(shipment.shipper.address_line2) && <span>{shipment.shipper.address_line2}</span>}
+                                </p>
+                                <p className="is-size-6 my-1">{formatAddressLocation(shipment.shipper)}</p>
+                            </div>
+
+                            <div className="column is-6 is-size-6 py-1">
+                                <p className="is-title is-size-6 my-2 has-text-weight-semibold">PARCELS</p>
+
+                                {shipment.parcels.map((parcel) => <>
+                                    <hr className="mt-1 mb-2" style={{ height: '1px' }} />
+                                    <p className="is-size-7 my-1">{formatParcelLabel(parcel)}</p>
+                                    <p className="is-size-7 my-1 has-text-grey">{formatDimension(parcel)}</p>
+                                    <p className="is-size-7 my-1 has-text-grey">{formatWeight(parcel)}</p>
+                                </>)}
+                            </div>
                         </div>
 
-                        <div className="is-12 py-1" style={{ display: `${Object.values(shipment.options as object).length === 0 ? 'none' : 'block'}` }}>
+                        <div className="columns mt-6 mb-0">
+                            {!isNone(shipment.customs) && <div className="column is-6 is-size-6 py-1">
+                                <p className="is-title is-size-6 my-2 has-text-weight-semibold">CUSTOMS DECLARATION</p>
 
-                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">Options</p>
-                            <OptionsDescription options={shipment.options} />
+                                <p className="is-size-6 my-1">{formatCustomsLabel(shipment.customs as Customs)}</p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.aes) ? '' : <span>AES: <strong>{shipment.customs?.aes}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.eel_pfc) ? '' : <span>EEL / PFC: <strong>{shipment.customs?.eel_pfc}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.invoice) ? '' : <span>Invoice Number: <strong>{shipment.customs?.invoice}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.invoice_date) ? '' : <span>Invoice Date: <strong>{shipment.customs?.invoice_date}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.certificate_number) ? '' : <span>Certificate Number: <strong>{shipment.customs?.certificate_number}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.duty) ? '' : <span>Duties paid by <strong>{formatRef('' + shipment.customs?.duty?.paid_by)}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {!shipment.customs?.certify ? '' : <span>Certified and Signed By <strong>{shipment.customs.signer}</strong></span>}
+                                </p>
+                                <p className="is-size-6 my-1 has-text-grey">
+                                    {isNone(shipment.customs?.content_description) ? '' : <span><strong>Content:</strong> {shipment.customs?.content_description}</span>}
+                                </p>
+                            </div>}
 
-                        </div>
+                            {(Object.values(shipment.options as object).length > 0) && <div className="column is-6 is-size-6 py-1">
+                                <p className="is-title is-size-6 my-2 has-text-weight-semibold">SHIPMENT OPTIONS</p>
 
-                        <div className="is-12 py-1" style={{ display: `${isNone(shipment.customs) ? 'none' : 'block'}` }}>
-
-                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">Customs Declaration</p>
-                            <CustomsInfoDescription customs={(shipment.customs || {})} />
-
+                                {[shipment.options].map((options: any) => <>
+                                    <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                                        {isNone(options.shipment_date) ? '' : <span>Shipment Date: <strong>{` ${formatDate(options.shipment_date)}`}</strong></span>}
+                                    </p>
+                                    <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                                        {isNone(options.currency) ? '' : <span>Preferred Currency: <strong>{` ${options.currency}`}</strong></span>}
+                                    </p>
+                                    <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                                        {isNone(options.signature_confirmation) ? '' : <span>Signature Confirmation <strong>Required</strong></span>}
+                                    </p>
+                                    <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                                        {isNone(options.insurance) ? '' : <>
+                                            <span>Insurance (Coverage Amount <strong>{options.insurance} {options.currency}</strong>)</span>
+                                        </>}
+                                    </p>
+                                    <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                                        {isNone(options.declared_value) ? '' : <span>Declared Value: <strong>{` ${options.declared_value} ${options.currency}`}</strong></span>}
+                                    </p>
+                                    <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
+                                        {isNone(options.cash_on_delivery) ? '' : <>
+                                            <span>Amount To Collect <strong>{options.cash_on_delivery}{options.currency}</strong></span>
+                                        </>}
+                                    </p>
+                                </>)}
+                            </div>}
                         </div>
 
                     </div>
 
-                    {!isNone(shipment.label) && <div className="pt-6 pb-4 px-4">
-                        <button className="button is-info" onClick={() => printLabel(shipment)}>Print Label</button>
-                    </div>}
+                </>}
 
-                </div>}
-
-                {isNone(shipment.id) && <div className="card my-6">
+                {!loading && isNone(shipment.id) && <div className="card my-6">
 
                     <div className="card-content has-text-centered">
                         <p>Uh Oh!</p>

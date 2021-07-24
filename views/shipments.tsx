@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { View } from '@/library/types';
 import ShipmentMenu from '@/components/shipment-menu';
-import { formatAddress, formatDateTime, formatRef, isNone } from '@/library/helper';
+import { formatAddress, formatDateTime, formatRef, isNone, shipmentCarrier } from '@/library/helper';
 import ShipmentMutation from '@/context/shipment-mutation';
 import { Shipments } from '@/context/shipments-query';
 import { Loading } from '@/components/loader';
@@ -9,10 +9,10 @@ import ModeIndicator from '@/components/mode-indicator';
 import NavLink from '@/components/generic/navlink';
 import { useLocation, useNavigate } from '@reach/router';
 import StatusBadge from '@/components/status-badge';
-import { Shipment } from '@/api/index';
 import Spinner from '@/components/spinner';
 import { ListStatusEnum } from '@/api/apis/ShipmentsApi';
 import LabelPrinter from '@/components/label/label-printer';
+import { AppMode } from '@/context/app-mode';
 
 
 interface ShipmentsView extends View { }
@@ -21,11 +21,12 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
   const navigate = useNavigate();
   const location = useLocation();
   const { setLoading } = useContext(Loading);
+  const { basePath } = useContext(AppMode);
   const { loading, results, load, loadMore, previous, next, called } = useContext(Shipments);
   const [status, setStatus] = React.useState<ListStatusEnum>();
 
   const viewShipment = (id: string) => (_: React.MouseEvent) => {
-    navigate('shipments/' + id);
+    navigate(`${basePath}/shipments/` + id);
   };
 
   useEffect(() => { setLoading(loading); }, [loading]);
@@ -141,9 +142,5 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
     </LabelPrinter>
   );
 });
-
-function shipmentCarrier(shipment: Shipment) {
-  return (shipment.meta as any)?.rate_provider || shipment.carrier_name;
-}
 
 export default ShipmentPage;

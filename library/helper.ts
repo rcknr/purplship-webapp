@@ -1,8 +1,10 @@
+import { Shipment } from "@/api/index";
 import { AddressType, CommodityType, CustomsType, ParcelType, PresetCollection, RequestError } from "@/library/types";
 
 
 const DATE_FORMAT = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit' });
 const DATE_TIME_FORMAT = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit', hour: "2-digit", minute: "2-digit" });
+const DATE_TIME_FORMAT_LONG = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit', hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
 
 export function formatRef(s?: string): string {
@@ -15,6 +17,10 @@ export function formatDate(date_string: string): string {
 
 export function formatDateTime(date_string: string): string {
     return DATE_TIME_FORMAT.format(new Date(date_string));
+}
+
+export function formatDateTimeLong(date_string: string): string {
+    return DATE_TIME_FORMAT_LONG.format(new Date(date_string));
 }
 
 export function notEmptyJSON(value?: string | null): boolean {
@@ -34,6 +40,16 @@ export function formatFullAddress(address: AddressType, countries?: { [country_c
     return [
         address.address_line1,
         address.address_line2,
+        address.city,
+        address.state_code,
+        address.postal_code,
+        country
+    ].filter(a => !isNone(a) && a !== "").join(', ');
+}
+
+export function formatAddressLocation(address: AddressType, countries?: { [country_code: string]: string }): string {
+    const country = countries === undefined ? address.country_code : countries[address.country_code];
+    return [
         address.city,
         address.state_code,
         address.postal_code,
@@ -178,4 +194,8 @@ export function collectToken(): string {
     const token = (root as HTMLDivElement).getAttribute('data-token') as string;
 
     return token;
+}
+
+export function shipmentCarrier(shipment: Shipment) {
+  return (shipment.meta as any)?.rate_provider || shipment.carrier_name;
 }

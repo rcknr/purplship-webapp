@@ -7,6 +7,7 @@ import ShipmentMutation from '@/context/shipment-mutation';
 import { Notify } from '@/components/notifier';
 import { Shipments } from '@/context/shipments-query';
 import { isNone } from '@/library/helper';
+import { AppMode } from '@/context/app-mode';
 
 
 interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement> {
@@ -17,6 +18,7 @@ interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement
 const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentMenuComponent>(({ shipment, voidLabel, className, ...props }) => {
     const navigate = useNavigate();
     const { notify } = useContext(Notify);
+    const { basePath } = useContext(AppMode);
     const { printLabel } = useContext(LabelPrinterContext);
     const shipments = useContext(Shipments);
     const btn = useRef<HTMLButtonElement>(null);
@@ -37,10 +39,10 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
         }
     };
     const createLabel = (_: React.MouseEvent) => {
-        navigate('buy_label/' + shipment.id);
+        navigate(basePath + '/buy_label/' + shipment.id);
     };
     const displayDetails = (_: React.MouseEvent) => {
-        navigate('shipments/' + shipment.id);
+        navigate(basePath + '/shipments/' + shipment.id);
     };
     const cancelShipment = (shipment: Shipment) => async (e: React.MouseEvent) => {
         try {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { LogType, View } from '@/library/types';
 import StatusCode from '@/components/status-code-badge';
-import { formatDateTime, isNone } from '@/library/helper';
+import { formatDateTimeLong, isNone } from '@/library/helper';
 import { Logs } from '@/context/logs-query';
 import { useNavigate } from '@reach/router';
 import { Log } from '@/context/log-query';
@@ -46,7 +46,7 @@ const LogList: React.FC<LogListView> = () => {
                                 <td className="status"><StatusCode code={log.status_code as number} /></td>
                                 <td className="description">{`${log.method} ${log.path}`}</td>
                                 <td className="date has-text-right">
-                                    <span className="mr-2">{formatDateTime(log.requested_at)}</span>
+                                    <span className="mr-2">{formatDateTimeLong(log.requested_at)}</span>
                                 </td>
                             </tr>
 
