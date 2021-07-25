@@ -52,7 +52,7 @@ export function initDebouncedPrediction(data: FeatureFlagType['ADDRESS_AUTO_COMP
     }[data.provider as string];
     const service = serviceType !== undefined ? serviceType(data) : undefined;
 
-    request.pipe(debounceTime(600)).subscribe((data) => {
+    request.pipe(debounceTime(500)).subscribe((data) => {
         service?.getPlacePredictions(data.params, data.callback);
     });
 
