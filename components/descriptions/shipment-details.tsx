@@ -134,15 +134,15 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                             <div className="column is-6 is-size-6 py-1">
                                 <p className="is-title is-size-6 my-2 has-text-weight-semibold">ADDRESS</p>
 
-                                <p className="is-size-6 my-1">{shipment.shipper.person_name}</p>
-                                <p className="is-size-6 my-1">{shipment.shipper.company_name}</p>
-                                <p className="is-size-6 my-1 has-text-info">{shipment.shipper.email}</p>
-                                <p className="is-size-6 my-1 has-text-info">{shipment.shipper.phone_number}</p>
+                                <p className="is-size-6 my-1">{shipment.recipient.person_name}</p>
+                                <p className="is-size-6 my-1">{shipment.recipient.company_name}</p>
+                                <p className="is-size-6 my-1 has-text-info">{shipment.recipient.email}</p>
+                                <p className="is-size-6 my-1 has-text-info">{shipment.recipient.phone_number}</p>
                                 <p className="is-size-6 my-1">
-                                    <span>{shipment.shipper.address_line1}</span>
-                                    {!isNone(shipment.shipper.address_line2) && <span>{shipment.shipper.address_line2}</span>}
+                                    <span>{shipment.recipient.address_line1}</span>
+                                    {!isNone(shipment.recipient.address_line2) && <span>{shipment.recipient.address_line2}</span>}
                                 </p>
-                                <p className="is-size-6 my-1">{formatAddressLocation(shipment.shipper)}</p>
+                                <p className="is-size-6 my-1">{formatAddressLocation(shipment.recipient)}</p>
                             </div>
 
                             <div className="column is-6 is-size-6 py-1">
