@@ -92,7 +92,6 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                                     <div className="p-4 mr-4">
                                         <span className="subtitle is-size-7 my-4">Service Level</span><br />
                                         <span className="subtitle is-size-7 has-text-weight-semibold">
-                                            {((shipment.meta as any)?.rate_provider !== shipment.carrier_name) && <span>{formatRef(shipment.carrier_name as string)} </span>}
                                             {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
                                         </span>
                                     </div>
@@ -113,36 +112,46 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                                 <hr className="mt-1 mb-2" style={{ height: '1px' }} />
 
                                 <div className="mt-3 mb-6">
-
-                                    <div className="columns my-0">
-                                        <div className="column is-6 is-size-6 py-1">
-                                            <div className="column is-4 is-size-6 py-1">Service Level</div>
-                                            <div className="column is-size-6 has-text-weight-semibold py-1">
-                                                {((shipment.meta as any)?.rate_provider !== shipment.carrier_name) && <span>{formatRef(shipment.carrier_name as string)} </span>}
-                                                {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
+                                    <div className="columns my-0 py-1">
+                                        <div className="column is-6 is-size-6">
+                                            <div className="columns my-0">
+                                                <div className="column is-3 is-size-6 py-1">Service Level</div>
+                                                <div className="column is-size-6 has-text-weight-semibold py-1">
+                                                    {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
+                                                </div>
+                                            </div>
+                                            <div className="columns my-0">
+                                                <div className="column is-3 is-size-6 py-1">Cost</div>
+                                                <div className="column is-size-6 py-1">
+                                                    <span className="has-text-weight-semibold mr-1">{shipment.selected_rate?.total_charge}</span>
+                                                    <span>{shipment.selected_rate?.currency}</span>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div className="column is-6 is-size-6 py-1">
-                                            {(shipment.selected_rate?.extra_charges || []).map(charge => <>
-                                            
-                                            </>)}
-                                        </div>
-                                    </div>
+                                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">CHARGES</p>
+                                            <hr className="mt-1 mb-2" style={{ height: '1px' }} />
 
+                                            <div className="columns m-0">
+                                                <div className="column is-5 is-size-7 px-0 py-1">
+                                                    <span className="is-uppercase">Base Charge</span>
+                                                </div>
+                                                <div className="is-size-7 py-1 has-text-grey has-text-right" style={{ minWidth: '100px' }}>
+                                                    <span className="mr-1">{shipment.selected_rate?.base_charge}</span>
+                                                    {!isNone(shipment.selected_rate?.currency) && <span>{shipment.selected_rate?.currency}</span>}
+                                                </div>
+                                            </div>
 
-                                    <div className="columns my-0">
-                                        <div className="column is-3 is-size-6 py-1">Service Level</div>
-                                        <div className="column is-size-6 has-text-weight-semibold py-1">
-                                            {((shipment.meta as any)?.rate_provider !== shipment.carrier_name) && <span>{formatRef(shipment.carrier_name as string)} </span>}
-                                            {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
-                                        </div>
-                                    </div>
-                                    <div className="columns my-0">
-                                        <div className="column is-3 is-size-6 py-1">Cost</div>
-                                        <div className="column is-size-6 py-1">
-                                            <span className="has-text-weight-semibold mr-1">{shipment.selected_rate?.total_charge}</span>
-                                            <span>{shipment.selected_rate?.currency}</span>
+                                            {(shipment.selected_rate?.extra_charges || []).map(charge => <div className="columns m-0">
+                                                <div className="column is-5 is-size-7 px-0 py-1">
+                                                    <span className="is-uppercase">{charge.name?.toLocaleLowerCase()}</span>
+                                                </div>
+                                                <div className="is-size-7 py-1 has-text-grey has-text-right" style={{ minWidth: '100px' }}>
+                                                    <span className="mr-1">{charge.amount}</span>
+                                                    {!isNone(charge.currency) && <span>{charge.currency}</span>}
+                                                </div>
+                                            </div>)}
                                         </div>
                                     </div>
                                 </div>
@@ -188,28 +197,28 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
 
                                         <p className="is-size-6 my-1">{formatCustomsLabel(shipment.customs as Customs)}</p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.aes) ? '' : <span>AES: <strong>{shipment.customs?.aes}</strong></span>}
+                                            {!isNone(shipment.customs?.aes) && <span>AES: <strong>{shipment.customs?.aes}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.eel_pfc) ? '' : <span>EEL / PFC: <strong>{shipment.customs?.eel_pfc}</strong></span>}
+                                            {!isNone(shipment.customs?.eel_pfc) && <span>EEL / PFC: <strong>{shipment.customs?.eel_pfc}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.invoice) ? '' : <span>Invoice Number: <strong>{shipment.customs?.invoice}</strong></span>}
+                                            {!isNone(shipment.customs?.invoice) && <span>Invoice Number: <strong>{shipment.customs?.invoice}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.invoice_date) ? '' : <span>Invoice Date: <strong>{shipment.customs?.invoice_date}</strong></span>}
+                                            {!isNone(shipment.customs?.invoice_date) && <span>Invoice Date: <strong>{shipment.customs?.invoice_date}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.certificate_number) ? '' : <span>Certificate Number: <strong>{shipment.customs?.certificate_number}</strong></span>}
+                                            {!isNone(shipment.customs?.certificate_number) && <span>Certificate Number: <strong>{shipment.customs?.certificate_number}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.duty) ? '' : <span>Duties paid by <strong>{formatRef('' + shipment.customs?.duty?.paid_by)}</strong></span>}
+                                            {!isNone(shipment.customs?.duty) && <span>Duties paid by <strong>{formatRef('' + shipment.customs?.duty?.paid_by)}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {!shipment.customs?.certify ? '' : <span>Certified and Signed By <strong>{shipment.customs.signer}</strong></span>}
+                                            {!isNone(shipment.customs?.signer) && <span>Certified and Signed By <strong>{shipment.customs?.signer}</strong></span>}
                                         </p>
                                         <p className="is-size-6 my-1 has-text-grey">
-                                            {isNone(shipment.customs?.content_description) ? '' : <span><strong>Content:</strong> {shipment.customs?.content_description}</span>}
+                                            {!isNone(shipment.customs?.content_description) && <span>Content: {shipment.customs?.content_description}</span>}
                                         </p>
                                     </div>}
 
@@ -218,25 +227,27 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
 
                                         {[shipment.options].map((options: any) => <>
                                             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
-                                                {isNone(options.shipment_date) ? '' : <span>Shipment Date: <strong>{` ${formatDate(options.shipment_date)}`}</strong></span>}
+                                                {!isNone(options.shipment_date) && <span>Shipment Date: <strong>{formatDate(options.shipment_date)}</strong></span>}
                                             </p>
                                             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
-                                                {isNone(options.currency) ? '' : <span>Preferred Currency: <strong>{` ${options.currency}`}</strong></span>}
+                                                {!isNone(options.currency) && <span>Preferred Currency: <strong>{options.currency}</strong></span>}
                                             </p>
                                             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
-                                                {isNone(options.signature_confirmation) ? '' : <span>Signature Confirmation <strong>Required</strong></span>}
+                                                {!isNone(options.signature_confirmation) && <span>Signature Confirmation <strong>Required</strong></span>}
                                             </p>
                                             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
-                                                {isNone(options.insurance) ? '' : <>
+                                                {!isNone(options.insurance) && <>
                                                     <span>Insurance (Coverage Amount <strong>{options.insurance} {options.currency}</strong>)</span>
                                                 </>}
                                             </p>
                                             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
-                                                {isNone(options.declared_value) ? '' : <span>Declared Value: <strong>{` ${options.declared_value} ${options.currency}`}</strong></span>}
+                                                {!isNone(options.declared_value) && <>
+                                                    <span>Declared Value: <strong>{options.declared_value}</strong> {options.currency}</span>
+                                                </>}
                                             </p>
                                             <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">
-                                                {isNone(options.cash_on_delivery) ? '' : <>
-                                                    <span>Amount To Collect <strong>{options.cash_on_delivery}{options.currency}</strong></span>
+                                                {!isNone(options.cash_on_delivery) && <>
+                                                    <span>Amount To Collect <strong>{options.cash_on_delivery}</strong> {options.currency}</span>
                                                 </>}
                                             </p>
                                         </>)}
