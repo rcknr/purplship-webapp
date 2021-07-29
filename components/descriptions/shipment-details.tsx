@@ -115,13 +115,19 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                                     <div className="columns my-0 py-1">
                                         <div className="column is-6 is-size-6">
                                             <div className="columns my-0">
-                                                <div className="column is-3 is-size-6 py-1">Service Level</div>
+                                                <div className="column is-4 is-size-6 py-1">Courier Provider</div>
+                                                <div className="column is-size-6 has-text-weight-semibold py-1">
+                                                    {formatRef(shipment.carrier_name as string)}
+                                                </div>
+                                            </div>
+                                            <div className="columns my-0">
+                                                <div className="column is-4 is-size-6 py-1">Service Level</div>
                                                 <div className="column is-size-6 has-text-weight-semibold py-1">
                                                     {formatRef(((shipment.meta as any)?.service_name || shipment.service) as string)}
                                                 </div>
                                             </div>
                                             <div className="columns my-0">
-                                                <div className="column is-3 is-size-6 py-1">Cost</div>
+                                                <div className="column is-4 is-size-6 py-1">Cost</div>
                                                 <div className="column is-size-6 py-1">
                                                     <span className="has-text-weight-semibold mr-1">{shipment.selected_rate?.total_charge}</span>
                                                     <span>{shipment.selected_rate?.currency}</span>
@@ -221,6 +227,23 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                                             {!isNone(shipment.customs?.content_description) && <span>Content: {shipment.customs?.content_description}</span>}
                                         </p>
                                     </div>}
+
+                                    {(!isNone(shipment.customs) && (shipment.customs?.commodities || []).length > 0) &&
+                                        <div className="column is-6 is-size-6 py-1">
+                                            <p className="is-title is-size-6 my-2 has-text-weight-semibold">COMMODITIES</p>
+
+                                            {(shipment.customs?.commodities || []).map((commodity) => <>
+                                                <hr className="mt-1 mb-2" style={{ height: '1px' }} />
+                                                <p className="is-size-7 my-1 has-text-weight-semibold">{commodity.sku}</p>
+                                                <p className="is-size-7 my-1">{commodity.description}</p>
+                                                <p className="is-size-7 my-1 has-text-grey">
+                                                    {isNone(commodity?.value_amount) ? '' : <>
+                                                        <span>Value: {commodity?.quantity} x {commodity?.value_amount} {commodity?.value_currency}</span>
+                                                    </>}
+                                                </p>
+                                                <p className="is-size-7 my-1 has-text-grey">{formatWeight(commodity)}</p>
+                                            </>)}
+                                        </div>}
 
                                     {(Object.values(shipment.options as object).length > 0) && <div className="column is-6 is-size-6 py-1">
                                         <p className="is-title is-size-6 my-2 has-text-weight-semibold">SHIPMENT OPTIONS</p>

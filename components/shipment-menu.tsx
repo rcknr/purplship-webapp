@@ -8,6 +8,7 @@ import { Notify } from '@/components/notifier';
 import { Shipments } from '@/context/shipments-query';
 import { isNone } from '@/library/helper';
 import { AppMode } from '@/context/app-mode';
+import { CustomInvoicePrinterContext } from './descriptions/custom-invoice-printer';
 
 
 interface ShipmentMenuComponent extends React.InputHTMLAttributes<HTMLDivElement> {
@@ -20,6 +21,7 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
     const { notify } = useContext(Notify);
     const { basePath } = useContext(AppMode);
     const { printLabel } = useContext(LabelPrinterContext);
+    const { printInvoice } = useContext(CustomInvoicePrinterContext);
     const shipments = useContext(Shipments);
     const btn = useRef<HTMLButtonElement>(null);
     const [isActive, setIsActive] = useState(false);
@@ -91,7 +93,10 @@ const ShipmentMenu: React.FC<ShipmentMenuComponent> = ShipmentMutation<ShipmentM
                 <div className="dropdown-menu" id={`shipment-menu-${shipment.id}`} role="menu">
                     <div className="dropdown-content">
                         <a className="dropdown-item" onClick={displayDetails}>View Shipment</a>
-                        {shipment.status !== ShipmentStatusEnum.Cancelled && <a href="#" className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>}
+                        {shipment.status !== ShipmentStatusEnum.Cancelled &&
+                            <a className="dropdown-item" onClick={cancelShipment(shipment)}>Cancel Shipment</a>}
+                        {!isNone((shipment?.meta as any).custom_invoice) &&
+                            <a className="dropdown-item" onClick={() => printInvoice(shipment)}>Print Invoice</a>}
                     </div>
                 </div>
             </div>
