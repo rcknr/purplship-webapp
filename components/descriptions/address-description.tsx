@@ -12,10 +12,10 @@ const AddressDescription: React.FC<AddressDescriptionComponent> = ({ address }) 
     return (
         <>
 
-            <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold">{formatAddressName(address)}</p>
-            <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-grey">{formatFullAddress(address, countries as Collection)}</p>
-            <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-info">{address.email}</p>
-            <p className="is-subtitle is-size-7 my-1 has-text-weight-semibold has-text-info">{address.phone_number}</p>
+            <p className="is-size-7 my-1 has-text-weight-semibold">{formatAddressName(address)}</p>
+            <p className="is-size-7 my-1 has-text-weight-semibold has-text-grey">{formatFullAddress(address, countries as Collection)}</p>
+            <p className="is-size-7 my-1 has-text-weight-semibold has-text-info">{address.email}</p>
+            <p className="is-size-7 my-1 has-text-weight-semibold has-text-info">{address.phone_number}</p>
 
         </>
     );

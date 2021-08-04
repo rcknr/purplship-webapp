@@ -61,6 +61,9 @@ const ShipmentPage: React.FC<ShipmentsView> = ShipmentMutation<ShipmentsView>(()
             <li className={`is-capitalized has-text-weight-semibold ${status === 'purchased' ? 'is-active' : ''}`}>
               <NavLink to="?status=purchased">purchased</NavLink>
             </li>
+            <li className={`is-capitalized has-text-weight-semibold ${status === 'delivered' ? 'is-active' : ''}`}>
+              <NavLink to="?status=delivered">delivered</NavLink>
+            </li>
             <li className={`is-capitalized has-text-weight-semibold ${status === 'cancelled' ? 'is-active' : ''}`}>
               <NavLink to="?status=cancelled">cancelled</NavLink>
             </li>

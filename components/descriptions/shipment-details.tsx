@@ -9,6 +9,7 @@ import { AppMode } from '@/context/app-mode';
 import StatusBadge from '@/components/status-badge';
 import { Customs, ShipmentStatusEnum } from '@/api/index';
 import ModeIndicator from '@/components/mode-indicator';
+import CopiableLink from '@/components/copiable-link';
 
 interface ShipmentDetailsComponent extends View {
     id?: string;
@@ -22,14 +23,6 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
 
     const buyLabel = (_: React.MouseEvent) => {
         navigate(basePath + '/buy_label/' + shipment.id);
-    };
-    const copyId = (_: React.MouseEvent) => {
-        var input = document.createElement('input');
-        input.setAttribute('value', shipment.id as string);
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
     };
 
     useEffect(() => { if (!loading && shipment?.id !== id) loadShipment(id); }, []);
@@ -51,14 +44,7 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                                 </div>
 
                                 <div className="column is-6 has-text-right pb-0">
-                                    <a className="button is-white is-small"
-                                        style={{ padding: '0', height: '20px' }}
-                                        data-id={shipment.id}
-                                        onClick={copyId}
-                                        title="Copy ID">
-                                        <span className="mr-1">{shipment.id}</span>
-                                        <i className="fas fa-clipboard"></i>
-                                    </a>
+                                    <CopiableLink text={shipment.id as string} title="Copy ID"/>
                                     <br />
                                     {!isNone(shipment.label) && <button className="button is-default is-small ml-1" onClick={() => printLabel(shipment)}>
                                         <i className="fas fa-print"></i>
