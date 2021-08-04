@@ -84,6 +84,22 @@ Purplship custom styling
     }
 }
 
+.system-connections-table {
+    .carrier {
+        width: 24%;
+        text-align: center !important;
+    }
+    .mode {
+        width: 6%;
+    }
+    .details {
+        width: 64%;
+    }
+    .action {
+        width: 6%;
+    }
+}
+
 .templates-table {
     .template {
     }

@@ -1,21 +1,40 @@
 import React, { useContext } from 'react';
+import SystemConnectionMutation from '@/context/system-connection-mutation';
+import { SystemConnections, SystemConnectionType } from '@/context/system-connections-query';
+import { Notify } from '@/components/notifier';
+import { NotificationType } from '@/library/types';
 import CarrierBadge from '@/components/carrier-badge';
-import { SystemConnections } from '@/context/system-connections-query';
+import ConnectionDescription from '@/components/descriptions/connection-description';
 
 interface SystemConnectionListView { }
 
-const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
-  const { system_connections } = useContext(SystemConnections);
+const SystemConnectionList: React.FC<SystemConnectionListView> = SystemConnectionMutation<SystemConnectionListView>(({ mutateConnection }) => {
+  const { notify } = useContext(Notify);
+  const { system_connections, refetch } = useContext(SystemConnections);
+
+  const onUpdate = async () => refetch && await refetch();
+  const toggle = ({ enabled, id }: SystemConnectionType) => async () => {
+    try {
+      await mutateConnection({ id, enable: !enabled });
+      notify({
+        type: NotificationType.success,
+        message: `system carrier connection ${!enabled ? 'enabled' : 'disabled'}!`
+      });
+      onUpdate();
+    } catch (message) {
+      notify({ type: NotificationType.error, message });
+    }
+  };
 
   return (
     <>
 
       {((system_connections).length > 0) && <table className="table is-fullwidth">
 
-        <tbody className="connections-table">
+        <tbody className="system-connections-table">
           <tr>
-            <td className="is-size-7" colSpan={4}>ACCOUNTS</td>
-            <td className="action"></td>
+            <td className="is-size-7" colSpan={3}>ACCOUNTS</td>
+            <td className="action">Active</td>
           </tr>
 
           {(system_connections || []).map((connection) => (
@@ -28,11 +47,14 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
                 {connection.test ? <span className="tag is-warning is-centered">Test</span> : <></>}
               </td>
               <td className="details">
-                <div className="content is-small">
-                  <ul>
-                    <li>carrier id: <span className="tag is-info is-light" title="carrier nickname">{connection.carrier_id}</span></li>
-                  </ul>
-                </div>
+                <ConnectionDescription connection={connection} />
+              </td>
+              <td className="action has-text-right">
+                <button className="button is-white is-large" onClick={toggle(connection)}>
+                  <span className={`icon is-medium ${connection.enabled ? 'has-text-success' : 'has-text-grey'}`}>
+                    <i className={`fas fa-${connection.enabled ? 'toggle-on' : 'toggle-off'} fa-lg`}></i>
+                  </span>
+                </button>
               </td>
             </tr>
 
@@ -51,6 +73,6 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = () => {
 
     </>
   );
-}
+});
 
 export default SystemConnectionList;

@@ -469,9 +469,11 @@ export interface get_parcel_templatesVariables {
 export interface get_system_connections_system_connections {
   id: string;
   carrier_id: string;  // eg. canadapost, dhl_express, fedex, purolator_courrier, ups...
-  carrier_name: string;
   test: boolean;
   active: boolean;
+  capabilities: string[];
+  carrier_name: string;
+  enabled: boolean;
 }
 
 export interface get_system_connections {
@@ -480,6 +482,31 @@ export interface get_system_connections {
 
 export interface get_system_connectionsVariables {
   test?: boolean | null;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: mutate_system_connection
+// ====================================================
+
+export interface mutate_system_connection_mutate_system_connection_carrier {
+  id: string;
+  active: boolean;
+}
+
+export interface mutate_system_connection_mutate_system_connection {
+  carrier: mutate_system_connection_mutate_system_connection_carrier | null;
+}
+
+export interface mutate_system_connection {
+  mutate_system_connection: mutate_system_connection_mutate_system_connection | null;
+}
+
+export interface mutate_system_connectionVariables {
+  data: SystemCarrierMutationInput;
 }
 
 
@@ -639,7 +666,7 @@ export interface get_user_connections_user_connections_AramexSettings {
   account_pin: string;
   account_entity: string;
   account_number: string;
-  account_country_code: string;
+  account_country_code: CarrierAccountCountryCode | null;
 }
 
 export interface get_user_connections_user_connections_AustraliaPostSettings {
@@ -804,7 +831,7 @@ export interface get_user_connections_user_connections_TNTSettings {
   username: string;
   password: string;
   account_number: string;
-  account_country_code: string;
+  account_country_code: CarrierAccountCountryCode | null;
 }
 
 export interface get_user_connections_user_connections_UPSSettings {
@@ -2009,6 +2036,244 @@ export enum dimension_unit {
   IN = "IN",
 }
 
+// An enumeration.
+export enum CarrierAccountCountryCode {
+  AD = "AD",
+  AE = "AE",
+  AF = "AF",
+  AG = "AG",
+  AI = "AI",
+  AL = "AL",
+  AM = "AM",
+  AN = "AN",
+  AO = "AO",
+  AR = "AR",
+  AS = "AS",
+  AT = "AT",
+  AU = "AU",
+  AW = "AW",
+  AZ = "AZ",
+  BA = "BA",
+  BB = "BB",
+  BD = "BD",
+  BE = "BE",
+  BF = "BF",
+  BG = "BG",
+  BH = "BH",
+  BI = "BI",
+  BJ = "BJ",
+  BM = "BM",
+  BN = "BN",
+  BO = "BO",
+  BR = "BR",
+  BS = "BS",
+  BT = "BT",
+  BW = "BW",
+  BY = "BY",
+  BZ = "BZ",
+  CA = "CA",
+  CD = "CD",
+  CF = "CF",
+  CG = "CG",
+  CH = "CH",
+  CI = "CI",
+  CK = "CK",
+  CL = "CL",
+  CM = "CM",
+  CN = "CN",
+  CO = "CO",
+  CR = "CR",
+  CU = "CU",
+  CV = "CV",
+  CY = "CY",
+  CZ = "CZ",
+  DE = "DE",
+  DJ = "DJ",
+  DK = "DK",
+  DM = "DM",
+  DO = "DO",
+  DZ = "DZ",
+  EC = "EC",
+  EE = "EE",
+  EG = "EG",
+  ER = "ER",
+  ES = "ES",
+  ET = "ET",
+  FI = "FI",
+  FJ = "FJ",
+  FK = "FK",
+  FM = "FM",
+  FO = "FO",
+  FR = "FR",
+  GA = "GA",
+  GB = "GB",
+  GD = "GD",
+  GE = "GE",
+  GF = "GF",
+  GG = "GG",
+  GH = "GH",
+  GI = "GI",
+  GL = "GL",
+  GM = "GM",
+  GN = "GN",
+  GP = "GP",
+  GQ = "GQ",
+  GR = "GR",
+  GT = "GT",
+  GU = "GU",
+  GW = "GW",
+  GY = "GY",
+  HK = "HK",
+  HN = "HN",
+  HR = "HR",
+  HT = "HT",
+  HU = "HU",
+  IC = "IC",
+  ID = "ID",
+  IE = "IE",
+  IL = "IL",
+  IN = "IN",
+  IQ = "IQ",
+  IR = "IR",
+  IS = "IS",
+  IT = "IT",
+  JE = "JE",
+  JM = "JM",
+  JO = "JO",
+  JP = "JP",
+  KE = "KE",
+  KG = "KG",
+  KH = "KH",
+  KI = "KI",
+  KM = "KM",
+  KN = "KN",
+  KP = "KP",
+  KR = "KR",
+  KV = "KV",
+  KW = "KW",
+  KY = "KY",
+  KZ = "KZ",
+  LA = "LA",
+  LB = "LB",
+  LC = "LC",
+  LI = "LI",
+  LK = "LK",
+  LR = "LR",
+  LS = "LS",
+  LT = "LT",
+  LU = "LU",
+  LV = "LV",
+  LY = "LY",
+  MA = "MA",
+  MC = "MC",
+  MD = "MD",
+  ME = "ME",
+  MG = "MG",
+  MH = "MH",
+  MK = "MK",
+  ML = "ML",
+  MM = "MM",
+  MN = "MN",
+  MO = "MO",
+  MP = "MP",
+  MQ = "MQ",
+  MR = "MR",
+  MS = "MS",
+  MT = "MT",
+  MU = "MU",
+  MV = "MV",
+  MW = "MW",
+  MX = "MX",
+  MY = "MY",
+  MZ = "MZ",
+  NA = "NA",
+  NC = "NC",
+  NE = "NE",
+  NG = "NG",
+  NI = "NI",
+  NL = "NL",
+  NO = "NO",
+  NP = "NP",
+  NR = "NR",
+  NU = "NU",
+  NZ = "NZ",
+  OM = "OM",
+  PA = "PA",
+  PE = "PE",
+  PF = "PF",
+  PG = "PG",
+  PH = "PH",
+  PK = "PK",
+  PL = "PL",
+  PR = "PR",
+  PT = "PT",
+  PW = "PW",
+  PY = "PY",
+  QA = "QA",
+  RE = "RE",
+  RO = "RO",
+  RS = "RS",
+  RU = "RU",
+  RW = "RW",
+  SA = "SA",
+  SB = "SB",
+  SC = "SC",
+  SD = "SD",
+  SE = "SE",
+  SG = "SG",
+  SH = "SH",
+  SI = "SI",
+  SK = "SK",
+  SL = "SL",
+  SM = "SM",
+  SN = "SN",
+  SO = "SO",
+  SR = "SR",
+  SS = "SS",
+  ST = "ST",
+  SV = "SV",
+  SY = "SY",
+  SZ = "SZ",
+  TC = "TC",
+  TD = "TD",
+  TG = "TG",
+  TH = "TH",
+  TJ = "TJ",
+  TL = "TL",
+  TN = "TN",
+  TO = "TO",
+  TR = "TR",
+  TT = "TT",
+  TV = "TV",
+  TW = "TW",
+  TZ = "TZ",
+  UA = "UA",
+  UG = "UG",
+  US = "US",
+  UY = "UY",
+  UZ = "UZ",
+  VA = "VA",
+  VC = "VC",
+  VE = "VE",
+  VG = "VG",
+  VI = "VI",
+  VN = "VN",
+  VU = "VU",
+  WS = "WS",
+  XB = "XB",
+  XC = "XC",
+  XE = "XE",
+  XM = "XM",
+  XN = "XN",
+  XS = "XS",
+  XY = "XY",
+  YE = "YE",
+  YT = "YT",
+  ZA = "ZA",
+  ZM = "ZM",
+  ZW = "ZW",
+}
+
 // null
 export interface CreateConnectionInput {
   id?: string | null;
@@ -2039,6 +2304,7 @@ export interface CreateConnectionInput {
 export interface AramexSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2046,13 +2312,13 @@ export interface AramexSettingsInput {
   account_pin: string;
   account_entity: string;
   account_number: string;
-  account_country_code: string;
 }
 
 // null
 export interface AustraliaPostSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   api_key: string;
@@ -2064,11 +2330,12 @@ export interface AustraliaPostSettingsInput {
 export interface CanadaPostSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
   password: string;
-  customer_number: string;
+  customer_number?: string | null;
   contract_id?: string | null;
 }
 
@@ -2076,6 +2343,7 @@ export interface CanadaPostSettingsInput {
 export interface CanparSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2086,6 +2354,7 @@ export interface CanparSettingsInput {
 export interface DHLExpressSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   site_id: string;
@@ -2097,6 +2366,7 @@ export interface DHLExpressSettingsInput {
 export interface DHLUniversalSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   consumer_key: string;
@@ -2107,6 +2377,7 @@ export interface DHLUniversalSettingsInput {
 export interface DicomSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2118,6 +2389,7 @@ export interface DicomSettingsInput {
 export interface FedexSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   user_key: string;
@@ -2130,6 +2402,7 @@ export interface FedexSettingsInput {
 export interface PurolatorSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2142,6 +2415,7 @@ export interface PurolatorSettingsInput {
 export interface RoyalMailSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   client_id: string;
@@ -2152,6 +2426,7 @@ export interface RoyalMailSettingsInput {
 export interface SendleSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   sendle_id: string;
@@ -2162,6 +2437,7 @@ export interface SendleSettingsInput {
 export interface SFExpressSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   partner_id: string;
@@ -2172,18 +2448,19 @@ export interface SFExpressSettingsInput {
 export interface TNTSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
   password: string;
   account_number: string;
-  account_country_code: string;
 }
 
 // null
 export interface UPSSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2196,6 +2473,7 @@ export interface UPSSettingsInput {
 export interface USPSSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2209,6 +2487,7 @@ export interface USPSSettingsInput {
 export interface USPSInternationalSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2222,6 +2501,7 @@ export interface USPSInternationalSettingsInput {
 export interface YanwenSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   customer_number: string;
@@ -2232,6 +2512,7 @@ export interface YanwenSettingsInput {
 export interface YunExpressSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   customer_number: string;
@@ -2242,6 +2523,7 @@ export interface YunExpressSettingsInput {
 export interface EShipperSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2252,6 +2534,7 @@ export interface EShipperSettingsInput {
 export interface FreightcomSettingsInput {
   id?: string | null;
   carrier_id: string;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
@@ -2288,6 +2571,7 @@ export interface UpdateConnectionInput {
 export interface PartialAramexSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2295,13 +2579,13 @@ export interface PartialAramexSettingsInput {
   account_pin?: string | null;
   account_entity?: string | null;
   account_number?: string | null;
-  account_country_code?: string | null;
 }
 
 // null
 export interface PartialAustraliaPostSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   api_key?: string | null;
@@ -2313,6 +2597,7 @@ export interface PartialAustraliaPostSettingsInput {
 export interface PartialCanadaPostSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2325,6 +2610,7 @@ export interface PartialCanadaPostSettingsInput {
 export interface PartialCanparSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2335,6 +2621,7 @@ export interface PartialCanparSettingsInput {
 export interface PartialDHLExpressSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   site_id?: string | null;
@@ -2346,6 +2633,7 @@ export interface PartialDHLExpressSettingsInput {
 export interface PartialDHLUniversalSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   consumer_key?: string | null;
@@ -2356,6 +2644,7 @@ export interface PartialDHLUniversalSettingsInput {
 export interface PartialDicomSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2367,6 +2656,7 @@ export interface PartialDicomSettingsInput {
 export interface PartialFedexSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   user_key?: string | null;
@@ -2379,6 +2669,7 @@ export interface PartialFedexSettingsInput {
 export interface PartialPurolatorSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2391,6 +2682,7 @@ export interface PartialPurolatorSettingsInput {
 export interface PartialRoyalMailSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   client_id?: string | null;
@@ -2401,6 +2693,7 @@ export interface PartialRoyalMailSettingsInput {
 export interface PartialSendleSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   sendle_id?: string | null;
@@ -2411,6 +2704,7 @@ export interface PartialSendleSettingsInput {
 export interface PartialSFExpressSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   partner_id?: string | null;
@@ -2421,18 +2715,19 @@ export interface PartialSFExpressSettingsInput {
 export interface PartialTNTSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
   password?: string | null;
   account_number?: string | null;
-  account_country_code?: string | null;
 }
 
 // null
 export interface PartialUPSSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2445,6 +2740,7 @@ export interface PartialUPSSettingsInput {
 export interface PartialUSPSSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2458,6 +2754,7 @@ export interface PartialUSPSSettingsInput {
 export interface PartialUSPSInternationalSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2471,6 +2768,7 @@ export interface PartialUSPSInternationalSettingsInput {
 export interface PartialYanwenSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   customer_number?: string | null;
@@ -2481,6 +2779,7 @@ export interface PartialYanwenSettingsInput {
 export interface PartialYunExpressSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   customer_number?: string | null;
@@ -2491,6 +2790,7 @@ export interface PartialYunExpressSettingsInput {
 export interface PartialEShipperSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2501,6 +2801,7 @@ export interface PartialEShipperSettingsInput {
 export interface PartialFreightcomSettingsInput {
   id?: string | null;
   carrier_id?: string | null;
+  account_country_code?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
@@ -2526,6 +2827,13 @@ export interface UpdateOrganizationInput {
   id?: string | null;
   name?: string | null;
   slug?: string | null;
+  clientMutationId?: string | null;
+}
+
+// null
+export interface SystemCarrierMutationInput {
+  id: string;
+  enable: boolean;
   clientMutationId?: string | null;
 }
 

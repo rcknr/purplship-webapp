@@ -278,11 +278,24 @@ query get_system_connections($test: Boolean) {
   system_connections(test: $test) {
     id
     carrier_id
-    carrier_name
     test
     active
+    capabilities
+    carrier_name
+    enabled
   }
 }
+`;
+
+export const MUTATE_SYSTEM_CONNECTION = gql`
+  mutation mutate_system_connection($data: SystemCarrierMutationInput!) {
+    mutate_system_connection(input: $data) {
+      carrier {
+        id
+        active
+      }
+    }
+  }
 `;
 
 export const CREATE_TEMPLATE = gql`

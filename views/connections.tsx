@@ -9,11 +9,13 @@ import { Loading } from '@/components/loader';
 import { SystemConnections } from '@/context/system-connections-query';
 import ModeIndicator from '@/components/mode-indicator';
 import ConfirmModal from '@/components/confirm-modal';
+import { APIReference } from '@/context/references-query';
 
 interface ConnectionsView extends View { }
 
 const ConnectionsPage: React.FC<ConnectionsView> = () => {
   const { setLoading } = useContext(Loading);
+  const { app_name } = useContext(APIReference);
   const {refetch, ...user_connections} = useContext(UserConnections);
   const system_connections = useContext(SystemConnections);
 
@@ -38,7 +40,7 @@ const ConnectionsPage: React.FC<ConnectionsView> = () => {
 
           <div className="table-container">
 
-            <Tabs tabs={['Your Connections', 'System Connections']} tabClass="is-capitalized has-text-weight-semibold" style={{ position: 'relative' }}>
+            <Tabs tabs={['Your Accounts', `${app_name} Accounts`]} tabClass="is-capitalized has-text-weight-semibold" style={{ position: 'relative' }}>
 
               <UserConnectionList />
 

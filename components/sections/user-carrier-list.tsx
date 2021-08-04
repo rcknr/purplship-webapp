@@ -9,6 +9,7 @@ import { NotificationType } from '@/library/types';
 import { AppMode, computeMode } from '@/context/app-mode';
 import { ConfirmModalContext } from '@/components/confirm-modal';
 import Spinner from '@/components/spinner';
+import CopiableLink from '../copiable-link';
 
 interface UserConnectionListView { }
 
@@ -86,7 +87,9 @@ const UserConnectionList: React.FC<UserConnectionListView> = ConnectionMutation<
               <td className="details">
                 <div className="content is-small">
                   <ul>
-                    <li>carrier id: <span className="tag is-info is-light" title="carrier nickname">{connection.carrier_id}</span></li>
+                    <li>
+                      <span className="is-size-7 my-1 has-text-weight-semibold">carrier id: {connection.carrier_id}</span>
+                    </li>
                   </ul>
                 </div>
               </td>
