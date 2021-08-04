@@ -210,8 +210,8 @@ query get_log($id: Int!) {
 `;
 
 export const GET_LOGS = gql`
-query get_logs($offset: Int, $first: Int) {
-  logs(offset: $offset, first: $first) {
+query get_logs($offset: Int, $first: Int, $status: String) {
+  logs(offset: $offset, first: $first, status: $status) {
     pageInfo {
       hasNextPage
       hasPreviousPage

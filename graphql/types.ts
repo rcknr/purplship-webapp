@@ -402,6 +402,7 @@ export interface get_logs {
 export interface get_logsVariables {
   offset?: number | null;
   first?: number | null;
+  status?: string | null;
 }
 
 
