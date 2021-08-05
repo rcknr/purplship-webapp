@@ -64,7 +64,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
 
                 <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                     <div className="modal-background" onClick={close}></div>
-                    <form className="modal-card" onSubmit={create}>
+                    {isActive && <form className="modal-card" onSubmit={create}>
                         <section className="modal-card-body">
                             <h3 className="subtitle is-3">Track a Shipment</h3>
 
@@ -90,7 +90,7 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
                                 <span>Submit</span>
                             </ButtonField>
                         </section>
-                    </form>
+                    </form>}
                     
                     <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
