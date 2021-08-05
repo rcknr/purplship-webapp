@@ -24,7 +24,7 @@ const APISettings: React.FC<APISettingsView> = () => {
     <>
 
       <header className="px-2 pt-1 pb-4">
-        <span className="subtitle is-4">API Key</span>
+        <span className="title is-4">API Key</span>
       </header>
 
       <hr />

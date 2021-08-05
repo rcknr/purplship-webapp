@@ -14,8 +14,8 @@ const Account: React.FC<AccountView> = () => {
   return (
     <>
 
-      <header className="px-2 pt-1 pb-6">
-        <span className="subtitle is-4">Account Settings</span>
+      <header className="px-2 pt-1 pb-4">
+        <span className="title is-4">Account Settings</span>
       </header>
 
 

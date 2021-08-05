@@ -1,20 +1,20 @@
-import { Shipment, ShipmentLabelTypeEnum } from '@/api/index';
+import { Shipment } from '@/api/index';
 import React, { useState } from 'react';
 
 
-type LabelPrinterContextType = {
-    printLabel: (shipment: Shipment) => void,
+type CustomInvoicePrinterContextType = {
+    printInvoice: (shipment: Shipment) => void,
 };
 
-export const LabelPrinterContext = React.createContext<LabelPrinterContextType>({} as LabelPrinterContextType);
+export const CustomInvoicePrinterContext = React.createContext<CustomInvoicePrinterContextType>({} as CustomInvoicePrinterContextType);
 
-interface LabelPrinterComponent extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+interface CustomInvoicePrinterComponent extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const LabelPrinter: React.FC<LabelPrinterComponent> = ({ children }) => {
+const CustomInvoicePrinter: React.FC<CustomInvoicePrinterComponent> = ({ children }) => {
     const [isActive, setIsActive] = useState<boolean>(false);
     const [shipment, setShipment] = useState<Shipment>();
 
-    const printLabel = (shipment: Shipment) => {
+    const printInvoice = (shipment: Shipment) => {
         setIsActive(true);
         setShipment(shipment);
     };
@@ -24,20 +24,14 @@ const LabelPrinter: React.FC<LabelPrinterComponent> = ({ children }) => {
         setShipment(undefined);
     };
     const conputeSource = (shipment: Shipment) => {
-        const label_type = shipment?.label_type || ShipmentLabelTypeEnum.Pdf;
-        const format = {
-            [ShipmentLabelTypeEnum.Pdf]: 'application/pdf',
-            [ShipmentLabelTypeEnum.Zpl]: 'application/zpl'
-        }[label_type];
-
-        return `data:${format};base64, ${encodeURI(shipment.label as string)}`;
+        return `data:application/pdf;base64, ${encodeURI((shipment?.meta as any).custom_invoice as string)}`;
     };
 
     return (
         <>
-            <LabelPrinterContext.Provider value={{ printLabel }}>
+            <CustomInvoicePrinterContext.Provider value={{ printInvoice }}>
                 {children}
-            </LabelPrinterContext.Provider>
+            </CustomInvoicePrinterContext.Provider>
 
             <div className={`modal ${isActive ? "is-active" : ""}`}>
                 <div className="modal-background" onClick={close}></div>
@@ -53,4 +47,4 @@ const LabelPrinter: React.FC<LabelPrinterComponent> = ({ children }) => {
     )
 };
 
-export default LabelPrinter;
+export default CustomInvoicePrinter;

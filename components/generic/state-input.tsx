@@ -7,19 +7,20 @@ import InputField, { InputFieldComponent } from '@/components/generic/input-fiel
 interface StateInputComponent extends InputFieldComponent {
     onValueChange: (value: string | null) => void;
     value?: string;
+    country_code?: string;
 }
 
-const StateInput: React.FC<StateInputComponent> = ({ name, onValueChange, value, ...props }) => {
+const StateInput: React.FC<StateInputComponent> = ({ name, onValueChange, value, country_code, ...props }) => {
     const onClick = (e: React.MouseEvent<HTMLInputElement>) => e.currentTarget.select();
     const input = useRef<HTMLInputElement>(null);
     const { states } = useContext(APIReference);
     const fname = (code_or_name?: string) => {
-        const [_, name] = find(states, code_or_name);
+        const [_, name] = find(states as Collection<Collection<string>>, code_or_name, country_code);
         return name;
     };
     const onChange = (e: ChangeEvent<any>) => {
         e.preventDefault();
-        let [code, name] = find(states, e.target.value);
+        let [code, name] = find(states as Collection<Collection<string>>, e.target.value, country_code);
         onValueChange(code || null);
 
         if (!isNone(code) && e.target.value === code) e.currentTarget.value = name;
@@ -45,18 +46,19 @@ const StateInput: React.FC<StateInputComponent> = ({ name, onValueChange, value,
     )
 };
 
-function find(states?: object, code_or_name?: string): [string, string] | [] {
-    const country: Collection<string> = (
+function find(states?: Collection<Collection<string>>, code_or_name?: string, current_country?: string): [string, string] | [] {
+    const country_code: string = (
         Object
-            .values(states || {})
+            .keys(states || {})
+            .filter(country => !isNone(current_country) && current_country === country)
             .find(country => (
-                Object.keys(country).includes(code_or_name as string) ||
-                Object.values(country).includes(code_or_name as string)
-            )) || {}
+                Object.keys(states ? states[country] : {}).includes(code_or_name as string)
+                || Object.values(states ? states[country] : {}).includes(code_or_name as string)
+            )) || ''
     );
 
     return (Object
-        .entries(country)
+        .entries(states ? states[country_code] || {} : {})
         .find(([code, name]) => code === code_or_name || name === code_or_name) || []
     );
 }

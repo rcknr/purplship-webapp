@@ -82,11 +82,16 @@ const TrackShipmentModal: React.FC<TrackShipmentModalComponent> = TrackerMutatio
                                     ))}
                             </SelectField>
 
-                            <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-6">
+                            <div className="p-3 my-5"></div>
+                            <ButtonField type="submit" 
+                                className={`is-primary ${loading ? 'is-loading' : ''} m-0`}
+                                fieldClass="form-floating-footer p-3"
+                                controlClass="has-text-centered">
                                 <span>Submit</span>
                             </ButtonField>
                         </section>
                     </form>
+                    
                     <button className="modal-close is-large has-background-dark" aria-label="close" onClick={close}></button>
                 </div>
             </Notifier>

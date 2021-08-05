@@ -1,18 +1,26 @@
+import { Shipment } from "@/api/index";
 import { AddressType, CommodityType, CustomsType, ParcelType, PresetCollection, RequestError } from "@/library/types";
+
+
+const DATE_FORMAT = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit' });
+const DATE_TIME_FORMAT = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit', hour: "2-digit", minute: "2-digit" });
+const DATE_TIME_FORMAT_LONG = new Intl.DateTimeFormat("default", { month: 'short', day: '2-digit', hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
 
 export function formatRef(s?: string): string {
     return (s || "").replaceAll('_', ' ').toLocaleUpperCase();
 }
 
-export function formatDate(date: string): string {
-    return (new Date(date)).toLocaleDateString();
+export function formatDate(date_string: string): string {
+    return DATE_FORMAT.format(new Date(date_string));
 }
 
 export function formatDateTime(date_string: string): string {
-    const date = new Date(date_string);
-    let [hour, minute, second] = date.toLocaleTimeString().split(/:| /);
-    return `${formatDate(date_string)}, ${hour}:${minute}:${second}`;
+    return DATE_TIME_FORMAT.format(new Date(date_string));
+}
+
+export function formatDateTimeLong(date_string: string): string {
+    return DATE_TIME_FORMAT_LONG.format(new Date(date_string));
 }
 
 export function notEmptyJSON(value?: string | null): boolean {
@@ -21,9 +29,8 @@ export function notEmptyJSON(value?: string | null): boolean {
 
 export function formatAddress(address: AddressType): string {
     return [
-        address.person_name,
+        address.person_name || address.company_name,
         address.city,
-        address.postal_code,
         address.country_code
     ].filter(a => !isNone(a) && a !== "").join(', ');
 }
@@ -32,6 +39,17 @@ export function formatFullAddress(address: AddressType, countries?: { [country_c
     const country = countries === undefined ? address.country_code : countries[address.country_code];
     return [
         address.address_line1,
+        address.address_line2,
+        address.city,
+        address.state_code,
+        address.postal_code,
+        country
+    ].filter(a => !isNone(a) && a !== "").join(', ');
+}
+
+export function formatAddressLocation(address: AddressType, countries?: { [country_code: string]: string }): string {
+    const country = countries === undefined ? address.country_code : countries[address.country_code];
+    return [
         address.city,
         address.state_code,
         address.postal_code,
@@ -95,7 +113,13 @@ export function isNone(value: any): boolean {
 }
 
 export function deepEqual(value1?: object | null, value2?: object | null): boolean {
-    return JSON.stringify(value1, Object.keys(value1 || {}).sort()) === JSON.stringify(value2, Object.keys(value2 || {}).sort());
+    const clean_value1 = Object.entries(value1 || {}).reduce((p, [k, v]) => ({ ...p, [k]: v === null ? undefined : v }), {});
+    const clean_value2 = Object.entries(value2 || {}).reduce((p, [k, v]) => ({ ...p, [k]: v === null ? undefined : v }), {});
+
+    return (
+        JSON.stringify(clean_value1, Object.keys(clean_value1 || {}).sort()) === 
+        JSON.stringify(clean_value2, Object.keys(clean_value2 || {}).sort())
+    );
 }
 
 // Remove undefined values from objects
@@ -170,4 +194,8 @@ export function collectToken(): string {
     const token = (root as HTMLDivElement).getAttribute('data-token') as string;
 
     return token;
+}
+
+export function shipmentCarrier(shipment: Shipment) {
+  return (shipment.meta as any)?.rate_provider || shipment.carrier_name;
 }

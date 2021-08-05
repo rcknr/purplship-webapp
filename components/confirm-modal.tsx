@@ -1,27 +1,40 @@
 import { NotificationType } from '@/library/types';
 import React, { useContext, useState } from 'react';
-import { Notify } from './notifier';
+import { Notify } from '@/components/notifier';
 
-interface DeleteItemModalComponent {
+type OperationType = {
     identifier: string;
     label: string;
-    onConfirm: () => Promise<void>;
-}
+    onConfirm: () => Promise<any>;
+};
+type ConfirmModalContextType = {
+    confirmDeletion: (operation: OperationType) => void,
+};
 
-const DeleteItemModal: React.FC<DeleteItemModalComponent> = ({ identifier, label, onConfirm, children }) => {
+export const ConfirmModalContext = React.createContext<ConfirmModalContextType>({} as ConfirmModalContextType);
+
+interface ConfirmModalComponent {}
+
+const ConfirmModal: React.FC<ConfirmModalComponent> = ({ children }) => {
     const { notify } = useContext(Notify);
     const [isActive, setIsActive] = useState<boolean>(false);
+    const [operation, setOperation] = useState<OperationType>();
 
+    const confirmDeletion = (operation: OperationType) => {
+        setOperation(operation);
+        setIsActive(true);
+    };
     const close = (evt?: React.MouseEvent) => {
         evt?.preventDefault();
         setIsActive(false);
+        setOperation(undefined);
     };
     const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
         try {
-            await onConfirm();
+            await operation?.onConfirm();
             notify({ 
-                type: NotificationType.success, message: `${label} deteled successfully!...`
+                type: NotificationType.success, message: `${operation?.label} deteled successfully!...`
             });
             close();
         } catch(message) {
@@ -31,15 +44,15 @@ const DeleteItemModal: React.FC<DeleteItemModalComponent> = ({ identifier, label
 
     return (
         <>
-            <button className="button is-white" onClick={() => setIsActive(true)}>
+            <ConfirmModalContext.Provider value={{ confirmDeletion }}>
                 {children}
-            </button>
+            </ConfirmModalContext.Provider>
 
             <div className={`modal ${isActive ? "is-active" : ""}`}>
                 <div className="modal-background" onClick={close}></div>
                 <form className="modal-card" onSubmit={handleSubmit}>
                     <section className="modal-card-body">
-                        <h3 className="subtitle is-3">Delete {label} <span className="is-size-7">({identifier})</span></h3>
+                        <h3 className="subtitle is-3">Delete {operation?.label} <span className="is-size-7">({operation?.identifier})</span></h3>
 
                         <div className="buttons my=2">
                             <button className="button is-info is-light" onClick={close}>Cancel</button>
@@ -53,4 +66,4 @@ const DeleteItemModal: React.FC<DeleteItemModalComponent> = ({ identifier, label
     )
 };
 
-export default DeleteItemModal;
+export default ConfirmModal;

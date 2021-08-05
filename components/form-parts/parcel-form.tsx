@@ -229,7 +229,12 @@ const ParcelForm: React.FC<ParcelFormComponent> = ShipmentMutation<ParcelFormCom
 
                 </div>
 
-                <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-2" disabled={deepEqual(value, parcel)}>
+                <div className="p-3 my-5"></div>
+                <ButtonField type="submit" 
+                    className={`is-primary ${loading ? 'is-loading' : ''} m-0`}
+                    fieldClass="form-floating-footer p-3"
+                    controlClass="has-text-centered"
+                    disabled={deepEqual(value || DEFAULT_PARCEL_CONTENT, parcel)}>
                     <span>Save</span>
                 </ButtonField>
 

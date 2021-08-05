@@ -7,9 +7,7 @@ const ModeIndicator: React.FC = () => {
     return (
         <>
             {testMode && <div className="mode-indicator">
-                <div className="mode-indicator-container">
-                    <span className="mode-indicator-label has-text-weight-semibold">TEST DATA</span>
-                </div>
+                <span className="mode-indicator-label has-text-weight-semibold">TEST DATA</span>
             </div>}
         </>
     )

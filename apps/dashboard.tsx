@@ -88,7 +88,7 @@ const Dashboard: React.FC = () => {
                     <Navbar />
 
                     <div className="dashboard-content" style={{ position: 'relative' }}>
-                        <Router basepath={computeBasePath()}>
+                        <Router basepath={computeBasePath()} primary={false}>
                             <ShipmentPage path="/" />
                             <TrackersPage path="trackers" />
 

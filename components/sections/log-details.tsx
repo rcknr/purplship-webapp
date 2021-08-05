@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View } from '@/library/types';
 import StatusCode from '@/components/status-code-badge';
-import { formatDateTime, isNone, notEmptyJSON } from '@/library/helper';
+import { formatDateTimeLong, isNone, notEmptyJSON } from '@/library/helper';
 import { Log } from '@/context/log-query';
 import { Loading } from '@/components/loader';
 import NavLink from '@/components/generic/navlink';
@@ -50,8 +50,12 @@ const LogDetails: React.FC<LogDetailsView> = ({ logId }) => {
 
                 <div className="card-content py-3">
                     <div className="columns my-0">
+                        <div className="column is-3 py-1">ID</div>
+                        <div className="column is-8 py-1">{log.id}</div>
+                    </div>
+                    <div className="columns my-0">
                         <div className="column is-3 py-1">Date</div>
-                        <div className="column is-8 py-1">{formatDateTime(log.requested_at)}</div>
+                        <div className="column is-8 py-1">{formatDateTimeLong(log.requested_at)}</div>
                     </div>
                     <div className="columns my-0">
                         <div className="column is-3 py-1">IP Address</div>

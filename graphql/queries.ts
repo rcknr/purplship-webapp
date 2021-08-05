@@ -210,8 +210,8 @@ query get_log($id: Int!) {
 `;
 
 export const GET_LOGS = gql`
-query get_logs($offset: Int, $first: Int) {
-  logs(offset: $offset, first: $first) {
+query get_logs($offset: Int, $first: Int, $status: String) {
+  logs(offset: $offset, first: $first, status: $status) {
     pageInfo {
       hasNextPage
       hasPreviousPage
@@ -278,11 +278,24 @@ query get_system_connections($test: Boolean) {
   system_connections(test: $test) {
     id
     carrier_id
-    carrier_name
     test
     active
+    capabilities
+    carrier_name
+    enabled
   }
 }
+`;
+
+export const MUTATE_SYSTEM_CONNECTION = gql`
+  mutation mutate_system_connection($data: SystemCarrierMutationInput!) {
+    mutate_system_connection(input: $data) {
+      carrier {
+        id
+        active
+      }
+    }
+  }
 `;
 
 export const CREATE_TEMPLATE = gql`
@@ -400,6 +413,7 @@ export const GET_USER_CONNECTIONS = gql`
         site_id
         password
         account_number
+        account_country_code
       }
       ... on DHLUniversalSettings {
         id
@@ -439,6 +453,7 @@ export const GET_USER_CONNECTIONS = gql`
         password
         meter_number
         user_key
+        account_country_code
       }
       ... on FreightcomSettings {
         id
@@ -508,6 +523,7 @@ export const GET_USER_CONNECTIONS = gql`
         password
         access_license_number
         account_number
+        account_country_code
       }
       ... on USPSSettings {
         id

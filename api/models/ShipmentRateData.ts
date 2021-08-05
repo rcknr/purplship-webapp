@@ -14,41 +14,55 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Specify address validation result
+ * 
  * @export
- * @interface AddressValidation
+ * @interface ShipmentRateData
  */
-export interface AddressValidation {
+export interface ShipmentRateData {
     /**
-     * True if the address is valid
-     * @type {boolean}
-     * @memberof AddressValidation
+     * 
+     * The requested carrier service for the shipment.
+     * 
+     * Please consult [the reference](#operation/references) for specific carriers services.<br/>
+     * Note that this is a list because on a Multi-carrier rate request you could specify a service per carrier.
+     * @type {Array<string>}
+     * @memberof ShipmentRateData
      */
-    success: boolean;
+    services?: Array<string> | null;
     /**
-     * validation service details
-     * @type {object}
-     * @memberof AddressValidation
+     * 
+     * The list of configured carriers you wish to get rates from.
+     * 
+     * *Note that the request will be sent to all carriers in nothing is specified*
+     * @type {Array<string>}
+     * @memberof ShipmentRateData
      */
-    meta?: object | null;
+    carrier_ids?: Array<string> | null;
+    /**
+     * The shipment reference
+     * @type {string}
+     * @memberof ShipmentRateData
+     */
+    reference?: string | null;
 }
 
-export function AddressValidationFromJSON(json: any): AddressValidation {
-    return AddressValidationFromJSONTyped(json, false);
+export function ShipmentRateDataFromJSON(json: any): ShipmentRateData {
+    return ShipmentRateDataFromJSONTyped(json, false);
 }
 
-export function AddressValidationFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddressValidation {
+export function ShipmentRateDataFromJSONTyped(json: any, ignoreDiscriminator: boolean): ShipmentRateData {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'success': json['success'],
-        'meta': !exists(json, 'meta') ? undefined : json['meta'],
+        'services': !exists(json, 'services') ? undefined : json['services'],
+        'carrier_ids': !exists(json, 'carrier_ids') ? undefined : json['carrier_ids'],
+        'reference': !exists(json, 'reference') ? undefined : json['reference'],
     };
 }
 
-export function AddressValidationToJSON(value?: AddressValidation | null): any {
+export function ShipmentRateDataToJSON(value?: ShipmentRateData | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +71,9 @@ export function AddressValidationToJSON(value?: AddressValidation | null): any {
     }
     return {
         
-        'success': value.success,
-        'meta': value.meta,
+        'services': value.services,
+        'carrier_ids': value.carrier_ids,
+        'reference': value.reference,
     };
 }
 

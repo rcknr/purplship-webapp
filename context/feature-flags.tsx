@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 
-type FeatureFlagType = {
-    ADDRESS_AUTO_COMPLETE: boolean,
-    MULTI_ORGANIZATIONS: boolean
+export type FeatureFlagType = {
+    MULTI_ORGANIZATIONS: boolean,
+    ADDRESS_AUTO_COMPLETE: { 
+        is_enabled: boolean;
+        provider?: string;
+        url?: string;
+        key?: string;
+    }
 };
 
 export function collectFeatureFlags(): FeatureFlagType {

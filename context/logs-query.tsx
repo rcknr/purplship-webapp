@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { LazyQueryResult, useLazyQuery } from '@apollo/client';
-import { get_logs, GET_LOGS, get_logs_logs_edges } from '@/graphql';
+import { get_logs, GET_LOGS, get_logs_logs_edges, get_logsVariables } from '@/graphql';
 import { LogType } from '@/library/types';
+import { isNone } from '@/library/helper';
 
 const PAGE_SIZE = 20;
 const PAGINATION = { offset: 0, first: PAGE_SIZE };
@@ -11,8 +12,8 @@ type LogsType = LazyQueryResult<get_logs, any> & {
   logs: LogType[];
   next?: number | null;
   previous?: number | null;
-  load: () => void;
-  loadMore: (cursor?: number | null) => void;
+  load: (options?: get_logsVariables) => void;
+  loadMore: (options?: get_logsVariables) => void;
 };
 
 export const Logs = React.createContext<LogsType>({} as LogsType);
@@ -30,8 +31,15 @@ const LogsQuery: React.FC = ({ children }) => {
       return { logs: { ...data.logs, pageInfo: { ...data.logs?.pageInfo, hasPreviousPage: variables?.offset > 0 } } }
     }
   });
-  const load = () => query.called ? fetchMore({ variables: PAGINATION }) : initialLoad({ variables });
-  const loadMore = (offset?: number | null) => fetchMore({ variables: { ...variables, offset: offset || 0 } });
+  const loadMore = (options: get_logsVariables = {}) => {
+    const { offset, status } = options;
+    const params = {
+      offset: offset || 0,
+      ...(isNone(status) ? {} : { status })
+    };
+    return (query.called ? fetchMore: initialLoad)({ variables: { ...variables, ...params } });
+  };
+  const load = (options?: get_logsVariables) => loadMore(options);
 
   return (
     <Logs.Provider value={{

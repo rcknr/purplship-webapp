@@ -6,7 +6,7 @@ import CheckBoxField from '@/components/generic/checkbox-field';
 import { NotificationType, ParcelTemplateType, ParcelType } from '@/library/types';
 import TemplateMutation from '@/context/template-mutation';
 import Notifier, { Notify } from '@/components/notifier';
-import { Loading } from './loader';
+import { Loading } from '@/components/loader';
 
 const DEFAULT_TEMPLATE_CONTENT = {
     parcel: {
@@ -16,33 +16,43 @@ const DEFAULT_TEMPLATE_CONTENT = {
     }
 } as ParcelTemplateType;
 
+type OperationType = {
+    parcelTemplate?: ParcelTemplateType;
+    onConfirm: () => Promise<any>;
+};
+type ParcelEditContextType = {
+    editParcel: (operation: OperationType) => void,
+};
 type ExtendedParcel = ParcelType & { label?: string; is_default?: boolean; };
 
-interface ParcelEditModalComponent {
-    parcelTemplate?: ParcelTemplateType;
-    className: string;
-    onUpdate?: () => void;
-}
+export const ParcelEditContext = React.createContext<ParcelEditContextType>({} as ParcelEditContextType);
+
+interface ParcelEditModalComponent {}
 
 const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<ParcelEditModalComponent>(
-    ({ parcelTemplate, children, className, onUpdate, createTemplate, updateTemplate }) => {
+    ({ children, createTemplate, updateTemplate }) => {
         const { notify } = useContext(Notify);
-        const { loading, setLoading } = useContext(Loading);
+        const { setLoading } = useContext(Loading);
         const [isActive, setIsActive] = useState<boolean>(false);
         const [key, setKey] = useState<string>(`parcel-${Date.now()}`);
-        const [isNew, _] = useState<boolean>(isNone(parcelTemplate));
+        const [isNew, setIsNew] = useState<boolean>(true);
         const [payload, setPayload] = useState<ParcelType | undefined>();
+        const [operation, setOperation] = useState<OperationType | undefined>();
 
-        const open = () => {
+        const editParcel = (operation: OperationType) => {
+            const { label, is_default, parcel } = operation.parcelTemplate || DEFAULT_TEMPLATE_CONTENT;
+
             setIsActive(true);
-            const { label, is_default, parcel } = parcelTemplate || DEFAULT_TEMPLATE_CONTENT;
-
-            setPayload({ ...parcel, is_default, label } as ExtendedParcel);
+            setOperation(operation);
+            setIsNew(isNone(operation.parcelTemplate));
+            setPayload({ ...parcel, label, is_default } as ExtendedParcel);
+            setKey(`parcel-${Date.now()}`);
         };
         const close = (_?: React.MouseEvent, changed?: boolean) => {
             if (isNew) setPayload(undefined);
-            if (changed && onUpdate !== undefined) onUpdate();
+            if (changed && operation?.onConfirm !== undefined) operation?.onConfirm();
             setIsActive(false);
+            setOperation(undefined);
             setKey(`parcel-${Date.now()}`);
         };
         const update = async ({ changes }: any) => {
@@ -53,11 +63,11 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
                 notify({ type: NotificationType.success, message: 'Parcel successfully added!' });
             }
             else {
-                await updateTemplate({ label, is_default, id: parcelTemplate?.id as string, parcel: parcel as any });
+                await updateTemplate({ label, is_default, id: operation?.parcelTemplate?.id as string, parcel: parcel as any });
                 notify({ type: NotificationType.success, message: 'Parcel successfully updated!' });
             }
 
-            setTimeout(() => close(undefined, true), 2500);
+            setTimeout(() => close(undefined, true), 2000);
             setLoading(false);
         };
         const Extension: React.FC<{ onChange?: EventHandler<any>; parcel?: ExtendedParcel }> = ({ onChange, parcel }) => (
@@ -75,17 +85,20 @@ const ParcelEditModal: React.FC<ParcelEditModalComponent> = TemplateMutation<Par
 
         return (
             <Notifier>
-                <button className={className} onClick={open}>
+                <ParcelEditContext.Provider value={{ editParcel }}>
                     {children}
-                </button>
+                </ParcelEditContext.Provider>
 
                 <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                     <div className="modal-background" onClick={close}></div>
                     <div className="modal-card">
 
                         <section className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Parcel</h3>
-                            <hr />
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'New' : 'Update'} Parcel</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
+
                             {payload !== undefined && <ParcelForm value={payload as any} update={update}>
                                 <Extension />
                             </ParcelForm>}

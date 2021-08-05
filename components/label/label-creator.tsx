@@ -16,6 +16,7 @@ import { Notify } from '@/components/notifier';
 import NavLink from '@/components/generic/navlink';
 import { AppMode } from '@/context/app-mode';
 import ModeIndicator from '@/components/mode-indicator';
+import Spinner from '@/components/spinner';
 
 
 interface LabelCreatorComponent extends View {
@@ -101,15 +102,7 @@ const LabelCreator: React.FC<LabelCreatorComponent> = ({ id }) => {
                 </div>
             </div>}
 
-            {!ready && <div className="card my-6">
-
-                <div className="card-content has-text-centered">
-                    <span className="icon has-text-info is-large">
-                        <i className="fas fa-spinner fa-pulse"></i>
-                    </span>
-                </div>
-
-            </div>}
+            {!ready && <Spinner />}
 
         </>
     )

@@ -402,6 +402,7 @@ export interface get_logs {
 export interface get_logsVariables {
   offset?: number | null;
   first?: number | null;
+  status?: string | null;
 }
 
 
@@ -468,9 +469,11 @@ export interface get_parcel_templatesVariables {
 export interface get_system_connections_system_connections {
   id: string;
   carrier_id: string;  // eg. canadapost, dhl_express, fedex, purolator_courrier, ups...
-  carrier_name: string;
   test: boolean;
   active: boolean;
+  capabilities: string[];
+  carrier_name: string;
+  enabled: boolean;
 }
 
 export interface get_system_connections {
@@ -479,6 +482,31 @@ export interface get_system_connections {
 
 export interface get_system_connectionsVariables {
   test?: boolean | null;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: mutate_system_connection
+// ====================================================
+
+export interface mutate_system_connection_mutate_system_connection_carrier {
+  id: string;
+  active: boolean;
+}
+
+export interface mutate_system_connection_mutate_system_connection {
+  carrier: mutate_system_connection_mutate_system_connection_carrier | null;
+}
+
+export interface mutate_system_connection {
+  mutate_system_connection: mutate_system_connection_mutate_system_connection | null;
+}
+
+export interface mutate_system_connectionVariables {
+  data: SystemCarrierMutationInput;
 }
 
 
@@ -687,6 +715,7 @@ export interface get_user_connections_user_connections_DHLExpressSettings {
   site_id: string;
   password: string;
   account_number: string;
+  account_country_code: string;
 }
 
 export interface get_user_connections_user_connections_DHLUniversalSettings {
@@ -734,6 +763,7 @@ export interface get_user_connections_user_connections_FedexSettings {
   password: string;
   meter_number: string;
   user_key: string;
+  account_country_code: string;
 }
 
 export interface get_user_connections_user_connections_FreightcomSettings {
@@ -817,6 +847,7 @@ export interface get_user_connections_user_connections_UPSSettings {
   password: string;
   access_license_number: string;
   account_number: string;
+  account_country_code: string;
 }
 
 export interface get_user_connections_user_connections_USPSSettings {
@@ -2037,6 +2068,7 @@ export interface CreateConnectionInput {
 // null
 export interface AramexSettingsInput {
   id?: string | null;
+  account_country_code: string;
   carrier_id: string;
   test?: boolean | null;
   active?: boolean | null;
@@ -2045,7 +2077,6 @@ export interface AramexSettingsInput {
   account_pin: string;
   account_entity: string;
   account_number: string;
-  account_country_code: string;
 }
 
 // null
@@ -2067,7 +2098,7 @@ export interface CanadaPostSettingsInput {
   active?: boolean | null;
   username: string;
   password: string;
-  customer_number: string;
+  customer_number?: string | null;
   contract_id?: string | null;
 }
 
@@ -2084,6 +2115,7 @@ export interface CanparSettingsInput {
 // null
 export interface DHLExpressSettingsInput {
   id?: string | null;
+  account_country_code: string;
   carrier_id: string;
   test?: boolean | null;
   active?: boolean | null;
@@ -2116,6 +2148,7 @@ export interface DicomSettingsInput {
 // null
 export interface FedexSettingsInput {
   id?: string | null;
+  account_country_code: string;
   carrier_id: string;
   test?: boolean | null;
   active?: boolean | null;
@@ -2170,18 +2203,19 @@ export interface SFExpressSettingsInput {
 // null
 export interface TNTSettingsInput {
   id?: string | null;
+  account_country_code: string;
   carrier_id: string;
   test?: boolean | null;
   active?: boolean | null;
   username: string;
   password: string;
   account_number: string;
-  account_country_code: string;
 }
 
 // null
 export interface UPSSettingsInput {
   id?: string | null;
+  account_country_code: string;
   carrier_id: string;
   test?: boolean | null;
   active?: boolean | null;
@@ -2286,6 +2320,7 @@ export interface UpdateConnectionInput {
 // null
 export interface PartialAramexSettingsInput {
   id?: string | null;
+  account_country_code?: string | null;
   carrier_id?: string | null;
   test?: boolean | null;
   active?: boolean | null;
@@ -2294,7 +2329,6 @@ export interface PartialAramexSettingsInput {
   account_pin?: string | null;
   account_entity?: string | null;
   account_number?: string | null;
-  account_country_code?: string | null;
 }
 
 // null
@@ -2333,6 +2367,7 @@ export interface PartialCanparSettingsInput {
 // null
 export interface PartialDHLExpressSettingsInput {
   id?: string | null;
+  account_country_code?: string | null;
   carrier_id?: string | null;
   test?: boolean | null;
   active?: boolean | null;
@@ -2365,6 +2400,7 @@ export interface PartialDicomSettingsInput {
 // null
 export interface PartialFedexSettingsInput {
   id?: string | null;
+  account_country_code?: string | null;
   carrier_id?: string | null;
   test?: boolean | null;
   active?: boolean | null;
@@ -2419,18 +2455,19 @@ export interface PartialSFExpressSettingsInput {
 // null
 export interface PartialTNTSettingsInput {
   id?: string | null;
+  account_country_code?: string | null;
   carrier_id?: string | null;
   test?: boolean | null;
   active?: boolean | null;
   username?: string | null;
   password?: string | null;
   account_number?: string | null;
-  account_country_code?: string | null;
 }
 
 // null
 export interface PartialUPSSettingsInput {
   id?: string | null;
+  account_country_code?: string | null;
   carrier_id?: string | null;
   test?: boolean | null;
   active?: boolean | null;
@@ -2525,6 +2562,13 @@ export interface UpdateOrganizationInput {
   id?: string | null;
   name?: string | null;
   slug?: string | null;
+  clientMutationId?: string | null;
+}
+
+// null
+export interface SystemCarrierMutationInput {
+  id: string;
+  enable: boolean;
   clientMutationId?: string | null;
 }
 

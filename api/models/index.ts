@@ -39,6 +39,7 @@ export * from './ShipmentCancelRequest';
 export * from './ShipmentData';
 export * from './ShipmentList';
 export * from './ShipmentPurchaseData';
+export * from './ShipmentRateData';
 export * from './ShippingRequest';
 export * from './TokenObtainPair';
 export * from './TokenPair';

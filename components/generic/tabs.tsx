@@ -5,9 +5,10 @@ interface TabsComponent extends React.HTMLAttributes<HTMLDivElement> {
     disabled?: string[];
     eventKey?: string;
     tabClass?: string;
+    tabContainerClass?: string;
 }
 
-const Tabs: React.FC<TabsComponent> = ({ tabs, disabled, eventKey, tabClass, children, ...props }) => {
+const Tabs: React.FC<TabsComponent> = ({ tabs, disabled, eventKey, tabClass, tabContainerClass, children, ...props }) => {
     const [selected, setSelected] = useState<string>(tabs[0]);
     const ref = useRef<any>();
     const __ = (tab: string) => (_?: any) => {
@@ -20,11 +21,11 @@ const Tabs: React.FC<TabsComponent> = ({ tabs, disabled, eventKey, tabClass, chi
     return (
         <>
 
-            <div className={`tabs ${tabClass}`}>
+            <div className={`tabs ${tabContainerClass}`}>
                 <ul>
 
                     {tabs.map((tab, index) => (
-                        <li key={index} className={`${selected === tab ? "is-active" : ""}`}>
+                        <li key={index} className={`${tabClass} ${selected === tab ? "is-active" : ""}`}>
                             <a onClick={__(tab)} data-name={tab} className={`is-capitalized ${(disabled || []).includes(tab) ? "is-disabled" : ""}`}>
                                 {tab}
                             </a>

@@ -1,89 +1,114 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import InputField, { InputFieldComponent } from '@/components/generic/input-field';
-import { Address, AddressCountryCodeEnum } from '@/api/index';
+import { Address } from '@/api/index';
 import { isNone } from '@/library/helper';
 import { initDebouncedPrediction, QueryAutocompletePrediction } from '@/library/autocomplete';
 import { Collection } from '@/library/types';
 import { APIReference } from '@/context/references-query';
 import { FeatureFlags } from '@/context/feature-flags';
+import { Subject } from 'rxjs/internal/Subject';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 
 interface AddressAutocompleteInputComponent extends InputFieldComponent {
     onValueChange: (value: Partial<Address>) => void;
     defaultValue?: string;
     disableSuggestion?: boolean;
+    country_code?: string;
+    dropdownClass?: string;
 }
 
-const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({ onValueChange, ...props }) => {
+const AddressAutocompleteInput: React.FC<AddressAutocompleteInputComponent> = ({ onValueChange, country_code, label, required, dropdownClass, className, fieldClass, controlClass, children, ...props }) => {
+    const ref = React.useRef<HTMLInputElement | null>(null);
+    const container = React.useRef<HTMLDivElement | null>(null);
     const { countries } = useContext(APIReference);
     const { ADDRESS_AUTO_COMPLETE } = useContext(FeatureFlags);
+    const [key] = useState<string>(`predictions_${Date.now()}`);
+    const [isActive, setIsActive] = useState<boolean>(false);
     const [predictions, setPredictions] = useState<QueryAutocompletePrediction[]>([]);
     const [predictor, initPredictor] = useState<ReturnType<typeof initDebouncedPrediction> | undefined>();
+
+    const updater: Subject<Partial<Address>> = new Subject();
+    updater.subscribe((data) => onValueChange(data));
+
     const onClick = (e: React.MouseEvent<HTMLInputElement>) => e.currentTarget.select();
     const onInput = (e: ChangeEvent<any>) => {
         e.preventDefault();
-        const value = e.target.value;
+        const value: string = e.target.value;
 
         if (predictor !== undefined) {
             let prediction = predictions.find(p => p.description.toLowerCase() === value.toLowerCase());
-            let address: Partial<Address> = isNone(prediction) ? { address_line1: value } : addressValue(prediction as QueryAutocompletePrediction);
-    
-            onValueChange(address);
-
-            if (isNone(prediction)) {
-                predictor.getPlacePredictions(
-                    { input: value },
-                    (predictions, status) => {
-                        const newPredictions = (status === "OK" ? predictions : []) as QueryAutocompletePrediction[];
-                        setPredictions(newPredictions);
-                    }
-                );
+            let address = (
+                isNone(prediction)
+                ? { address_line1: value }
+                : predictor?.formatPrediction(prediction as QueryAutocompletePrediction, countries as Collection)
+            ) as Partial<Address>;
+            
+            updater.next(address);
+            setIsActive(predictions.length > 0);
+            if (isNone(prediction) && (value || "").length > 3) {
+                predictor.getPlacePredictions({ input: value }, (newPredictions) => {
+                    setPredictions(newPredictions)
+                    setIsActive(newPredictions.length > 0);
+                });
                 e.target.value = address.address_line1;
             }
         } else {
-            onValueChange({ address_line1: value });
+            updater.next({ address_line1: value });
         }
     };
-
-    const addressValue = (prediction: QueryAutocompletePrediction): Partial<Address> => {
-        let extra: Partial<Address> = {};
-        let content = prediction.description.split(', ');
-        let address_line1 = prediction.description;
-
-        if (content.length >= 3) {
-            const [country, _] = Object.entries(countries as Collection).find(
-                ([_, name]) => name.toLowerCase() === content[content.length - 1]
-            ) || [];
-            if (country !== undefined) extra.country_code = AddressCountryCodeEnum[country as (keyof typeof AddressCountryCodeEnum)];
-
-            const state = content[content.length - 2];
-            if (state !== undefined) extra.state_code = state;
-
-            const city = content[content.length - 3];
-            if (city !== undefined) extra.city = city;
+    const onSelect = (prediction: QueryAutocompletePrediction) => (e: React.MouseEvent) => {
+        let address = predictor?.formatPrediction(prediction as QueryAutocompletePrediction, countries as Collection);
+        setIsActive(false);
+        if(ref.current !== null) ref.current.value = prediction.description;
+        updater.next(address as Partial<Address>);
+    };
+    const onBodyClick = (e: MouseEvent) => {
+        if (container.current !== null && !container.current.contains(e.target as Element)) {
+            setIsActive(false);
+            document.removeEventListener('click', onBodyClick);
         }
-
-        if (content.length > 3) {
-            address_line1 = (content.slice(0, content.length - 3)).join(' ');
-        }
-    
-        return { address_line1, ...extra };
     };
 
     useEffect(() => {
-        if (ADDRESS_AUTO_COMPLETE) initPredictor(initDebouncedPrediction());
+        initPredictor(initDebouncedPrediction(ADDRESS_AUTO_COMPLETE));
     }, [ADDRESS_AUTO_COMPLETE]);
+    useEffect(() => {
+        if (isActive) document.addEventListener('click', onBodyClick);
+    }, [isActive]);
 
-    return (
-        <InputField onInput={onInput} onClick={onClick} list="predictions" {...props}>
-            <datalist id="predictions">
-                {predictions
-                    .map((prediction, index) => (
-                        <option key={`${index}-auto-complete`} value={prediction.description}/>
-                    ))
-                }
-            </datalist>
-        </InputField>
+    const content = (_: any) => (
+        <div className={`field ${fieldClass}`} key={key} ref={container}>
+            {label !== undefined && <label className="label is-capitalized" style={{ fontSize: ".8em" }}>
+                {label}
+                {required && <span className="icon is-small has-text-danger small-icon"><i className="fas fa-asterisk"></i></span>}
+            </label>}
+            <div className={`control ${controlClass}`}>
+                <div className={`dropdown input is-fullwidth p-0 ${isActive ? 'is-active' : ''} ${dropdownClass}`}
+                    style={{ border: 'none' }}
+                    key={`dropdown-input-${key}`}>
+                    <input onInput={onInput} onClick={onClick} autoComplete={ADDRESS_AUTO_COMPLETE?.is_enabled ? key : "on"} className="input is-fullwidth" required={required} ref={ref} {...props} />
+
+                    <div className="dropdown-menu py-0" id={`dropdown-input-${key}`} role="menu" style={{ right: 0, left: 0 }}>
+                        <div className="dropdown-content py-0">
+                            <nav className="panel dropped-panel">
+                                {(predictions || [])
+                                    .map((prediction) => (
+                                        <a key={`${prediction.id}-${Date.now()}`}
+                                            onClick={onSelect(prediction)}
+                                            className={`panel-block`}>
+                                            <span>{`${prediction.description} ${prediction.location}`}</span>
+                                        </a>
+                                    ))
+                                }
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
+
+    return <>{content(predictions)}</>;
 };
 
 export default AddressAutocompleteInput;

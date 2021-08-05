@@ -10,28 +10,46 @@ import ConnectionMutation from '@/context/connection-mutation';
 import { UserConnectionType } from '@/context/user-connections-query';
 import Notifier, { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
-import { deepEqual } from '@/library/helper';
+import { deepEqual, isNone } from '@/library/helper';
 import { AppMode } from '@/context/app-mode';
+import CountryInput from '@/components/generic/country-input';
+
+type OperationType = {
+    connection?: UserConnectionType;
+    onConfirm?: () => Promise<any>;
+};
+type ConnectProviderModalContextType = {
+    editConnection: (operation: OperationType) => void,
+};
+
+export const ConnectProviderModalContext = React.createContext<ConnectProviderModalContextType>({} as ConnectProviderModalContextType);
 
 interface ConnectProviderModalComponent {
     connection?: UserConnectionType;
-    className?: string;
-    onUpdate?: () => void;
 }
 
 const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = ConnectionMutation<ConnectProviderModalComponent>(
-    ({ children, connection, className, onUpdate, createConnection, updateConnection }) => {
+    ({ children, createConnection, updateConnection }) => {
         const { carriers } = useContext(APIReference);
         const { notify } = useContext(Notify);
         const { loading, setLoading } = useContext(Loading);
         const { testMode } = useContext(AppMode);
         const DEFAULT_STATE = (): Partial<UserConnectionType> => ({ carrier_name: 'none', test: testMode });
         const [key, setKey] = useState<string>(`connection-${Date.now()}`);
-        const [isNew, _] = useState<boolean>(connection === null || connection === undefined);
-        const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(connection || DEFAULT_STATE());
+        const [isNew, setIsNew] = useState<boolean>(true);
+        const [payload, setPayload] = useState<Partial<UserConnectionType | any>>(DEFAULT_STATE());
         const [isActive, setIsActive] = useState<boolean>(false);
         const [isDisabled, setIsDisabled] = useState<boolean>(true);
+        const [operation, setOperation] = useState<OperationType>({} as OperationType);
 
+        const editConnection = (operation: OperationType): void => {
+            setIsActive(true);
+            setIsDisabled(true);
+            setPayload(operation.connection || DEFAULT_STATE());
+            setIsNew(isNone(operation.connection));
+            setOperation(operation);
+            setKey(`connection-${Date.now()}`);
+        };
         const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
             evt.preventDefault();
             setLoading(true);
@@ -49,8 +67,8 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                     type: NotificationType.success,
                     message: `carrier connection ${isNew ? 'registered' : 'updated'} successfully`
                 });
-                setTimeout(() => close(), 1500);
-                onUpdate && onUpdate();
+                setTimeout(() => close(), 500);
+                operation.onConfirm && operation.onConfirm();
             } catch (err) {
                 notify({ type: NotificationType.error, message: err });
             } finally {
@@ -58,11 +76,10 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
             }
         };
         const close = (e?: React.MouseEvent) => {
-            console.log(e, "triggered")
             e?.preventDefault();
             if (isNew) setPayload(DEFAULT_STATE());
             setKey(`connection-${Date.now()}`);
-            setIsDisabled(false);
+            setIsDisabled(true);
             setIsActive(false);
         };
         const handleOnChange = (property: string) => (e: React.ChangeEvent<any>) => {
@@ -74,7 +91,12 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
                 new_state = { ...payload, test: e.target.checked };
             }
             setPayload(new_state);
-            setIsDisabled(deepEqual((connection || DEFAULT_STATE), new_state));
+            setIsDisabled(deepEqual((operation.connection || DEFAULT_STATE), new_state));
+        };
+        const directChange = (property: string) => (value: any) => {
+            const new_state = { ...payload, [property]: value };
+            setPayload(new_state);
+            setIsDisabled(deepEqual((operation.connection || DEFAULT_STATE), new_state));
         };
         const has = (property: string) => {
             return hasProperty(payload.carrier_name as CarrierSettingsCarrierNameEnum, property);
@@ -82,15 +104,18 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
         return (
             <Notifier>
-                <button className={className} onClick={() => setIsActive(true)}>
+                <ConnectProviderModalContext.Provider value={{ editConnection }}>
                     {children}
-                </button>
+                </ConnectProviderModalContext.Provider>
 
                 <div className={`modal ${isActive ? "is-active" : ""}`} key={key}>
                     <div className="modal-background" onClick={close}></div>
                     <form className="modal-card" onSubmit={handleSubmit}>
                         <section className="modal-card-body">
-                            <h3 className="subtitle is-3">{isNew ? 'Connect a Carrier' : 'Update a Carrier Connection'}</h3>
+                            <div className="form-floating-header p-4">
+                                <h3 className="subtitle is-3">{isNew ? 'Connect a Carrier' : 'Update a Carrier Connection'}</h3>
+                            </div>
+                            <div className="p-3 my-5"></div>
 
                             <SelectField value={payload.carrier_name} onChange={handleOnChange("carrier_name")} disabled={!isNew} key={`select-${key}`} className="is-fullwidth" required>
                                 <option value='none'>Select Carrier</option>
@@ -155,7 +180,7 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
                                     {has("account_entity") && <InputField label="Account Entity" defaultValue={payload.account_entity} onChange={handleOnChange("account_entity")} className="is-small" required />}
 
-                                    {has("account_country_code") && <InputField label="Account Country Code" defaultValue={payload.account_country_code} onChange={handleOnChange("account_country_code")} className="is-small" required />}
+                                    {has("account_country_code") && <CountryInput label="Account Country Code" onValueChange={directChange("account_country_code")} value={payload.account_country_code} className="is-small" required />}
 
                                     {has("mailer_id") && <InputField label="Mailer ID" defaultValue={payload.mailer_id} onChange={handleOnChange("mailer_id")} className="is-small" />}
 
@@ -167,7 +192,11 @@ const ConnectProviderModal: React.FC<ConnectProviderModalComponent> = Connection
 
                                     <CheckBoxField defaultChecked={payload.test} onChange={handleOnChange("test")}>Test Mode</CheckBoxField>
 
-                                    <ButtonField className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={isDisabled}>Submit</ButtonField>
+                                    <ButtonField className={`is-primary ${loading ? 'is-loading' : ''}`}
+                                        fieldClass="has-text-centered mt-3"
+                                        disabled={isDisabled}>
+                                        <span>Submit</span>
+                                    </ButtonField>
                                 </>
                             }
                         </section>
@@ -186,17 +215,17 @@ function hasProperty(carrier_name: CarrierSettingsCarrierNameEnum, property: str
         [CarrierSettingsCarrierNameEnum.Canadapost]: ["carrier_id", "test", "username", "password", "customer_number", "contract_id"],
         [CarrierSettingsCarrierNameEnum.Canpar]: ["carrier_id", "test", "username", "password"],
         [CarrierSettingsCarrierNameEnum.Dicom]: ["carrier_id", "test", "username", "password", "billing_account"],
-        [CarrierSettingsCarrierNameEnum.DhlExpress]: ["carrier_id", "test", "site_id", "password", "account_number"],
+        [CarrierSettingsCarrierNameEnum.DhlExpress]: ["carrier_id", "test", "site_id", "password", "account_number", "account_country_code"],
         [CarrierSettingsCarrierNameEnum.DhlUniversal]: ["carrier_id", "test", "consumer_key", "consumer_secret"],
         [CarrierSettingsCarrierNameEnum.Eshipper]: ["carrier_id", "test", "username", "password"],
         [CarrierSettingsCarrierNameEnum.Freightcom]: ["carrier_id", "test", "username", "password"],
-        [CarrierSettingsCarrierNameEnum.Fedex]: ["carrier_id", "test", "user_key", "password", "meter_number", "account_number"],
+        [CarrierSettingsCarrierNameEnum.Fedex]: ["carrier_id", "test", "user_key", "password", "meter_number", "account_number", "account_country_code"],
         [CarrierSettingsCarrierNameEnum.Purolator]: ["carrier_id", "test", "username", "password", "account_number", "user_token"],
         [CarrierSettingsCarrierNameEnum.Royalmail]: ["carrier_id", "test", "client_id", "client_secret"],
         [CarrierSettingsCarrierNameEnum.Sendle]: ["carrier_id", "test", "sendle_id", "api_key"],
         [CarrierSettingsCarrierNameEnum.SfExpress]: ["carrier_id", "test", "partner_id", "check_word"],
         [CarrierSettingsCarrierNameEnum.Tnt]: ["carrier_id", "test", "username", "password", "account_country_code", "account_number"],
-        [CarrierSettingsCarrierNameEnum.Ups]: ["carrier_id", "test", "username", "password", "access_license_number", "account_number"],
+        [CarrierSettingsCarrierNameEnum.Ups]: ["carrier_id", "test", "username", "password", "access_license_number", "account_number", "account_country_code"],
         [CarrierSettingsCarrierNameEnum.Usps]: ["carrier_id", "test", "username", "password", "mailer_id", "customer_registration_id", "logistics_manager_mailer_id"],
         [CarrierSettingsCarrierNameEnum.UspsInternational]: ["carrier_id", "test", "username", "password", "mailer_id", "customer_registration_id", "logistics_manager_mailer_id"],
         [CarrierSettingsCarrierNameEnum.Yanwen]: ["carrier_id", "test", "customer_number", "license_key"],

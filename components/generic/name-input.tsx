@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useEffect } from 'react';
 import InputField, { InputFieldComponent } from '@/components/generic/input-field';
 import { formatAddress, isNone } from '@/library/helper';
-import { Address } from '@/api';
+import { Address } from '@/api/index';
 import { AddressTemplates } from '@/context/address-templates-query';
 
 interface NameInputComponent extends InputFieldComponent {

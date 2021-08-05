@@ -31,7 +31,8 @@ const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>)
     const fetchRates = async (shipment: Shipment | ShipmentData) => {
       return handleFailure((async () => {
         if ((shipment as Shipment).id !== undefined) {
-          return purplship.shipments.rates({ id: (shipment as Shipment).id as string });
+          const { reference, id } = shipment as Shipment;
+          return purplship.shipments.rates({ id: id as string, data: { reference } });
         } else {
           return purplship.shipments.create({ data: (shipment as ShipmentData), test: testMode });
         }
@@ -40,9 +41,10 @@ const ShipmentMutation = <T extends {}>(Component: React.FC<ShipmentMutator<T>>)
     const buyLabel = async (shipment: Shipment) => handleFailure(
       purplship.shipments.purchase({
         data: {
-          selected_rate_id: shipment.selected_rate_id as string,
           payment: shipment.payment,
-          label_type: shipment.label_type as any
+          reference: shipment.reference,
+          label_type: shipment.label_type as any,
+          selected_rate_id: shipment.selected_rate_id as string,
         },
         id: shipment.id as string
       })

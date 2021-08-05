@@ -140,7 +140,12 @@ const ShipmentOptions: React.FC<ShipmentOptionsComponent> = ShipmentMutation<Shi
             </div>
 
 
-            <ButtonField type="submit" className={`is-primary ${loading ? 'is-loading' : ''}`} fieldClass="has-text-centered mt-3" disabled={deepEqual(shipment.options, options) || (options === {} && shipment.options === {})}>
+            <div className="p-3 my-5"></div>
+            <ButtonField type="submit" 
+                className={`is-primary ${loading ? 'is-loading' : ''} m-0`}
+                fieldClass="form-floating-footer p-3"
+                controlClass="has-text-centered"
+                disabled={deepEqual(shipment.options, options) || (options === {} && shipment.options === {})}>
                 <span>Save</span>
             </ButtonField>
 

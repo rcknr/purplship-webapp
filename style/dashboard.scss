@@ -22,7 +22,7 @@ Purplship custom styling
     position: absolute;
     z-index: 100;
     margin: 0 !important;
-    height: 0.25rem !important;
+    height: 0.10rem !important;
 }
 
 .purplship-notification-loader {
@@ -32,24 +32,37 @@ Purplship custom styling
     position: absolute;
     z-index: 100;
     margin: 0 !important;
-    height: 0.25rem !important;
+    height: 0.10rem !important;
 }
 
 .shipments-table {
     .carrier {
-        width: 15%;
+        width: 8%;
+        min-width: 83px;
+    }
+    .service {
+        width: 20%;
+    }
+    .status {
+        width: 10%;
     }
     .recipient {
         min-width: 40%;
     }
-    .creation {
-        width: 15%;
-    }
-    .status {
-        width: 15%;
+    .date {
+        width: 13%;
     }
     .action {
         width: 15%;
+        min-width: 160px;
+    }
+
+    tbody > tr.items {
+        cursor: pointer;
+    }
+
+    tbody > tr.items:hover {
+        background-color: #eeeeee;
     }
 }
 
@@ -68,6 +81,22 @@ Purplship custom styling
     }
     .action {
         width: 15%;
+    }
+}
+
+.system-connections-table {
+    .carrier {
+        width: 24%;
+        text-align: center !important;
+    }
+    .mode {
+        width: 6%;
+    }
+    .details {
+        width: 64%;
+    }
+    .action {
+        width: 6%;
     }
 }
 
@@ -102,26 +131,33 @@ Purplship custom styling
 }
 
 .trackers-table {
+    .carrier {
+        width: 8%;
+        min-width: 83px;
+    }
     .tracking-number {
-        width: 25%;
-        min-width: 25%;
+        width: 20%;
     }
     .status {
-        width: 8%;
-        min-width: 8%;
-    }
-    .carrier {
-        width: 14%;
-        min-width: 14%;
+        width: 10%;
     }
     .last-event {
-        width: 43%;
-        max-width: 43%;
+        min-width: 40%;
+    }
+    .date {
+        width: 15%;
     }
     .action {
-        width: 10%;
-        max-width: 10%;
-        min-width: 90px;
+        width: 5%;
+        min-width: 50px;
+    }
+
+    tbody > tr.items {
+        cursor: pointer;
+    }
+
+    tbody > tr.items:hover {
+        background-color: #eeeeee;
     }
 }
 
@@ -167,7 +203,7 @@ hr {
 }
 
 .mode-menu-item {
-    color: rgba(196, 76, 52, 0.7) !important;
+    color: rgb(196, 76, 52) !important;
 }
 
 .purplship-notifier {
@@ -181,26 +217,32 @@ hr {
     font-weight: 700;
 }
 
-.mode-indicator {
-    position: absolute;
+.static-nav {
     top: 0;
     z-index: 1;
-    border-top: 2px solid rgba(196, 76, 52, 0.7);
+    position: sticky;
+    background-color: white;
+}
+
+.mode-indicator {    
+    position: sticky;
+    top: 60px;
+    z-index: 1;
+    border-top: 1px solid rgb(196,76,52);
     padding: 0;
     text-align: center;
     width: 100%;
+    display: flex;
 
-    .mode-indicator-container {
+    .mode-indicator-label {
         margin: 0 auto;
-        background: rgba(196, 76, 52, 0.7);
+        background: rgb(196,76,52);
         display: inline;
-        padding: 1px 10px;
+        padding: 2px 14px;
         border-radius: 0 0 5px 5px;
-
-        .mode-indicator-label {
-            font-size: 0.6rem;
-            color: white;
-        }
+        color: white;
+        font-size: .55em;
+        font-weight: bold;
     }
 }
 
@@ -210,6 +252,17 @@ hr {
 
 td > div.dropdown.is-active .dropdown-menu {
     top: 75%;
+}
+
+.dropdown-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 240px;
+    overflow: hidden;
+}
+
+.dropdown-panel {
+    max-height: 190px;
 }
 
 .label-container {
@@ -232,6 +285,7 @@ td > div.dropdown.is-active .dropdown-menu {
 
 .tab-content {
     display: none;
+    overflow: hidden;
 
     &.is-active {
         display: block;
@@ -243,13 +297,23 @@ td > div.dropdown.is-active .dropdown-menu {
     overflow-y: auto;
 }
 
+.form-floating-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
 .form-floating-footer {
     position: absolute;
     bottom: 0;
     right: 0;
     left: 0;
+    z-index: 5;
     background: white;
-    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
 }
 
 .rates-list-box {
