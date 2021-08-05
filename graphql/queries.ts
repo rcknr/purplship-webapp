@@ -413,6 +413,7 @@ export const GET_USER_CONNECTIONS = gql`
         site_id
         password
         account_number
+        account_country_code
       }
       ... on DHLUniversalSettings {
         id
@@ -452,6 +453,7 @@ export const GET_USER_CONNECTIONS = gql`
         password
         meter_number
         user_key
+        account_country_code
       }
       ... on FreightcomSettings {
         id
@@ -521,6 +523,7 @@ export const GET_USER_CONNECTIONS = gql`
         password
         access_license_number
         account_number
+        account_country_code
       }
       ... on USPSSettings {
         id
