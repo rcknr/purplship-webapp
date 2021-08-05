@@ -40,7 +40,7 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = SystemConnectio
           {(system_connections || []).map((connection) => (
 
             <tr key={connection.id}>
-              <td className="carrier">
+              <td className="carrier is-vcentered">
                 <CarrierBadge carrier={connection.carrier_name} className="box has-text-weight-bold" />
               </td>
               <td className="mode is-vcentered">
@@ -49,7 +49,7 @@ const SystemConnectionList: React.FC<SystemConnectionListView> = SystemConnectio
               <td className="details">
                 <ConnectionDescription connection={connection} />
               </td>
-              <td className="action has-text-right">
+              <td className="action has-text-right is-vcentered">
                 <button className="button is-white is-large" onClick={toggle(connection)}>
                   <span className={`icon is-medium ${connection.enabled ? 'has-text-success' : 'has-text-grey'}`}>
                     <i className={`fas fa-${connection.enabled ? 'toggle-on' : 'toggle-off'} fa-lg`}></i>
