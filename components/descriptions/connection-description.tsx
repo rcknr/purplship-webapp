@@ -28,7 +28,7 @@ const ConnectionDescription: React.FC<ConnectionDescriptionComponent> = ({ conne
     useEffect(() => {
         if (isNone(carrier_capabilities)) return;
 
-        setRawCapabilities((carrier_capabilities as any)[connection.carrier_id]);
+        setRawCapabilities((carrier_capabilities as any)[connection.carrier_name]);
     }, [carrier_capabilities]);
 
     return (
@@ -38,8 +38,8 @@ const ConnectionDescription: React.FC<ConnectionDescriptionComponent> = ({ conne
                     <span className="is-size-7 my-1 has-text-weight-semibold">carrier id: {connection.carrier_id}</span>
                 </li>
 
-                {connection.capabilities.map(capability => {
-                    if (raw_capabilities.filter(raw_capability => raw_capability.includes(CAPABILITY_KEYS[capability])).length > 0) {
+                {(connection?.capabilities || []).map(capability => {
+                    if ((raw_capabilities || []).filter(raw_capability => raw_capability.includes(CAPABILITY_KEYS[capability])).length > 0) {
                         return (
                             <li className="is-size-7 my-1 has-text-weight-semibold">{CAPABILITY_DETAILS[capability]}</li>
                         );
