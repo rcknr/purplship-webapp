@@ -17,10 +17,9 @@ import { Notify } from '@/components/notifier';
 import { Loading } from '@/components/loader';
 
 export const DEFAULT_ADDRESS_CONTENT = {
-    residential: false,
-    country_code: AddressCountryCodeEnum.Ca,
-    state_code: 'QC'
-} as Partial<Address>;
+    address_line1: '',
+    address_line2: '',
+    residential: false } as Partial<Address>;
 
 const NEXT_TAB_MAPPING: Collection = { "shipper": "recipient", "recipient": "parcel" };
 
@@ -115,7 +114,7 @@ const AddressForm: React.FC<AddressFormComponent> = ShipmentMutation<AddressForm
                 </div>
 
                 <div className="columns mb-0">
-                    <AddressAutocompleteInput label="Street (Line 1)" name="address_line1" onValueChange={(value) => dispatch({ name: "partial", value })} value={address.address_line1}  country_code={address.country_code} fieldClass="column mb-0 px-2 py-2" required />
+                    <AddressAutocompleteInput label="Street (Line 1)" name="address_line1" onValueChange={(value) => dispatch({ name: "partial", value })} value={address.address_line1} country_code={address.country_code} fieldClass="column mb-0 px-2 py-2" required />
                 </div>
 
                 <div className="columns is-multiline mb-0">
