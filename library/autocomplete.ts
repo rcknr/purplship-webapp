@@ -205,8 +205,8 @@ function initCanadaPostService(data: FeatureFlagType['ADDRESS_AUTO_COMPLETE']): 
 
             request(url, formData, response => {
                 const place = response.Items[0];
-                console.log(response);
-                if (place) {
+
+                if (place && !place.Error) {
                     const address: Partial<Address> = {
                         address_line1: place.Line1,
                         address_line2: place.Line2,
