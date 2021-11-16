@@ -113,7 +113,7 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
                       <button className="button is-white is-pulled-right"
                         onClick={(e) => {
                           e.stopPropagation();
-                          confirmDeletion({label: "Shipment Tracker", identifier: tracker.id as string, onConfirm: remove(tracker.id)})
+                          confirmDeletion({ label: "Shipment Tracker", identifier: tracker.id as string, onConfirm: remove(tracker.id) })
                         }}>
                         <span className="icon is-small">
                           <i className="fas fa-trash"></i>
@@ -134,7 +134,7 @@ const TrackersPage: React.FC<TrackersView> = TrackerMutation<TrackersView>(({ re
                 <button className="button is-small" onClick={() => loadMore({ cursor: previous, status })} disabled={isNone(previous)}>
                   <span>Previous</span>
                 </button>
-                <button className="button is-small" onClick={() => loadMore({ cursor: previous, status })} disabled={isNone(next)}>
+                <button className="button is-small" onClick={() => loadMore({ cursor: next, status })} disabled={isNone(next)}>
                   <span>Next</span>
                 </button>
               </div>
