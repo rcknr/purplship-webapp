@@ -183,7 +183,7 @@ const ShipmentDetails: React.FC<ShipmentDetailsComponent> = ({ id }) => {
                                     </div>
                                 </div>
 
-                                <div className="columns mt-6 mb-0">
+                                <div className="columns mt-6 mb-0 is-multiline">
                                     {!isNone(shipment.customs) && <div className="column is-6 is-size-6 py-1">
                                         <p className="is-title is-size-6 my-2 has-text-weight-semibold">CUSTOMS DECLARATION</p>
 
